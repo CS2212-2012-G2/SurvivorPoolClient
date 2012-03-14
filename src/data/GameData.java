@@ -1,12 +1,12 @@
 package data;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Vector;
 
 import common.Utils;
-//import admin.data.JSONUtils;
-import data.me.json.*;
+
+import data.me.json.JSONArray;
+import data.me.json.JSONException;
+import data.me.json.JSONObject;
 
 /**
  * GameData is the class that will be used to keep track of the important game
@@ -93,9 +93,9 @@ public abstract class GameData {
 		
 		int newSize = 0;
 		for (int i = 0; i < allContestants.size(); i++) {
-			Contestant c = (Contestant)allContestants.get(i);
+			Contestant c = (Contestant)allContestants.elementAt(i);
 			if ((c != null) && !c.isCastOff()) {
-				active.add((Object)c);
+				active.addElement((Object)c);
 			}
 		}
 		
@@ -129,7 +129,7 @@ public abstract class GameData {
 		Contestant j; 
 		// loop through array
 		for(int i = 0; i <= numContestants; i++){
-			j = (Contestant)allContestants.get(i); // get Contestant object for comparison 
+			j = (Contestant)allContestants.elementAt(i); // get Contestant object for comparison 
 			if(first.equals(j.getFirstName()) && last.equals(j.getLastName())) { // ensure names match
 				return j; // return info on player
 			}
@@ -146,7 +146,7 @@ public abstract class GameData {
 	public Contestant getContestant(String id) {
 		int index = getContestantIndexID(id);
 		
-		return (index > -1 ? (Contestant)allContestants.get(index) : null);
+		return (index > -1 ? (Contestant)allContestants.elementAt(index) : null);
 	}
 	
 	/**
@@ -166,7 +166,7 @@ public abstract class GameData {
 			return;
 		}
 		
-		allContestants.add((Object)c);
+		allContestants.addElement((Object)c);
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~ USER METHODS ~~~~~~~~~~~~~~~~~~ //
@@ -184,7 +184,7 @@ public abstract class GameData {
 	 * @param u New user to add.
 	 */
 	public void addUser(User u) {
-		allUsers.add((Object)u);
+		allUsers.addElement((Object)u);
 	}
 	
 	/**
@@ -192,10 +192,10 @@ public abstract class GameData {
 	 * @param u    User to remove.
 	 */
 	public void removeUser(User u) {
-		for (Object o: allUsers) {
-			User arrU = (User)o;
+		for(int i =0;i<allUsers.size();i++){
+			User arrU = (User)allUsers.elementAt(i);
 			if (u.getID().equals(arrU.getID())) {
-				allUsers.remove(arrU);
+				allUsers.removeElement(arrU);
 				return;
 			}
 		}
@@ -207,8 +207,8 @@ public abstract class GameData {
 	 * @return User if ID found, null otherwise.
 	 */
 	public User getUser(String ID) {
-		for (Object o: allUsers) {
-			User u = (User)o;
+		for(int i =0;i<allUsers.size();i++){
+			User u = (User)allUsers.elementAt(i);
 			if (u.getID().equalsIgnoreCase(ID)) {
 				return u;
 			}
@@ -225,15 +225,13 @@ public abstract class GameData {
 	 */
 	
 	public void allocatePoints(Contestant c){
-		Iterator<User> itr = allUsers.iterator();
 		User u;
-		while(itr.hasNext()){
-			u = itr.next();
+		for(int i =0;i<allUsers.size();i++){
+			u = (User) allUsers.elementAt(i);
 			if(u.getWeeklyPick().equals(c)){
-			   u.addPoints(20);
-			   System.out.println("Added 20 points to " + u);
-			}
-		itr.next();
+				   u.addPoints(20);
+				   System.out.println("Added 20 points to " + u);
+				}
 		}
 	}
 	
@@ -304,14 +302,13 @@ public abstract class GameData {
 	 * @param target
 	 *            Contestant to remove
 	 */
-	@SuppressWarnings("unchecked")
 	public void removeContestant(Contestant target) {
 		// is the contestant there?
 		// done this way incase its just a Contestant with ID passed
-		for (int i = 0; i < numContestants && allContestants.get(i)	!= null; i++) {
-			Contestant c = (Contestant)allContestants.get(i);
+		for (int i = 0; i < numContestants && allContestants.elementAt(i)	!= null; i++) {
+			Contestant c = (Contestant)allContestants.elementAt(i);
 			if (target.getID().equalsIgnoreCase(c.getID())) {
-				allContestants.remove(i);
+				allContestants.removeElementAt(i);
 				return;
 			}
 		}
@@ -363,7 +360,7 @@ public abstract class GameData {
 	protected int getContestantIndexID(String id) {
 		// loop through array
 		for(int i = 0; i < numContestants; i++){
-			Contestant j = (Contestant)allContestants.get(i); // get Contestant object for comparison 
+			Contestant j = (Contestant)allContestants.elementAt(i); // get Contestant object for comparison 
 			if (j.getID().equals(id)) { // ensure names match
 				return i; // return info on player
 			}
@@ -416,13 +413,15 @@ public abstract class GameData {
 		
 		obj.put(KEY_NUM_CONTEST, new Integer(numContestants));
 		JSONArray cons = new JSONArray();
-		for (Object o: allContestants) {
+		for(int i =0;i<allContestants.size();i++){
+			Object o = allContestants.elementAt(i);
 			if (o != null)
 				cons.put(((Contestant) o).toJSONObject());
 		}
 		
 		JSONArray users = new JSONArray();
-		for (Object o: allUsers) {
+		for(int i =0;i<allUsers.size();i++){
+			Object o = allUsers.elementAt(i);
 			if (o != null)
 				users.put(((User) o).toJSONObject());
 		}
@@ -449,7 +448,7 @@ public abstract class GameData {
 	 * @throws JSONException
 	 */
 	public void fromJSONObject(JSONObject obj) throws JSONException {
-		numContestants = ((Number)obj.get(KEY_NUM_CONTEST)).intValue();
+		numContestants = ((Integer)obj.get(KEY_NUM_CONTEST)).intValue();
 				
 		// tribes
 		JSONArray ts = (JSONArray)obj.get(KEY_TRIBES);

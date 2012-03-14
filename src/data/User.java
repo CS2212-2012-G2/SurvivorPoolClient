@@ -2,8 +2,8 @@ package data;
 
 import common.Utils;
 
-import admin.data.GameData;
-import data.me.json.*;
+import data.me.json.JSONException;
+import data.me.json.JSONObject;
 
 /**
  * The user class will be used to create an individual who will be participating
@@ -138,8 +138,7 @@ public class User implements Person {
 	 */
 	public void setFirstName(String first) throws InvalidFieldException {
 		if (!Utils.checkString(first, REGEX_FIRST_NAME))
-			throw new InvalidFieldException(InvalidFieldException.Field.USER_FIRST,
-					"Invalid First Name (User)");
+			throw new InvalidFieldException("Invalid First Name (User)");
 		firstName = first;
 	}
 
@@ -152,8 +151,7 @@ public class User implements Person {
 	 */
 	public void setLastName(String last) throws InvalidFieldException {
 		if (!Utils.checkString(last, REGEX_LAST_NAME))
-			throw new InvalidFieldException(InvalidFieldException.Field.USER_LAST,
-					"Invalid Last Name (User)");
+			throw new InvalidFieldException("Invalid Last Name (User)");
 		lastName = last;
 	}
 
@@ -187,8 +185,7 @@ public class User implements Person {
 	 */
 	public void setUltimatePickNoSetPts(Contestant winner) throws InvalidFieldException  {
 		if (winner == null) {
-			throw new InvalidFieldException(InvalidFieldException.Field.USER_WEEKLY_PICK,
-					"Weekly pick was null");
+			throw new InvalidFieldException("Weekly pick was null");
 		}
 		
 		ultPick = winner;
@@ -214,8 +211,7 @@ public class User implements Person {
 		if (Utils.checkString(id,REGEX_PLAYER_ID))
 			unID = id;
 		else 
-			throw new InvalidFieldException(InvalidFieldException.Field.USER_ID,
-					"Invalid Player ID");
+			throw new InvalidFieldException("Invalid Player ID");
 	}
 	
 	/**

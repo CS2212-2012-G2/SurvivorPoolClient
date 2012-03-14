@@ -23,11 +23,11 @@ public class GameData extends data.GameData {
 	public GameData(int numContestants) {
 		super(numContestants);
 		
-		allList = arrayToList(allContestants);
+		allList = allContestants;
 	}
 	
 	private void updateSortAllContestants(int compFactID) {
-		allList = arrayToList(allContestants);
+		allList = allContestants;
 		Vector t = noNullList(allList);
 		Object[] ar = new Object[t.size()];
 		t.copyInto(ar);
@@ -35,32 +35,13 @@ public class GameData extends data.GameData {
 		
 		// t holds the sorted array, replace all the values with their
 		// new index. When the entry is null, it means we are done.
-		for (int i = 0; i < numContestants && allContestants[i] != null;
-			 i++) {
-			allContestants[i] = (Contestant) ar[i];
+		for (int i = 0; i < numContestants;i++) {
+			allContestants.setElementAt((Contestant) ar[i],i);;
 		}
 
-		allList = arrayToList(allContestants);
+		allList = allContestants;
 	}
 
-	/**
-	 * Convert an array to a vector
-	 * @param ar an array
-	 * @return a Vector containing the elements of the array
-	 */
-	private Vector arrayToList(Object[] ar){
-		Vector retList = new Vector();
-		for(int i =0;i<ar.length;i++){
-			retList.addElement(ar[i]);
-		}
-		return retList;
-	}
-	
-	/**
-	 * Returns a vector with all nulls removed
-	 * @param c a vector which may contain nulls
-	 * @return a vector which contains all non-null elements from param
-	 */
 	private Vector noNullList(Vector c){
 		Vector retList=new Vector();
 		for(int i =0;i<c.size();i++){
@@ -128,7 +109,7 @@ public class GameData extends data.GameData {
 
 	public void fromJSONObject(JSONObject obj) throws JSONException {
 		super.fromJSONObject(obj);
-		allList = arrayToList(allContestants);
+		allList = allContestants;
 		
 	}
 	

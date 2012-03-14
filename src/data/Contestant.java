@@ -1,7 +1,9 @@
 package data;
 
-import data.me.json.*;
 import common.Utils;
+
+import data.me.json.JSONException;
+import data.me.json.JSONObject;
 
 
 /**
@@ -120,8 +122,7 @@ public class Contestant implements Person {
 		String[] s = GameData.getCurrentGame().getTribeNames();
 		
 		if (!name.equals(s[0]) && !name.equals(s[1])) {
-			throw new InvalidFieldException(InvalidFieldException.Field.CONT_TRIBE,
-					"Invalid Tribe.");
+			throw new InvalidFieldException("Invalid Tribe.");
 		}
 		
 		tribe = name;
@@ -136,8 +137,7 @@ public class Contestant implements Person {
 	public void setFirstName(String name) throws InvalidFieldException {
 		
 		if (!Utils.checkString(name,REGEX_FIRST_NAME))
-			throw new InvalidFieldException(InvalidFieldException.Field.CONT_FIRST,
-					"Invalid First Name");
+			throw new InvalidFieldException("Invalid First Name");
 		
 		firstName = name;
 		
@@ -149,8 +149,7 @@ public class Contestant implements Person {
 	 */
 	public void setLastName(String name) throws InvalidFieldException {
 		if (!Utils.checkString(name,REGEX_LAST_NAME))
-			throw new InvalidFieldException(InvalidFieldException.Field.CONT_LAST,
-					"Invalid Last Name");
+			throw new InvalidFieldException("Invalid Last Name");
 		
 		lastName = name;
 	}
@@ -188,8 +187,7 @@ public class Contestant implements Person {
 	public void setID(String newID) throws InvalidFieldException {
 		newID = newID.toLowerCase();
 		if (!Utils.checkString(newID,REGEX_CONTEST_ID))
-			throw new InvalidFieldException(InvalidFieldException.Field.CONT_ID,
-					"Invalid contestant ID");
+			throw new InvalidFieldException("Invalid contestant ID");
 		cID = newID;
 	}
 	
@@ -254,8 +252,7 @@ public class Contestant implements Person {
 	 * Returns a string of the contestant's Last name, first name, and ID tag.
 	 */
 	public String toString() {
-		return String.format("[%s] %s, %s", 
-				getID(), getLastName(), getFirstName());
+		return getID()+" "+getLastName()+" "+getFirstName();
 	}
 	
 	/**
