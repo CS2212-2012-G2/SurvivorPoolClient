@@ -2,11 +2,14 @@ package client.data;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Vector;
+import java.util.Enumeration;
+
+import javax.microedition.io.Connector;
+import javax.microedition.io.file.FileConnection;
+import javax.microedition.io.file.FileSystemRegistry;
 
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.io.IOUtilities;
-
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
@@ -19,20 +22,42 @@ import data.me.json.JSONObject;
  */
 public class JSONUtils{
 	
-	public static String seasonFile = "res/data/Settings.dat";
+	public static String seasonFile = "file:///SDCard/BlackBerry/documents/Settings.txt";
 	
+	//some code from http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822
 	public static JSONObject readFile(String path) throws FileNotFoundException{
+		//FileConnection fconn = null;
+		InputStream is = null;
+		String root = null;
+		 Enumeration r = FileSystemRegistry.listRoots();
+		 while (r.hasMoreElements()) {
+		      root = (String) r.nextElement();
+		      if( root.equalsIgnoreCase("sdcard/") ) {
+		         System.out.println("yeah sd card exists");
+		      } else if( root.equalsIgnoreCase("store/") ) {
+		         //internal memory identifier
+		      }
+		 }
 		try {
-			
-			Class classs = Class.forName("client.SplashScreen");
-			InputStream is = classs.getResourceAsStream(seasonFile);
+			FileConnection fconn = (FileConnection)Connector.open("file:///SDCard/BlackBerry/documents/Settings.txt",Connector.READ_WRITE);
+			if (!fconn.exists()) {
+				throw new IOException("No such file!");
+			}
+			is = fconn.openInputStream();
 			String str = new String(IOUtilities.streamToBytes(is), "UTF-8");
 			JSONObject obj = new JSONObject(str);
 			return obj;
-
-		} catch (Exception ex) {
-			throw new FileNotFoundException();
+		} catch (IOException e) {
+				System.out.println("io exception");
+			   System.out.println(e.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}finally{
+			if(is != null){
+				try { is.close(); } catch (IOException ignored) {}
+			}
 		}
+		return null;
 	}
 	
 	

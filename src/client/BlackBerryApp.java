@@ -8,7 +8,7 @@ package client;
  * Description: The gateway class which create the first instance of the Blackberry application.
  * */
 
-import net.rim.device.api.ui.*;
+import net.rim.device.api.ui.UiApplication;
 
 public class BlackBerryApp extends UiApplication {
 

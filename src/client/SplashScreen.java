@@ -10,6 +10,8 @@ package client;
 
 import java.io.InputStream;
 import java.util.Vector;
+
+import client.data.GameData;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.*;
 import net.rim.device.api.ui.component.*;
@@ -87,7 +89,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 		/* Log-in button */
 		// centre the button
-		button1 = new ButtonField("Log In", LabelField.FIELD_HCENTER);
+		button1 = new ButtonField("Log In CHANGE", LabelField.FIELD_HCENTER);
 		button1.setChangeListener(this); // activate listener
 
 		/* build editable text field */
@@ -137,16 +139,19 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 	public boolean checkLogIn(String userID) {
 		try {
-			Class classs = Class.forName("client.SplashScreen");
-			InputStream is = classs.getResourceAsStream("/userData");
+			if(GameData.getCurrentGame()==null)
+				GameData.initGameData();
+			//Class classs = Class.forName("client.SplashScreen");
+			//InputStream is = classs.getResourceAsStream("/userData");
 			// retrieve input file
 			// example line in file
 			// USERID FIRSTNAME LASTNAME CURRENTSCORE
 			// IE. jdemelo8 Jonathan Demelo 43
-			String str = new String(IOUtilities.streamToBytes(is), "UTF-8");
+			//String str = new String(IOUtilities.streamToBytes(is), "UTF-8");
 			// extract userIDs from input
-			Vector userIDVec = splitUserID(str, " "); 
+			//Vector userIDVec = splitUserID(str, " "); 
 			// check valid userIDs
+			
 			for (int i = 0; i < userIDVec.capacity(); i++) {
 				if (userIDVec.elementAt(i).equals(userID)) {
 					return true;

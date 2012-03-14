@@ -86,10 +86,12 @@ public class GameData extends data.GameData {
 	 * 
 	 */
 	public static GameData initGameData() {
+		System.out.println("Initialized gamedata");
 		JSONObject json;
 		try {
 			json = JSONUtils.readFile(JSONUtils.seasonFile);
 		} catch (FileNotFoundException e) {
+			System.out.println("Failed to read file.");	
 			return (GameData) currentGame; 
 		}
 		
