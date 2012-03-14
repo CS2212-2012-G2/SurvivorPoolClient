@@ -8,6 +8,8 @@ package client;
  * Description:
  * */
 
+import java.util.Vector;
+
 import client.data.GameData;
 import data.Contestant;
 import data.User;
@@ -132,12 +134,12 @@ public class StandingScreen extends MainScreen implements FieldChangeListener {
 		labelTemp.setFont(font1);
 
 		
-		User[] userList = GameData.getCurrentGame().getAllUsers();
+		Vector userList = GameData.getCurrentGame().getAllUsers();
 		list.add(new Object[] { labelTemp }); // add headers
 
 		/* fill list with players */
-		for (int i = 0; i < userList.length; i++) {
-			tempUser = userList[i];
+		for (int i = 0; i < userList.size(); i++) {
+			tempUser = (User) userList.elementAt(i);
 			int tempPlacement = i + 1;
 			
 			// Formatting decisions

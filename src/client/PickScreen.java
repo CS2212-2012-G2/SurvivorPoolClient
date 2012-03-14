@@ -8,6 +8,8 @@ package client;
  * Description:
  * */
 
+import java.util.Vector;
+
 import client.data.GameData;
 import data.Contestant;
 import net.rim.device.api.system.Bitmap;
@@ -130,14 +132,14 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		 */
 
 
-		Contestant[] contList = GameData.getCurrentGame().getAllContestants();
+		Vector contList = GameData.getCurrentGame().getAllContestants();
 
 		/* build choices drop down*/
-		String[] choices = new String[contList.length];
+		String[] choices = new String[contList.size()];
 		int iSetTo = 0;
 		
-		for (int i = 0; i < contList.length; i++) {
-			tempCont = contList[i];
+		for (int i = 0; i < contList.size(); i++) {
+			tempCont = (Contestant) contList.elementAt(i);
 			if(!tempCont.isCastOff())
 				choices[i]= tempCont.getFirstName() + " " + tempCont.getLastName();
 			
@@ -158,7 +160,14 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			};
 			labelTempName.setFont(font2);
 
-			labelTempStatus = new LabelField(tempCont.isCastOff(), LabelField.ELLIPSIS) {
+			String tempString = "";
+			
+			if (tempCont.isCastOff())
+				tempString = "Active";
+			else
+				tempString = "Castoff";
+			
+			labelTempStatus = new LabelField(tempString, LabelField.ELLIPSIS) {
 				public void paint(Graphics g) {
 					g.setColor(Color.WHITE);
 					super.paint(g);
