@@ -1,5 +1,5 @@
 <loader version="1.0">
-	<application id="UWOSurvivorClient">
+	<application id="G2Client">
 		<name >
 			Survivor Client
 		</name>
@@ -20,7 +20,7 @@
 				7.0.0
 			</directory>
 			<files >
-				UWOSurvivorClient.cod
+				G2Client.cod
 
 			</files>
 
