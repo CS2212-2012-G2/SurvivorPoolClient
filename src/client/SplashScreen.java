@@ -8,18 +8,29 @@ package client;
  * Description: 
  * */
 
-import java.io.InputStream;
 import java.util.Vector;
 
-import client.data.GameData;
+import net.rim.device.api.command.Command;
+import net.rim.device.api.command.CommandHandler;
+import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.ui.*;
-import net.rim.device.api.ui.component.*;
-import net.rim.device.api.ui.container.*;
-import net.rim.device.api.ui.toolbar.*;
+import net.rim.device.api.ui.Color;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.FontFamily;
+import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.ButtonField;
+import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.EditField;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
+import net.rim.device.api.ui.toolbar.ToolbarButtonField;
+import net.rim.device.api.ui.toolbar.ToolbarManager;
 import net.rim.device.api.util.StringProvider;
-import net.rim.device.api.command.*;
-import net.rim.device.api.io.IOUtilities;
+import client.data.GameData;
 
 public class SplashScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
@@ -151,13 +162,10 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 			// extract userIDs from input
 			//Vector userIDVec = splitUserID(str, " "); 
 			// check valid userIDs
-			
-			for (int i = 0; i < userIDVec.capacity(); i++) {
-				if (userIDVec.elementAt(i).equals(userID)) {
-					return true;
-				}
-			}
+			 if(GameData.getCurrentGame().getUser(userID)!=null)
+				 return true;
 		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return false; // match is not found
 	}

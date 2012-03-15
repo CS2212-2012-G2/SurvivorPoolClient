@@ -470,6 +470,7 @@ public abstract class GameData {
 			Contestant c = new Contestant();
 			c.fromJSONObject(cons.getJSONObject(i));
 			addContestant(c);
+			
 		}
 		
 		// users:

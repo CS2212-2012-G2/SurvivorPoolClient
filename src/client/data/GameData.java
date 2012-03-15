@@ -35,7 +35,7 @@ public class GameData extends data.GameData {
 		
 		// t holds the sorted array, replace all the values with their
 		// new index. When the entry is null, it means we are done.
-		for (int i = 0; i < numContestants;i++) {
+		for (int i = 0; i <t.size();i++) {
 			allContestants.setElementAt((Contestant) ar[i],i);;
 		}
 
@@ -106,7 +106,7 @@ public class GameData extends data.GameData {
 			e.printStackTrace();
 		}
 		
-		return (GameData)currentGame;
+		return null;
 	}
 
 	public void fromJSONObject(JSONObject obj) throws JSONException {
@@ -133,41 +133,5 @@ public class GameData extends data.GameData {
 		// TODO figure out a way to ouput data on BB
 		
 	}
-	
-	public static void main(String[] args) {
-		GameData g = new GameData(6);
-		
-		String[] tribes = new String[] {"banana", "apple"};
-		
-		g.setTribeNames(tribes[0], tribes[1]);
-		
-		Contestant c1 = null, c2 = null;
-		try {
-			c1 = new Contestant("asd2", "Al", "Sd", tribes[1]);
-			c2 = new Contestant("as", "John", "Silver", tribes[0]);
-		} catch (InvalidFieldException e) {
-			// wont happen.
-		}
-		
-		g.addContestant(c1);
-		g.addContestant(c2);
-		
-		try {
-			System.out.println(g.toJSONObject().toString());
-		} catch (JSONException e1) {
-			e1.printStackTrace();
-		}
-		
-		GameData g2 = new GameData(6);
-		
-			try {
-				g2.fromJSONObject(g.toJSONObject());
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		
-		
-	}
 
-	
 }
