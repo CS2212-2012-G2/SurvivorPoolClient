@@ -155,6 +155,9 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 				if(!GameData.initGameData()){//if initialization failed
 					Dialog.alert("res/data/Settings.dat file not found or malformed.Contact Admin. Exiting");
 					System.exit(0);	
+				}else if(!GameData.getCurrentGame().getSeasonStarted()){
+					Dialog.alert("Cannot start until season has been started.Contact Admin. Exiting");
+					System.exit(0);
 				}
 			}
 
