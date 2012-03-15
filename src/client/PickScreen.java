@@ -47,7 +47,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 	public PickScreen(String voteType, String userData) {
 		super();
-		
+		System.out.println("IN pick screen constructor");
 		this.voteType = voteType;
 
 		VerticalFieldManager vertFieldManager = new VerticalFieldManager(
@@ -105,7 +105,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			System.out.println(e.getMessage());
 		}
 		
-		
+		System.out.println("IN pick screen about to build list");
 		/* build contestant list */
 		RichList list = new RichList(vertFieldManager, true, 3, 0);
 
@@ -175,10 +175,10 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			};
 			labelTempName.setFont(font2);
 
-			list.add(new Object[] { Bitmap.getBitmapResource(tempCont.getPicture()), labelTempName, labelTempTribe,
-					labelTempStatus });
+		//	list.add(new Object[] { Bitmap.getBitmapResource(tempCont.getPicture()), labelTempName, labelTempTribe,
+			//		labelTempStatus });
 		}
-
+		System.out.println("IN pick screen added to build list");
 		HorizontalFieldManager horFieldManager = new HorizontalFieldManager(
 				HorizontalFieldManager.USE_ALL_WIDTH
 						| HorizontalFieldManager.FIELD_HCENTER) {
