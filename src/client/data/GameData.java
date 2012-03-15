@@ -86,32 +86,38 @@ public class GameData extends data.GameData {
 	 * 
 	 */
 	public static boolean initGameData() {
-		System.out.println("Initializing gamedata");
+		System.out.println("initGameData started");
 		JSONObject json;
 		try {
 			json = JSONUtils.readFile(JSONUtils.seasonFile);
-			if(json==null)
+			if(json==null){
+				System.out.println("Json utils read file returned null.");
 				return false;
+			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Failed to read file.");	
 			return false;
 		}
+		
 		System.out.println("file found");
+		
 		try {
 			currentGame = new GameData(json.getInt(KEY_NUM_CONTEST));
 		} catch (JSONException e) {
 			System.out.println("json exception");
 			return false;
 		}
-		System.out.println("current new gamedata");
+		
+		System.out.println("creating gamedata from json");
 		try {
 			GameData.getCurrentGame().fromJSONObject(json);
 		} catch (JSONException e) {
 			System.out.println("json exception");
 			return false;
 		}
-		System.out.println("read json");
-		System.out.println("game data asdfinitalized");
+		
+		System.out.println("json read");
+		System.out.println("initGameData finished");
 		return true;
 	}
 

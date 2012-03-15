@@ -26,9 +26,10 @@ public class JSONUtils{
 	
 	//some code from http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822
 	public static JSONObject readFile(String path) throws FileNotFoundException{
-		//FileConnection fconn = null;
+		
 		InputStream is = null;
 		String root = null;
+		
 		boolean sdCardPresent = false;
 		Enumeration r = FileSystemRegistry.listRoots();
 		while (r.hasMoreElements()) {
@@ -38,8 +39,10 @@ public class JSONUtils{
 				break;
 			}
 		}
+		
 		if(!sdCardPresent)
 			return null;
+		
 		try {
 			FileConnection fconn = (FileConnection)Connector.open(seasonFile,Connector.READ_WRITE);
 			if (!fconn.exists()) {

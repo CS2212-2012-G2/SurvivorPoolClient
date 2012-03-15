@@ -34,7 +34,7 @@ import client.data.GameData;
 
 public class SplashScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
-	private ButtonField button1; // The continue button.
+	private ButtonField btnLogin; // The continue button.
 	private FontFamily ff1; // fonts.
 	private Font font1; // fonts.
 	private EditField edit; // editable text field
@@ -100,8 +100,8 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 		/* Log-in button */
 		// centre the button
-		button1 = new ButtonField("Log In", LabelField.FIELD_HCENTER);
-		button1.setChangeListener(this); // activate listener
+		btnLogin = new ButtonField("Log In", LabelField.FIELD_HCENTER);
+		btnLogin.setChangeListener(this); // activate listener
 
 		/* build editable text field */
 		edit = new EditField("\nUserID:  ", "", 10, EditField.NO_NEWLINE) {
@@ -129,12 +129,12 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		/* Build the components to MainScreen */
 		this.setStatus(manager);
 		vertFieldManager.add(edit);
-		vertFieldManager.add(button1);
+		vertFieldManager.add(btnLogin);
 		this.add(vertFieldManager);
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {
-		if (arg0 == button1) { // if the log in button is clicked
+		if (arg0 == btnLogin) { // if the log in button is clicked
 			if (checkLogIn(edit.getText().toLowerCase())) {
 				UiApplication.getUiApplication().pushScreen(
 						new MainMenuScreen(edit.getText().toLowerCase())); /*
@@ -150,28 +150,21 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 	public boolean checkLogIn(String userID) {
 		try {
+			//create new gamedata
 			if(GameData.getCurrentGame()==null){
-				if(!GameData.initGameData()){
+				if(!GameData.initGameData()){//if initialization failed
 					Dialog.alert("res/data/Settings.dat file not found or malformed.Contact Admin. Exiting");
-					System.exit(0);
-					
+					System.exit(0);	
 				}
 			}
-			//Class classs = Class.forName("client.SplashScreen");
-			//InputStream is = classs.getResourceAsStream("/userData");
-			// retrieve input file
-			// example line in file
-			// USERID FIRSTNAME LASTNAME CURRENTSCORE
-			// IE. jdemelo8 Jonathan Demelo 43
-			//String str = new String(IOUtilities.streamToBytes(is), "UTF-8");
-			// extract userIDs from input
-			//Vector userIDVec = splitUserID(str, " "); 
-			// check valid userIDs
-			 if(GameData.getCurrentGame().getUser(userID)!=null)
-				 return true;
+
+			if(GameData.getCurrentGame().getUser(userID)!=null)//valid id
+				return true;
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
 		return false; // match is not found
 	}
 

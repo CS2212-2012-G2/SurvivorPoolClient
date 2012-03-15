@@ -26,7 +26,7 @@ import net.rim.device.api.util.StringProvider;
 
 public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
-	private ButtonField button1, button2, button3; // The continue button.
+	private ButtonField btnUserStanding, btnVote, btnBonus; // The continue button.
 	private Bitmap backgroundBitmap; // background image
 	private String userData;
 
@@ -93,30 +93,30 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 		}
 
 		/* buttons */
-		button1 = new ButtonField("View Standings", LabelField.FIELD_HCENTER);
-		button1.setChangeListener(this);
-		button1.setMargin(230, 0, 0, 0); // formatting the button placements
-		button2 = new ButtonField("Make Your Vote", LabelField.FIELD_HCENTER);
-		button2.setChangeListener(this);
-		button3 = new ButtonField("Bonus Questions", LabelField.FIELD_HCENTER);
-		button3.setChangeListener(this);
+		btnUserStanding = new ButtonField("View Standings", LabelField.FIELD_HCENTER);
+		btnUserStanding.setChangeListener(this);
+		btnUserStanding.setMargin(230, 0, 0, 0); // formatting the button placements
+		btnVote = new ButtonField("Make Your Vote", LabelField.FIELD_HCENTER);
+		btnVote.setChangeListener(this);
+		btnBonus = new ButtonField("Bonus Questions", LabelField.FIELD_HCENTER);
+		btnBonus.setChangeListener(this);
 
 		/* Build the components to MainScreen */
 		this.setStatus(manager);
-		vertFieldManager.add(button1);
-		vertFieldManager.add(button2);
-		vertFieldManager.add(button3);
+		vertFieldManager.add(btnUserStanding);
+		vertFieldManager.add(btnVote);
+		vertFieldManager.add(btnBonus);
 		this.add(vertFieldManager);
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {
-		if (arg0 == button1) { // View Standings
+		if (arg0 == btnUserStanding) { // View Standings
 			UiApplication.getUiApplication().pushScreen(
 					new StandingScreen(userData));
-		} else if (arg0 == button2) { // Voting Area
+		} else if (arg0 == btnVote) { // Voting Area
 			UiApplication.getUiApplication().pushScreen(
 					new PickMenuScreen(userData));
-		} else if (arg0 == button3) { // Bonus Questions
+		} else if (arg0 == btnBonus) { // Bonus Questions
 			UiApplication.getUiApplication().pushScreen(
 					new BonusScreen(userData));
 		}

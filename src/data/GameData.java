@@ -480,6 +480,7 @@ public abstract class GameData {
 			u.fromJSONObject(users.getJSONObject(i));
 			addUser(u);
 		}
+		System.out.println(this.toJSONObject().toString());
 	}
 
 	public abstract void writeData();

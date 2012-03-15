@@ -47,7 +47,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 	public PickScreen(String voteType, String userData) {
 		super();
-		System.out.println("IN pick screen constructor");
+		System.out.println("PickScreen constructor");
 		this.voteType = voteType;
 
 		VerticalFieldManager vertFieldManager = new VerticalFieldManager(
@@ -105,7 +105,6 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			System.out.println(e.getMessage());
 		}
 		
-		System.out.println("IN pick screen about to build list");
 		/* build contestant list */
 		RichList list = new RichList(vertFieldManager, true, 3, 0);
 
@@ -131,18 +130,23 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		 * -----------------------------------------------------------
 		 */
 
-
+		System.out.println("PickScreen: Getting all contestants from GD");
 		Vector contList = GameData.getCurrentGame().getAllContestants();
-
+		System.out.println("PickScreen: conlist size"+contList.size());
+		
 		/* build choices drop down*/
 		String[] choices = new String[contList.size()];
 		int iSetTo = 0;
 		
+		System.out.println("PickScreen: adding contestants to table");
+		
 		for (int i = 0; i < contList.size(); i++) {
 			tempCont = (Contestant) contList.elementAt(i);
-			if(!tempCont.isCastOff())
-				choices[i]= tempCont.getFirstName() + " " + tempCont.getLastName();
-			
+			System.out.println("PickScreen: "+tempCont.getFirstName());
+			if(!tempCont.isCastOff()){
+				choices[iSetTo]= tempCont.getFirstName() + " " + tempCont.getLastName();
+				iSetTo++;
+			}
 			/* list contains labels so that the text colour can change */
 			labelTempName = new LabelField(tempCont.getFirstName() + " " + tempCont.getLastName(), LabelField.ELLIPSIS) {
 				public void paint(Graphics g) {
@@ -163,9 +167,9 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			String tempString = "";
 			
 			if (tempCont.isCastOff())
-				tempString = "Active";
-			else
 				tempString = "Castoff";
+			else
+				tempString = "Active";
 			
 			labelTempStatus = new LabelField(tempString, LabelField.ELLIPSIS) {
 				public void paint(Graphics g) {
@@ -178,7 +182,8 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		//	list.add(new Object[] { Bitmap.getBitmapResource(tempCont.getPicture()), labelTempName, labelTempTribe,
 			//		labelTempStatus });
 		}
-		System.out.println("IN pick screen added to build list");
+		System.out.println("PickScreen: contestants added to list");
+		
 		HorizontalFieldManager horFieldManager = new HorizontalFieldManager(
 				HorizontalFieldManager.USE_ALL_WIDTH
 						| HorizontalFieldManager.FIELD_HCENTER) {
@@ -206,9 +211,13 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		 * 
 		 * ---------------------------------------------------
 		 */
-
+		String[] possibleChoices = new String[iSetTo];
+		for(int i =0;i<iSetTo;i++){
+			possibleChoices[i]=choices[i];
+		}
+		
 		ObjectChoiceField tempField = new ObjectChoiceField(" Cast your "
-				+ voteType + " vote: ", choices, iSetTo,
+				+ voteType + " vote: ", possibleChoices, 0,
 				ObjectChoiceField.FORCE_SINGLE_LINE
 						| ObjectChoiceField.FIELD_HCENTER);
 		horFieldManager.add(button1);
@@ -219,6 +228,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
 		this.setStatus(manager);
+		System.out.println("PickScreen: Constructor end");
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {

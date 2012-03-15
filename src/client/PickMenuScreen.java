@@ -26,7 +26,7 @@ import net.rim.device.api.util.StringProvider;
 
 public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 	/* Variables */
-	private ButtonField button1, button2, button3; // The continue button.
+	private ButtonField btnWeekly, btnUltimate, btnFinal; // The continue button.
 	private Bitmap backgroundBitmap;
 	private String userData;
 	
@@ -92,13 +92,13 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 		}
 		
 		/* Buttons */
-		button1 = new ButtonField("Vote For This Week", LabelField.FIELD_HCENTER); 
-		button1.setChangeListener(this);
-		button1.setMargin(230, 0, 0, 0); // formatting
-		button2 = new ButtonField("Vote For Ultimate", LabelField.FIELD_HCENTER); 
-		button2.setChangeListener(this);
-		button3 = new ButtonField("Vote For Finals", LabelField.FIELD_HCENTER); 
-		button3.setChangeListener(this);
+		btnWeekly = new ButtonField("Vote For This Week", LabelField.FIELD_HCENTER); 
+		btnWeekly.setChangeListener(this);
+		btnWeekly.setMargin(230, 0, 0, 0); // formatting
+		btnUltimate = new ButtonField("Vote For Ultimate", LabelField.FIELD_HCENTER); 
+		btnUltimate.setChangeListener(this);
+		btnFinal = new ButtonField("Vote For Finals", LabelField.FIELD_HCENTER); 
+		btnFinal.setChangeListener(this);
 		/* -----------------------------------------------------------------
 		 * IF NOT THE FINALS, button3.setEnabled(false);
 		 * -----------------------------------------------------------------*/
@@ -106,22 +106,22 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 		
 		/* Build the components to MainScreen */
 		this.setStatus(manager);
-		vertFieldManager.add(button1);
-		vertFieldManager.add(button2);
-		vertFieldManager.add(button3);
+		vertFieldManager.add(btnWeekly);
+		vertFieldManager.add(btnUltimate);
+		vertFieldManager.add(btnFinal);
 		this.add(vertFieldManager);
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {
-		if (arg0 == button1) { // if the log in button is clicked
+		if (arg0 == btnWeekly) { 
 			UiApplication.getUiApplication().pushScreen(
 					new PickScreen("weekly", userData));
-		}
-		else if (arg0 == button2){
+		
+		}else if (arg0 == btnUltimate){
 			UiApplication.getUiApplication().pushScreen(
 					new PickScreen("ultimate", userData));
-		}
-		else if (arg0 == button3){
+		
+		}else if (arg0 == btnFinal){//TODO: should only appear in last week
 			UiApplication.getUiApplication().pushScreen(
 					new PickScreen("final", userData));
 		}
