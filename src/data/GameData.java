@@ -35,6 +35,7 @@ public abstract class GameData {
 	// store contestant who was cast off
 	protected Contestant elimCont;
 	
+	protected User currentUser = null;
 	/**
 	 * JSON Keys
 	 */
@@ -150,8 +151,7 @@ public abstract class GameData {
 	}
 	
 	/**
-	 * Adds a new contestant into the Game, this will maintain the list of 
-	 * contestants as sorted by ID.
+	 * Add contestant safely into gamedata
 	 * @param c New contestant, will not add if ID of contestant is null.
 	 */
 	public void addContestant(Contestant c) {
@@ -169,6 +169,19 @@ public abstract class GameData {
 		allContestants.addElement((Object)c);
 	}
 	
+	/**
+	 * Add contestants without checking if id is valid or any other
+	 * checks needed when reading in from new season
+	 * @param c
+	 */
+	public void addContestantNoCheck(Contestant c) {
+		if (allContestants.size() == numContestants) {
+			System.out.println("Too many contestants.");
+			return;
+		}
+		
+		allContestants.addElement((Object)c);
+	}
 	// ~~~~~~~~~~~~~~~~~~~ USER METHODS ~~~~~~~~~~~~~~~~~~ //
 	
 	/**
@@ -358,7 +371,6 @@ public abstract class GameData {
 	 * @return Index in activeContestants where ID is stored, else < 0.
 	 */
 	protected int getContestantIndexID(String id) {
-		// loop through array
 		for(int i = 0; i < numContestants; i++){
 			Contestant j = (Contestant)allContestants.elementAt(i); // get Contestant object for comparison 
 			if (j.getID().equals(id)) { // ensure names match
@@ -392,6 +404,19 @@ public abstract class GameData {
 	 */
 	public void endCurrentGame() {
 		GameData.currentGame = null;
+	}
+	
+	
+	public User getCurrentUser() {
+		return currentUser;
+	}
+	
+	/**
+	 * Set the current blackberry user
+	 * @param u User
+	 */
+	public void setCurrentUser(User u) {
+		currentUser = u;
 	}
 	
 	/**
@@ -469,7 +494,7 @@ public abstract class GameData {
 		for (int i =0;i<cons.length();i++) {
 			Contestant c = new Contestant();
 			c.fromJSONObject(cons.getJSONObject(i));
-			addContestant(c);
+			addContestantNoCheck(c);
 			
 		}
 		
@@ -484,5 +509,6 @@ public abstract class GameData {
 	}
 
 	public abstract void writeData();
+
 	
 }

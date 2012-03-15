@@ -40,7 +40,7 @@ public class StandingScreen extends MainScreen implements FieldChangeListener {
 	private Font font1, font2; // fonts.
 	private User tempUser;
 	
-	public StandingScreen(String userData) {
+	public StandingScreen() {
 		super();
 
 		VerticalFieldManager vertFieldManager = new VerticalFieldManager(

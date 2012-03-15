@@ -23,19 +23,15 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.toolbar.ToolbarButtonField;
 import net.rim.device.api.ui.toolbar.ToolbarManager;
 import net.rim.device.api.util.StringProvider;
+import data.User;
 
 public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
 	private ButtonField btnUserStanding, btnVote, btnBonus; // The continue button.
 	private Bitmap backgroundBitmap; // background image
-	private String userData;
 
-	public MainMenuScreen(String userData) {
+	public MainMenuScreen() {
 		super(NO_VERTICAL_SCROLL);
-
-		/* THIS WILL BE CHANGED IN SOME FORM */
-		this.userData = userData;
-		/* WHEN DATA PERSISTANCE IS ADDED */
 
 		backgroundBitmap = Bitmap.getBitmapResource("MainMenu.png");
 
@@ -112,13 +108,13 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnUserStanding) { // View Standings
 			UiApplication.getUiApplication().pushScreen(
-					new StandingScreen(userData));
+					new StandingScreen());
 		} else if (arg0 == btnVote) { // Voting Area
 			UiApplication.getUiApplication().pushScreen(
-					new PickMenuScreen(userData));
+					new PickMenuScreen());
 		} else if (arg0 == btnBonus) { // Bonus Questions
 			UiApplication.getUiApplication().pushScreen(
-					new BonusScreen(userData));
+					new BonusScreen());
 		}
 
 	}

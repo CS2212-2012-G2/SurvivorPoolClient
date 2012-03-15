@@ -31,6 +31,7 @@ import net.rim.device.api.ui.toolbar.ToolbarButtonField;
 import net.rim.device.api.ui.toolbar.ToolbarManager;
 import net.rim.device.api.util.StringProvider;
 import client.data.GameData;
+import data.User;
 
 public class SplashScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
@@ -137,11 +138,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		if (arg0 == btnLogin) { // if the log in button is clicked
 			if (checkLogIn(edit.getText().toLowerCase())) {
 				UiApplication.getUiApplication().pushScreen(
-						new MainMenuScreen(edit.getText().toLowerCase())); /*
-														 * CHANGE THIS WHEN
-														 * NEEDED
-														 */
-				/* ------------------------------------------------------ */
+						new MainMenuScreen());
 			} else
 				edit.setText(""); // bad username, clear the field
 		}
@@ -160,10 +157,11 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 					System.exit(0);
 				}
 			}
-
-			if(GameData.getCurrentGame().getUser(userID)!=null)//valid id
+			User u =GameData.getCurrentGame().getUser(userID); 
+			if(u!=null){
+				GameData.getCurrentGame().setCurrentUser(u);
 				return true;
-			
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

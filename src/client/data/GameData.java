@@ -64,19 +64,6 @@ public class GameData extends data.GameData {
 		}
 	}
 	
-	
-	protected int getContestantIndexID(String id) {
-		Contestant t = new Contestant();
-		try { 
-			t.setID(id);
-		} catch (InvalidFieldException e) 
-		{ 
-			System.out.println("getContestantIndexID:\t" + e.getMessage());
-			return -1;
-		}
-		return allList.indexOf(t);
-	}
-	
 	/**
 	 * initGameData reads in a data file and builds a GameData object out
 	 * of it, returning it to the user.

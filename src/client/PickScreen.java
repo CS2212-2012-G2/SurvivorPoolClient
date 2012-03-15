@@ -10,10 +10,6 @@ package client;
 
 import java.util.Vector;
 
-import client.data.GameData;
-import data.Contestant;
-import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.command.Command;
 import net.rim.device.api.command.CommandHandler;
 import net.rim.device.api.command.ReadOnlyCommandMetadata;
@@ -22,6 +18,7 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
+import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
@@ -34,6 +31,9 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.toolbar.ToolbarButtonField;
 import net.rim.device.api.ui.toolbar.ToolbarManager;
 import net.rim.device.api.util.StringProvider;
+import client.data.GameData;
+import data.Contestant;
+import data.User;
 
 public class PickScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
@@ -42,10 +42,12 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	private String name, voteType;
 	private FontFamily ff1; // fonts.
 	private Font font2; // fonts.
-	private ButtonField button1;
+	private ButtonField btnVoted;
 	private Contestant tempCont;
-
-	public PickScreen(String voteType, String userData) {
+	private ObjectChoiceField tempField;
+	private String[] possibleChoices;
+	
+	public PickScreen(String voteType) {
 		super();
 		System.out.println("PickScreen constructor");
 		this.voteType = voteType;
@@ -144,7 +146,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			tempCont = (Contestant) contList.elementAt(i);
 			System.out.println("PickScreen: "+tempCont.getFirstName());
 			if(!tempCont.isCastOff()){
-				choices[iSetTo]= tempCont.getFirstName() + " " + tempCont.getLastName();
+				choices[iSetTo]= tempCont.getFirstName() + " " + tempCont.getLastName()+" "+tempCont.getID();
 				iSetTo++;
 			}
 			/* list contains labels so that the text colour can change */
@@ -200,8 +202,8 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 
 
-		button1 = new ButtonField("Okay");
-		button1.setChangeListener(this);
+		btnVoted = new ButtonField("Okay");
+		btnVoted.setChangeListener(this);
 
 		/*
 		 * ADD AFTER PERSISTANCE ------------------------------
@@ -211,19 +213,19 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		 * 
 		 * ---------------------------------------------------
 		 */
-		String[] possibleChoices = new String[iSetTo];
+		possibleChoices = new String[iSetTo];
 		for(int i =0;i<iSetTo;i++){
 			possibleChoices[i]=choices[i];
 		}
 		
-		ObjectChoiceField tempField = new ObjectChoiceField(" Cast your "
+		tempField = new ObjectChoiceField(" Cast your "
 				+ voteType + " vote: ", possibleChoices, 0,
 				ObjectChoiceField.FORCE_SINGLE_LINE
 						| ObjectChoiceField.FIELD_HCENTER);
-		horFieldManager.add(button1);
+		horFieldManager.add(btnVoted);
 		horFieldManager.add(tempField);
 		horFieldManager.setFont(font2);
-
+		
 		/* Build the components to MainScreen */
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
@@ -232,9 +234,21 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {
-		if (arg0 == button1) { // if the okay button is clicked
+		if (arg0 == btnVoted) { // if the okay button is clicked
 			if (voteType.equals("weekly")) {
-				// output
+				
+				//TODO: move this to a helper function
+				int i =tempField.getSelectedIndex();
+				if(i==-1)
+					return;
+				
+				String conName = possibleChoices[i];
+				
+				int idLoc = conName.lastIndexOf((int)' ');
+				String conId = conName.substring(idLoc+1);
+				Contestant c = GameData.getCurrentGame().getContestant(conId);
+				System.out.println("****You chose "+c.getFirstName());
+				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(c);
 			} else if (voteType.equals("ultimate")) { // ultimate
 				// output
 			} else { // final

@@ -28,13 +28,13 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 	/* Variables */
 	private ButtonField btnWeekly, btnUltimate, btnFinal; // The continue button.
 	private Bitmap backgroundBitmap;
-	private String userData;
 	
-	public PickMenuScreen(String userData) {
+	
+	public PickMenuScreen() {
 		super(NO_VERTICAL_SCROLL);
 		
 		/* REPLACE AFTER DATA PERSISTANCE*/
-		this.userData = userData;
+
 		/* -----------------------------------------*/
 		backgroundBitmap = Bitmap.getBitmapResource("MainMenu.png");
 
@@ -115,15 +115,15 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnWeekly) { 
 			UiApplication.getUiApplication().pushScreen(
-					new PickScreen("weekly", userData));
+					new PickScreen("weekly"));
 		
 		}else if (arg0 == btnUltimate){
 			UiApplication.getUiApplication().pushScreen(
-					new PickScreen("ultimate", userData));
+					new PickScreen("ultimate"));
 		
 		}else if (arg0 == btnFinal){//TODO: should only appear in last week
 			UiApplication.getUiApplication().pushScreen(
-					new PickScreen("final", userData));
+					new PickScreen("final"));
 		}
 
 	}

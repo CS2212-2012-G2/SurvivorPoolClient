@@ -43,7 +43,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	private BonusQuestion[] bonusCollection;
 	private String[] multiChoiceArray;
 
-	public BonusScreen(String userData) {
+	public BonusScreen() {
 		super(NO_VERTICAL_SCROLL);
 
 		/* TESTING PURPOSES, REMOVE WHEN DATA PERSISTANCE IS ACTIVE */
