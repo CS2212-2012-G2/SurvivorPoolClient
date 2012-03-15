@@ -22,7 +22,7 @@ import data.me.json.JSONObject;
  */
 public class JSONUtils{
 	
-	public static String seasonFile = "file:///SDCard/BlackBerry/documents/Settings.dat";
+	public static String seasonFile = "file:///SDCard/res/data/Settings.dat";
 	
 	//some code from http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822
 	public static JSONObject readFile(String path) throws FileNotFoundException{
