@@ -85,28 +85,34 @@ public class GameData extends data.GameData {
 	 * @return GameData object made out of file or null if season not created
 	 * 
 	 */
-	public static GameData initGameData() {
-		System.out.println("Initialized gamedata");
+	public static boolean initGameData() {
+		System.out.println("Initializing gamedata");
 		JSONObject json;
 		try {
 			json = JSONUtils.readFile(JSONUtils.seasonFile);
+			if(json==null)
+				return false;
 		} catch (FileNotFoundException e) {
 			System.out.println("Failed to read file.");	
-			return (GameData) currentGame; 
+			return false;
 		}
-		
+		System.out.println("file found");
 		try {
 			currentGame = new GameData(json.getInt(KEY_NUM_CONTEST));
 		} catch (JSONException e) {
-			e.printStackTrace();
+			System.out.println("json exception");
+			return false;
 		}
+		System.out.println("current new gamedata");
 		try {
 			GameData.getCurrentGame().fromJSONObject(json);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			System.out.println("json exception");
+			return false;
 		}
-		
-		return null;
+		System.out.println("read json");
+		System.out.println("game data asdfinitalized");
+		return true;
 	}
 
 	public void fromJSONObject(JSONObject obj) throws JSONException {

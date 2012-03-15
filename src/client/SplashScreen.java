@@ -100,7 +100,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 		/* Log-in button */
 		// centre the button
-		button1 = new ButtonField("Log In CHANGE", LabelField.FIELD_HCENTER);
+		button1 = new ButtonField("Log In", LabelField.FIELD_HCENTER);
 		button1.setChangeListener(this); // activate listener
 
 		/* build editable text field */
@@ -150,8 +150,13 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 	public boolean checkLogIn(String userID) {
 		try {
-			if(GameData.getCurrentGame()==null)
-				GameData.initGameData();
+			if(GameData.getCurrentGame()==null){
+				if(!GameData.initGameData()){
+					Dialog.alert("res/data/Settings.dat file not found or malformed.Contact Admin. Exiting");
+					System.exit(0);
+					
+				}
+			}
 			//Class classs = Class.forName("client.SplashScreen");
 			//InputStream is = classs.getResourceAsStream("/userData");
 			// retrieve input file

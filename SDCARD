@@ -1,0 +1,6 @@
+To get BB to share the Settings.dat file from the admin side, the following needs to be done:
+
+In the Blackberry emulator, click on simulate->change sd card
+Add the folder that contains the folder 'res'
+Click on remount SD Card on Startup.
+Hit the harddrive + button, and data persistence should work.

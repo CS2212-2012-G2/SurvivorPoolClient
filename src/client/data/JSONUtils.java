@@ -29,19 +29,21 @@ public class JSONUtils{
 		//FileConnection fconn = null;
 		InputStream is = null;
 		String root = null;
-		 Enumeration r = FileSystemRegistry.listRoots();
-		 while (r.hasMoreElements()) {
-		      root = (String) r.nextElement();
-		      if( root.equalsIgnoreCase("sdcard/") ) {
-		         System.out.println("yeah sd card exists");
-		      } else if( root.equalsIgnoreCase("store/") ) {
-		         //internal memory identifier
-		      }
-		 }
+		boolean sdCardPresent = false;
+		Enumeration r = FileSystemRegistry.listRoots();
+		while (r.hasMoreElements()) {
+			root = (String) r.nextElement();
+			if( root.equalsIgnoreCase("sdcard/") ) {
+				sdCardPresent=true;
+				break;
+			}
+		}
+		if(!sdCardPresent)
+			return null;
 		try {
 			FileConnection fconn = (FileConnection)Connector.open(seasonFile,Connector.READ_WRITE);
 			if (!fconn.exists()) {
-				throw new IOException("No such file!");
+				return null;
 			}
 			is = fconn.openInputStream();
 			String str = new String(IOUtilities.streamToBytes(is), "UTF-8");
