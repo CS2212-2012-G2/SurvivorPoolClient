@@ -57,55 +57,14 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 
-		/* build the tool bar */
-		ToolbarManager manager = new ToolbarManager();
-		setToolbar(manager);
-		try {
-			/* refresh button */
-			ToolbarButtonField toolbutton1 = new ToolbarButtonField(null,
-					new StringProvider("Refresh"));
-			toolbutton1.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton1";
-				}
-			});
-			/* if pressed, go back to the splash screen */
-			toolbutton1.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					UiApplication.getUiApplication().pushScreen(
-							new SplashScreen());
-				}
-			}));
-			/* Exit button */
-			ToolbarButtonField toolbutton2 = new ToolbarButtonField(null,
-					new StringProvider("Exit"));
-			toolbutton2.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton2";
-				}
-			});
-			/* if pressed, exit the system */
-			toolbutton2.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					System.exit(0);
-				}
-			}));
+		setToolbar(Common.getToolbar());
 
-			/* add buttons to the tool bar */
-			manager.add(toolbutton1);
-			manager.add(toolbutton2);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 
-		/* Log-in button */
-		// centre the button
 		btnLogin = new ButtonField("Log In", LabelField.FIELD_HCENTER);
 		btnLogin.setChangeListener(this); // activate listener
 
 		/* build editable text field */
+		
 		edit = new EditField("\nUserID:  ", "", 10, EditField.NO_NEWLINE) {
 			public void paint(Graphics graphics) { // keep on same line
 				graphics.setColor(Color.WHITE); // white text
