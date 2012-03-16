@@ -8,11 +8,6 @@ package client;
  * Description: 
  * */
 
-import java.util.Vector;
-
-import net.rim.device.api.command.Command;
-import net.rim.device.api.command.CommandHandler;
-import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -27,9 +22,6 @@ import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import net.rim.device.api.ui.toolbar.ToolbarButtonField;
-import net.rim.device.api.ui.toolbar.ToolbarManager;
-import net.rim.device.api.util.StringProvider;
 import client.data.ErrorText;
 import client.data.GameData;
 import data.User;
@@ -88,7 +80,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		edit.setFont(font1);
 
 		/* Build the components to MainScreen */
-		this.setStatus(manager);
+		this.setStatus(Common.getToolbar());
 		vertFieldManager.add(edit);
 		vertFieldManager.add(btnLogin);
 		this.add(vertFieldManager);
