@@ -172,39 +172,4 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		return false; // match is not found
 	}
 
-	public static Vector splitUserID(String inString, String delimeter) {
-		Vector vec = new Vector();
-		char newLine = 10;
-
-		try {
-			int indexA = 0; // start
-			int indexB = inString.indexOf(delimeter); // first delimeter
-														// location
-
-			while (indexB != -1) { // while there's still more in file
-				if (indexB > indexA) {
-					// strip the current word
-					String temp = new String(inString.substring(indexA, indexB));
-					if (indexA == 0)
-						vec.addElement(temp); // add to vector
-
-					// if the current string section contains a new line
-					if (temp.indexOf(newLine) != -1) {
-						String tempUser = temp.substring(
-								temp.indexOf(newLine) + 1, temp.length());
-						vec.addElement(tempUser); // add to vector
-					}
-
-				}
-
-				// Increment to next word
-				// A starts at the character after the previous's last
-				indexA = indexB + delimeter.length();
-				// B ends at the next delimeter
-				indexB = inString.indexOf(delimeter, indexA);
-			}
-		} catch (Exception e) {
-		}
-		return vec;
-	}
 }
