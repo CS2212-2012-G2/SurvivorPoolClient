@@ -5,12 +5,7 @@ import java.util.Vector;
 
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.util.Arrays;
-
-import common.Utils;
-
 import data.Contestant;
-import data.InvalidFieldException;
-import data.me.json.JSONArray;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
