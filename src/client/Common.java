@@ -68,8 +68,7 @@ public class Common {
 	 * @return
 	 */
 	public static ToolbarManager getToolbar(){
-		if(toolbar==null)
-			createToolbar();
+		createToolbar();
 		return toolbar;
 	}
 }
