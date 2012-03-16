@@ -30,6 +30,7 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.toolbar.ToolbarButtonField;
 import net.rim.device.api.ui.toolbar.ToolbarManager;
 import net.rim.device.api.util.StringProvider;
+import client.data.ErrorText;
 import client.data.GameData;
 import data.User;
 
@@ -132,6 +133,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		vertFieldManager.add(edit);
 		vertFieldManager.add(btnLogin);
 		this.add(vertFieldManager);
+
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {
@@ -147,21 +149,22 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 	public boolean checkLogIn(String userID) {
 		try {
-			//create new gamedata
-			if(GameData.getCurrentGame()==null){
-				if(!GameData.initGameData()){//if initialization failed
-					Dialog.alert("res/data/Settings.dat file not found or malformed.Contact Admin. Exiting");
+			//TODO: find the proper place to check. Not during click.
+			if(GameData.getCurrentGame()==null){ 
+				if(!GameData.initGameData()){
+					ErrorText.displayErrorMsg("Exiting.");
 					System.exit(0);	
-				}else if(!GameData.getCurrentGame().getSeasonStarted()){
-					Dialog.alert("Cannot start until season has been started.Contact Admin. Exiting");
-					System.exit(0);
 				}
 			}
+			
 			User u =GameData.getCurrentGame().getUser(userID); 
 			if(u!=null){
 				GameData.getCurrentGame().setCurrentUser(u);
 				return true;
+			}else{
+				ErrorText.displayErrorMsg("Invalid user id.");
 			}
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

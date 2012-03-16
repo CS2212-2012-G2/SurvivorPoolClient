@@ -78,17 +78,19 @@ public class GameData extends data.GameData {
 		try {
 			json = JSONUtils.readFile(JSONUtils.seasonFile);
 			if(json==null){
-				System.out.println("Json utils read file returned null.");
 				return false;
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Failed to read file.");	
 			return false;
 		}
-		
-		System.out.println("file found");
+		System.out.println("json read fine");
 		
 		try {
+			if (!json.getBoolean(KEY_SEASON_STARTED)){
+				ErrorText.displayErrorMsg("Season has not started.");
+				return false;
+			}
 			currentGame = new GameData(json.getInt(KEY_NUM_CONTEST));
 		} catch (JSONException e) {
 			System.out.println("json exception");
@@ -96,9 +98,11 @@ public class GameData extends data.GameData {
 		}
 		
 		System.out.println("creating gamedata from json");
+		
 		try {
 			GameData.getCurrentGame().fromJSONObject(json);
 		} catch (JSONException e) {
+			ErrorText.displayErrorMsg("Corrupted file.");
 			System.out.println("json exception");
 			return false;
 		}

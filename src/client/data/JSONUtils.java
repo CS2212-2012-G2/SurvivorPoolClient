@@ -26,43 +26,53 @@ public class JSONUtils{
 	
 	//some code from http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822
 	public static JSONObject readFile(String path) throws FileNotFoundException{
-		
 		InputStream is = null;
-		String root = null;
 		
 		boolean sdCardPresent = false;
 		Enumeration r = FileSystemRegistry.listRoots();
+		
+		//makes sure the sd card is inserted
 		while (r.hasMoreElements()) {
-			root = (String) r.nextElement();
+			String root = (String) r.nextElement();
 			if( root.equalsIgnoreCase("sdcard/") ) {
 				sdCardPresent=true;
 				break;
 			}
 		}
-		
-		if(!sdCardPresent)
+
+		//exit if no sd card found
+		if(!sdCardPresent){
+			ErrorText.displayErrorMsg("SD card not present");
 			return null;
+		}
 		
 		try {
 			FileConnection fconn = (FileConnection)Connector.open(seasonFile,Connector.READ_WRITE);
-			if (!fconn.exists()) {
+			if (!fconn.exists()) {//file doesn't exist
+				ErrorText.displayErrorMsg(seasonFile+" not found.");
 				return null;
 			}
+			
 			is = fconn.openInputStream();
 			String str = new String(IOUtilities.streamToBytes(is), "UTF-8");
 			JSONObject obj = new JSONObject(str);
-			return obj;
-		} catch (IOException e) {
-				System.out.println("io exception");
-			   System.out.println(e.toString());
-		} catch (JSONException e) {
+			return obj; //return json obejct
+			
+		}catch (IOException e) {
+			ErrorText.displayErrorMsg("Error reading "+seasonFile);
 			e.printStackTrace();
+			return null;
+		
+		}catch (JSONException e) {
+			ErrorText.displayErrorMsg("File is malformed. Contact admin.");
+			e.printStackTrace();
+			return null;
+		
 		}finally{
 			if(is != null){
 				try { is.close(); } catch (IOException ignored) {}
 			}
 		}
-		return null;
 	}
 	
 	
