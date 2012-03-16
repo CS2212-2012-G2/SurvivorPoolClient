@@ -8,9 +8,6 @@ package client;
  * Description:
  * */
 
-import net.rim.device.api.command.Command;
-import net.rim.device.api.command.CommandHandler;
-import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -26,9 +23,6 @@ import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import net.rim.device.api.ui.toolbar.ToolbarButtonField;
-import net.rim.device.api.ui.toolbar.ToolbarManager;
-import net.rim.device.api.util.StringProvider;
 
 public class BonusScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
@@ -80,48 +74,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 
-		/* build the tool bar */
-		ToolbarManager manager = new ToolbarManager();
-		setToolbar(manager);
-		try {
-			/* Logout button */
-			ToolbarButtonField toolbuttonSend = new ToolbarButtonField(null,
-					new StringProvider("Log Out"));
-			toolbuttonSend.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbuttonSend";
-				}
-			});
-			/* if pressed, go back to Splash */
-			toolbuttonSend.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					UiApplication.getUiApplication().pushScreen(
-							new SplashScreen());
-				}
-			}));
-			/* Exit button */
-			ToolbarButtonField toolbutton2 = new ToolbarButtonField(null,
-					new StringProvider("Exit"));
-			toolbutton2.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton2";
-				}
-			});
-			/* if pressed, exit the system */
-			toolbutton2.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					System.exit(0);
-				}
-			}));
-
-			/* add buttons to the tool bar */
-			manager.add(toolbuttonSend);
-			manager.add(toolbutton2);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		setToolbar(Common.getToolbar());
 
 		/* Font setup */
 		try { // set up the smaller list font
@@ -239,7 +192,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
-		this.setStatus(manager);
+		this.setStatus(Common.getToolbar());
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {

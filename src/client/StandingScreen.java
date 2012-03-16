@@ -10,27 +10,20 @@ package client;
 
 import java.util.Vector;
 
-import client.data.GameData;
-import data.Contestant;
-import data.User;
-import net.rim.device.api.ui.Graphics;
-import net.rim.device.api.command.Command;
-import net.rim.device.api.command.CommandHandler;
-import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
+import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.table.RichList;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import net.rim.device.api.ui.toolbar.ToolbarButtonField;
-import net.rim.device.api.ui.toolbar.ToolbarManager;
-import net.rim.device.api.util.StringProvider;
+import client.data.GameData;
+import data.User;
 
 public class StandingScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
@@ -55,49 +48,9 @@ public class StandingScreen extends MainScreen implements FieldChangeListener {
 		};
 		;
 
-		/* build the tool bar */
-		ToolbarManager manager = new ToolbarManager();
-		setToolbar(manager);
-		try {
-			/* Logout button */
-			ToolbarButtonField toolbutton1 = new ToolbarButtonField(null,
-					new StringProvider("Log Out"));
-			toolbutton1.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton1";
-				}
-			});
-			/* if pressed, go back to Splash */
-			toolbutton1.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					UiApplication.getUiApplication().pushScreen(
-							new SplashScreen());
-				}
-			}));
-			/* Exit button */
-			ToolbarButtonField toolbutton2 = new ToolbarButtonField(null,
-					new StringProvider("Exit"));
-			toolbutton2.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton2";
-				}
-			});
-			/* if pressed, exit the system */
-			toolbutton2.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					System.exit(0);
-				}
-			}));
-
-			/* add buttons to the tool bar */
-			manager.add(toolbutton1);
-			manager.add(toolbutton2);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
+	
+		setToolbar(Common.getToolbar());
+		
 		RichList list = new RichList(vertFieldManager, false, 1, 0);
 		try { // set up the header list font
 			ff1 = FontFamily.forName("Verdana");
@@ -169,7 +122,7 @@ public class StandingScreen extends MainScreen implements FieldChangeListener {
 		}
 
 		/* Build the components to MainScreen */
-		this.setStatus(manager);
+		this.setStatus(Common.getToolbar());
 		this.add(vertFieldManager);
 
 	}

@@ -10,9 +10,6 @@ package client;
 
 import java.util.Vector;
 
-import net.rim.device.api.command.Command;
-import net.rim.device.api.command.CommandHandler;
-import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -28,12 +25,8 @@ import net.rim.device.api.ui.component.table.RichList;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import net.rim.device.api.ui.toolbar.ToolbarButtonField;
-import net.rim.device.api.ui.toolbar.ToolbarManager;
-import net.rim.device.api.util.StringProvider;
 import client.data.GameData;
 import data.Contestant;
-import data.User;
 
 public class PickScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
@@ -64,48 +57,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		};
 		;
 
-		/* build the tool bar */
-		ToolbarManager manager = new ToolbarManager();
-		setToolbar(manager);
-		try {
-			/* Logout button */
-			ToolbarButtonField toolbutton1 = new ToolbarButtonField(null,
-					new StringProvider("Log Out"));
-			toolbutton1.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton1";
-				}
-			});
-			/* if pressed, go back to Splash */
-			toolbutton1.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					UiApplication.getUiApplication().pushScreen(
-							new SplashScreen());
-				}
-			}));
-			/* Exit button */
-			ToolbarButtonField toolbutton2 = new ToolbarButtonField(null,
-					new StringProvider("Exit"));
-			toolbutton2.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton2";
-				}
-			});
-			/* if pressed, exit the system */
-			toolbutton2.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					System.exit(0);
-				}
-			}));
-
-			/* add buttons to the tool bar */
-			manager.add(toolbutton1);
-			manager.add(toolbutton2);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		setToolbar(Common.getToolbar());
 		
 		/* build contestant list */
 		RichList list = new RichList(vertFieldManager, true, 3, 0);
@@ -132,9 +84,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		 * -----------------------------------------------------------
 		 */
 
-		System.out.println("PickScreen: Getting all contestants from GD");
 		Vector contList = GameData.getCurrentGame().getAllContestants();
-		System.out.println("PickScreen: conlist size"+contList.size());
 		
 		/* build choices drop down*/
 		String[] choices = new String[contList.size()];
@@ -229,7 +179,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		/* Build the components to MainScreen */
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
-		this.setStatus(manager);
+		this.setStatus(Common.getToolbar());
 		System.out.println("PickScreen: Constructor end");
 	}
 
