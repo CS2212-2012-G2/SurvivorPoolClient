@@ -70,6 +70,7 @@ public class GameData extends data.GameData {
 	public static boolean initGameData() {
 		System.out.println("initGameData started");
 		JSONObject json;
+		
 		try {
 			json = JSONUtils.readFile(JSONUtils.seasonFile);
 			if(json==null){
@@ -79,6 +80,7 @@ public class GameData extends data.GameData {
 			System.out.println("Failed to read file.");	
 			return false;
 		}
+		
 		System.out.println("json read fine");
 		
 		try {
@@ -111,20 +113,6 @@ public class GameData extends data.GameData {
 		super.fromJSONObject(obj);
 		allList = allContestants;
 		
-	}
-	
-	// TODO: Implement:
-	
-	public String toString() {
-		return super.toString();
-	}
-	
-	/**
-	 * Used by SeasonCreate to create a new season.
-	 * @param num
-	 */
-	public static void initSeason(int num){
-		currentGame = new GameData(num);
 	}
 	
 	public void writeData() {
