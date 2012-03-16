@@ -174,7 +174,7 @@ public class User implements Person {
 	 *            contestant choice
 	 * @throws InvalidFieldException If null, throws exception.
 	 */
-	public void setUltimatePick(Contestant winner) throws InvalidFieldException  {
+	public void setUltimatePick(Contestant winner){
 		setUltimatePickNoSetPts(winner);
 		ultPoints = 2 * GameData.getCurrentGame().weeksLeft();
 	}
@@ -183,11 +183,7 @@ public class User implements Person {
 	 * @param winner
 	 * @throws InvalidFieldException
 	 */
-	public void setUltimatePickNoSetPts(Contestant winner) throws InvalidFieldException  {
-		if (winner == null) {
-			throw new InvalidFieldException("Weekly pick was null");
-		}
-		
+	public void setUltimatePickNoSetPts(Contestant winner) {
 		ultPick = winner;
 	}
 	
