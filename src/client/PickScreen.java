@@ -71,13 +71,17 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			});
 		}
 		
-		Vector contList = GameData.getCurrentGame().getActiveContestants();		
+		Vector contList = GameData.getCurrentGame().getActiveContestants();
+		
 		String[] choices = new String[contList.size()];
 		//get all active contestants for drop down box
 		for(int i =0;i<contList.size();i++){
 			Contestant c = (Contestant) contList.elementAt(i);
 			choices[i]=c.getFirstName()+ " "+c.getLastName()+" "+" ID: "+c.getID();
 		}
+		
+		ocfActiveContestant = new ObjectChoiceField(" Cast your "+ voteType + " vote: ",choices);
+		
 		
 		System.out.println("PickScreen: adding contestants to table");
 		
@@ -139,20 +143,15 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		btnVoted = new ButtonField("Okay");
 		btnVoted.setChangeListener(this);
 
-		ocfActiveContestant = new ObjectChoiceField(" Cast your "
-				+ voteType + " vote: ",choices, 0,
-				ObjectChoiceField.FORCE_SINGLE_LINE
-						| ObjectChoiceField.FIELD_HCENTER);
 		horFieldManager.add(btnVoted);
 		horFieldManager.add(ocfActiveContestant);
 		horFieldManager.setFont(font2);
 		
-		/* Build the components to MainScreen */
 		
-		//ocfActiveContestant.setEditable(false);
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
 		this.setStatus(Common.getToolbar());
+		vertFieldManager.setFocus(); //THIS NEEDS TO BE HERE. APP CRASHES WITHOUT IT
 		System.out.println("PickScreen: Constructor end");
 	}
 
