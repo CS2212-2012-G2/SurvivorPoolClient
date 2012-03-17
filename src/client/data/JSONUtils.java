@@ -2,6 +2,7 @@ package client.data;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 
 import javax.microedition.io.Connector;
@@ -27,22 +28,8 @@ public class JSONUtils{
 	//some code from http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822
 	public static JSONObject readFile(String path) throws FileNotFoundException{
 		InputStream is = null;
-		
-		boolean sdCardPresent = false;
-		Enumeration r = FileSystemRegistry.listRoots();
-		
-		//makes sure the sd card is inserted
-		while (r.hasMoreElements()) {
-			String root = (String) r.nextElement();
-			if( root.equalsIgnoreCase("sdcard/") ) {
-				sdCardPresent=true;
-				break;
-			}
-		}
-
-		//exit if no sd card found
-		if(!sdCardPresent){
-			ErrorText.displayErrorMsg("SD card not present");
+		if(!isSDCardInserted()){
+			ErrorText.displayErrorMsg("SD Card not inserted.");
 			return null;
 		}
 		
@@ -81,16 +68,49 @@ public class JSONUtils{
 	 * @param filePath The file path to write to
 	 * @param json A json object that has the keys and teh values
 	 */
-	public static void writeJSON(String filePath, JSONObject json){
-		/*try {
-			FileWriter fileWrite = new FileWriter(filePath, false);
-			fileWrite.write(json.toString());
-			fileWrite.close();
+	public static void writeJSON(JSONObject json){
+		OutputStream os = null;
+		if(!isSDCardInserted()){
+			ErrorText.displayErrorMsg("SD Card not inserted.");
+			return;
+		}
+		
+		try {
+			FileConnection fconn = (FileConnection)Connector.open(seasonFile+".as",Connector.READ_WRITE);
+			if (!fconn.exists()) {//file doesn't exist
+				fconn.create();
+			}
 			
-		} catch (IOException e) {
-			System.out.println("JSONObject: writeJson: could not write to file");
+			os = fconn.openOutputStream(0);
+			String jsonString = json.toString();
+			System.out.println(jsonString);
+			os.write(jsonString.getBytes());
+			
+		}catch (IOException e) {
+			ErrorText.displayErrorMsg("Error reading "+seasonFile);
 			e.printStackTrace();
-		}*/
+			return;
+		
+		}finally{
+			if(os != null){
+				try { os.close(); } catch (IOException ignored) {}
+			}
+		}
+		
 	}
 
+	
+	private static boolean isSDCardInserted(){
+		Enumeration r = FileSystemRegistry.listRoots();
+		
+		//makes sure the sd card is inserted
+		while (r.hasMoreElements()) {
+			String root = (String) r.nextElement();
+			if( root.equalsIgnoreCase("sdcard/") ) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

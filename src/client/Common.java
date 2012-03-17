@@ -1,5 +1,6 @@
 package client;
 
+import data.GameData;
 import net.rim.device.api.command.Command;
 import net.rim.device.api.command.CommandHandler;
 import net.rim.device.api.command.ReadOnlyCommandMetadata;
@@ -51,7 +52,7 @@ public class Common {
 			btnExit.setCommand(new Command(new CommandHandler() {
 				public void execute(ReadOnlyCommandMetadata metadata,
 						Object context) {
-					System.exit(0);
+					exitApp();
 				}
 			}));
 
@@ -70,5 +71,10 @@ public class Common {
 	public static ToolbarManager getToolbar(){
 		createToolbar();
 		return toolbar;
+	}
+	
+	public static void exitApp(){
+		//GameData.getCurrentGame().writeData();
+		System.exit(0);
 	}
 }

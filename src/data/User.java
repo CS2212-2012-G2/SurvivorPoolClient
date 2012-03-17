@@ -163,6 +163,7 @@ public class User implements Person {
 	 */
 	public void setWeeklyPick(Contestant pick)  {
 		weeklyPick = pick;
+		System.out.println("***********eyaatad:"+pick.getID());
 	}
 
 	/**

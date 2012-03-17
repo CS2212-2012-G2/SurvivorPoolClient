@@ -37,7 +37,6 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	private Font font2; // fonts.
 	private ButtonField btnVoted;
 	private ObjectChoiceField ocfActiveContestant;
-	private String[] choices;
 	private RichList list;	
 	
 	public PickScreen(String voteType) {
@@ -73,14 +72,9 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		
 		Vector contList = GameData.getCurrentGame().getActiveContestants();
 		
-		String[] choices = new String[contList.size()];
-		//get all active contestants for drop down box
-		for(int i =0;i<contList.size();i++){
-			Contestant c = (Contestant) contList.elementAt(i);
-			choices[i]=c.getFirstName()+ " "+c.getLastName()+" "+" ID: "+c.getID();
-		}
-		
-		ocfActiveContestant = new ObjectChoiceField(" Cast your "+ voteType + " vote: ",choices);
+		Contestant[] contArray = new Contestant[contList.size()];
+		contList.copyInto(contArray);
+		ocfActiveContestant = new ObjectChoiceField(" Cast your "+ voteType + " vote: ",contArray);
 		
 		
 		System.out.println("PickScreen: adding contestants to table");
@@ -173,16 +167,14 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	 */
 	private Contestant getChosenContestant(){
 		int i =ocfActiveContestant.getSelectedIndex();
+		System.out.println("**********:"+i);
 		if(i==-1)
 			return null;
 		
-		String conName = choices[i];
-		
-		//int idLoc = conName.lastIndexOf((int)' ');
-		//String conId = conName.substring(idLoc+1);
-		//return GameData.getCurrentGame().getContestant(conId);
-		return null;
-	
+
+		Contestant contestant = (Contestant) ocfActiveContestant.getChoice(i);
+		System.out.println(contestant.getID());
+		return contestant;
 	}
 
 }

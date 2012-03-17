@@ -252,7 +252,7 @@ public class Contestant implements Person {
 	 * Returns a string of the contestant's Last name, first name, and ID tag.
 	 */
 	public String toString() {
-		return getID()+" "+getLastName()+" "+getFirstName();
+		return getFirstName()+ " "+getLastName()+" ID: "+getID();
 	}
 	
 	/**
