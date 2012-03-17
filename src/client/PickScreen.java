@@ -36,7 +36,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	private FontFamily ff1; // fonts.
 	private Font font2; // fonts.
 	private ButtonField btnVoted;
-	private ObjectChoiceField tempField;
+	private ObjectChoiceField ocfActiveContestant;
 	private String[] choices;
 	private RichList list;	
 	
@@ -139,15 +139,17 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		btnVoted = new ButtonField("Okay");
 		btnVoted.setChangeListener(this);
 
-		tempField = new ObjectChoiceField(" Cast your "
+		ocfActiveContestant = new ObjectChoiceField(" Cast your "
 				+ voteType + " vote: ",choices, 0,
 				ObjectChoiceField.FORCE_SINGLE_LINE
 						| ObjectChoiceField.FIELD_HCENTER);
 		horFieldManager.add(btnVoted);
-		horFieldManager.add(tempField);
+		horFieldManager.add(ocfActiveContestant);
 		horFieldManager.setFont(font2);
 		
 		/* Build the components to MainScreen */
+		
+		//ocfActiveContestant.setEditable(false);
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
 		this.setStatus(Common.getToolbar());
@@ -160,23 +162,27 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(getChosenContestant());
 			} else if (voteType.equals("ultimate")) { 
 				GameData.getCurrentGame().getCurrentUser().setUltimatePick(getChosenContestant());
-			} else { //TODO: are these the same?
+			} else if(voteType.equals("final")){ //TODO: are these the same?
 				GameData.getCurrentGame().getCurrentUser().setUltimatePick(getChosenContestant());
 			}
 		}
 	}
 	
+	/**
+	 * Gets the contestant from the drop down box or null if none chosen
+	 * @return
+	 */
 	private Contestant getChosenContestant(){
-		
-		int i =tempField.getSelectedIndex();
+		int i =ocfActiveContestant.getSelectedIndex();
 		if(i==-1)
 			return null;
 		
 		String conName = choices[i];
 		
-		int idLoc = conName.lastIndexOf((int)' ');
-		String conId = conName.substring(idLoc+1);
-		return GameData.getCurrentGame().getContestant(conId);
+		//int idLoc = conName.lastIndexOf((int)' ');
+		//String conId = conName.substring(idLoc+1);
+		//return GameData.getCurrentGame().getContestant(conId);
+		return null;
 	
 	}
 
