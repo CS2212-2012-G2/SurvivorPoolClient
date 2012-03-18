@@ -194,6 +194,9 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		this.add(vertFieldManager);
 		this.setStatus(Common.getToolbar());
 	}
+	public boolean onSavePrompt(){
+		return true;
+	}
 
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == buttonSend) { // if the SEND button is clicked

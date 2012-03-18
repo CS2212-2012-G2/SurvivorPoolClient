@@ -9,6 +9,8 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
 import javax.microedition.io.file.FileSystemRegistry;
 
+import client.Common;
+
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.io.IOUtilities;
 import data.me.json.JSONException;
@@ -29,14 +31,14 @@ public class JSONUtils{
 	public static JSONObject readFile(String path) throws FileNotFoundException{
 		InputStream is = null;
 		if(!isSDCardInserted()){
-			ErrorText.displayErrorMsg("SD Card not inserted.");
+			Common.displayErrorMsg("SD Card not inserted.");
 			return null;
 		}
 		
 		try {
 			FileConnection fconn = (FileConnection)Connector.open(seasonFile,Connector.READ_WRITE);
 			if (!fconn.exists()) {//file doesn't exist
-				ErrorText.displayErrorMsg(seasonFile+" not found.");
+				Common.displayErrorMsg(seasonFile+" not found.");
 				return null;
 			}
 			
@@ -46,12 +48,12 @@ public class JSONUtils{
 			return obj; //return json obejct
 			
 		}catch (IOException e) {
-			ErrorText.displayErrorMsg("Error reading "+seasonFile);
+			Common.displayErrorMsg("Error reading "+seasonFile);
 			e.printStackTrace();
 			return null;
 		
 		}catch (JSONException e) {
-			ErrorText.displayErrorMsg("File is malformed. Contact admin.");
+			Common.displayErrorMsg("File is malformed. Contact admin.");
 			e.printStackTrace();
 			return null;
 		
@@ -71,23 +73,23 @@ public class JSONUtils{
 	public static void writeJSON(JSONObject json){
 		OutputStream os = null;
 		if(!isSDCardInserted()){
-			ErrorText.displayErrorMsg("SD Card not inserted.");
+			Common.displayErrorMsg("SD Card not inserted.");
 			return;
 		}
 		
 		try {
 			FileConnection fconn = (FileConnection)Connector.open(seasonFile+".as",Connector.READ_WRITE);
-			if (!fconn.exists()) {//file doesn't exist
+			if (!fconn.exists()) {
 				fconn.create();
 			}
 			
 			os = fconn.openOutputStream(0);
 			String jsonString = json.toString();
 			System.out.println(jsonString);
-			os.write(jsonString.getBytes());
+			//os.write(jsonString.getBytes());
 			
 		}catch (IOException e) {
-			ErrorText.displayErrorMsg("Error reading "+seasonFile);
+			Common.displayErrorMsg("Error reading "+seasonFile);
 			e.printStackTrace();
 			return;
 		

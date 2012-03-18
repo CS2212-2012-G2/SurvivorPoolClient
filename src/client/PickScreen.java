@@ -149,6 +149,10 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		System.out.println("PickScreen: Constructor end");
 	}
 
+	public boolean onSavePrompt(){
+		return true;
+	}
+	
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnVoted) { // if the okay button is clicked
 			if (voteType.equals("weekly")) {

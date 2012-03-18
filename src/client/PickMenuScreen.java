@@ -64,6 +64,10 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 		vertFieldManager.add(btnFinal);
 		this.add(vertFieldManager);
 	}
+	
+	public boolean onSavePrompt(){
+		return true;
+	}
 
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnWeekly) { 

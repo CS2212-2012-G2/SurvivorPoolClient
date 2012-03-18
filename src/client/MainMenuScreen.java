@@ -55,6 +55,10 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 		vertFieldManager.add(btnBonus);
 		this.add(vertFieldManager);
 	}
+	
+	public boolean onSavePrompt(){
+		return true;
+	}
 
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnUserStanding) { // View Standings

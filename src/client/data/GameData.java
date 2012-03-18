@@ -3,6 +3,8 @@ package client.data;
 
 import java.util.Vector;
 
+import client.Common;
+
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.util.Arrays;
 import data.Contestant;
@@ -72,7 +74,7 @@ public class GameData extends data.GameData {
 		
 		try {
 			if (!json.getBoolean(KEY_SEASON_STARTED)){
-				ErrorText.displayErrorMsg("Season has not started.");
+				Common.displayErrorMsg("Season has not started.");
 				return false;
 			}
 			currentGame = new GameData(json.getInt(KEY_NUM_CONTEST));
@@ -86,7 +88,7 @@ public class GameData extends data.GameData {
 		try {
 			GameData.getCurrentGame().fromJSONObject(json);
 		} catch (JSONException e) {
-			ErrorText.displayErrorMsg("Corrupted file.");
+			Common.displayErrorMsg("Corrupted file.");
 			System.out.println("json exception");
 			return false;
 		}

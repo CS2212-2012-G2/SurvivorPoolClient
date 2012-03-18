@@ -22,7 +22,6 @@ import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import client.data.ErrorText;
 import client.data.GameData;
 import data.User;
 
@@ -103,7 +102,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 			//TODO: find the proper place to check. Not during click.
 			if(GameData.getCurrentGame()==null){ 
 				if(!GameData.initGameData()){
-					ErrorText.displayErrorMsg("Exiting.");
+					Common.displayErrorMsg("Exiting.");
 					System.exit(0);	
 				}
 			}
@@ -113,13 +112,13 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 				GameData.getCurrentGame().setCurrentUser(u);
 				return true;
 			}else{
-				ErrorText.displayErrorMsg("Invalid user id.");
+				Common.displayErrorMsg("Invalid user id.");
 			}
 			
 		} catch (Exception ex) {
-			ErrorText.displayErrorMsg("Problem detected."+ex.toString()+" Exiting.");
+			Common.displayErrorMsg("Problem detected."+ex.toString()+" Exiting.");
 			ex.printStackTrace();
-			Common.exitApp();
+			System.exit(0);
 		}
 		
 		return false; // match is not found

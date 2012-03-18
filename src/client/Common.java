@@ -1,13 +1,14 @@
 package client;
 
-import data.GameData;
 import net.rim.device.api.command.Command;
 import net.rim.device.api.command.CommandHandler;
 import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.toolbar.ToolbarButtonField;
 import net.rim.device.api.ui.toolbar.ToolbarManager;
 import net.rim.device.api.util.StringProvider;
+import data.GameData;
 
 public class Common {
 
@@ -73,8 +74,24 @@ public class Common {
 		return toolbar;
 	}
 	
+	/**
+	 * Close the app with the option to saveData
+	 * @param saveData
+	 */
 	public static void exitApp(){
-		//GameData.getCurrentGame().writeData();
+		int response = Dialog.ask(Dialog.D_SAVE,"Do you want to save?");
+		if(response == Dialog.SAVE)
+			System.out.println("*****SAVE");
+		else if(response == Dialog.CANCEL)
+			return;
 		System.exit(0);
+	}
+
+	/**
+	 * Display error to user.
+	 * @param msg
+	 */
+	public static void displayErrorMsg(String msg){
+		Dialog.alert(msg);
 	}
 }
