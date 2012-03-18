@@ -23,31 +23,6 @@ public class GameData extends data.GameData {
 		allList = allContestants;
 	}
 	
-	private void updateSortAllContestants(int compFactID) {
-		allList = allContestants;
-		Vector t = noNullList(allList);
-		Object[] ar = new Object[t.size()];
-		t.copyInto(ar);
-		Arrays.sort(ar,ComparatorFactory.getComparator(compFactID));
-		
-		// t holds the sorted array, replace all the values with their
-		// new index. When the entry is null, it means we are done.
-		for (int i = 0; i <t.size();i++) {
-			allContestants.setElementAt((Contestant) ar[i],i);;
-		}
-
-		allList = allContestants;
-	}
-
-	private Vector noNullList(Vector c){
-		Vector retList=new Vector();
-		for(int i =0;i<c.size();i++){
-			if(c.elementAt(i)!=null)
-				retList.addElement(c.elementAt(i));
-		}
-		return retList;
-	}
-	
 	/**
 	 * initGameData reads in a data file and builds a GameData object out
 	 * of it, returning it to the user.
@@ -105,7 +80,12 @@ public class GameData extends data.GameData {
 	}
 	
 	public void writeData() {
-		// TODO figure out a way to ouput data on BB
+		try {
+			JSONUtils.writeJSON(this.toJSONObject());
+		} catch (JSONException e) {
+			System.out.println("***write data json exception");
+			e.printStackTrace();
+		}
 		
 	}
 

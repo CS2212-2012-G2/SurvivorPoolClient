@@ -1,18 +1,17 @@
 package client.data;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Enumeration;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
 import javax.microedition.io.file.FileSystemRegistry;
 
-import client.Common;
-
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.io.IOUtilities;
+import client.Common;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
@@ -71,7 +70,8 @@ public class JSONUtils{
 	 * @param json A json object that has the keys and teh values
 	 */
 	public static void writeJSON(JSONObject json){
-		OutputStream os = null;
+		//http://stackoverflow.com/questions/1519328/j2me-blackberry-how-to-read-write-text-file
+		DataOutputStream os = null;
 		if(!isSDCardInserted()){
 			Common.displayErrorMsg("SD Card not inserted.");
 			return;
@@ -83,10 +83,10 @@ public class JSONUtils{
 				fconn.create();
 			}
 			
-			os = fconn.openOutputStream(0);
+			os = fconn.openDataOutputStream();
 			String jsonString = json.toString();
 			System.out.println(jsonString);
-			//os.write(jsonString.getBytes());
+			os.write(jsonString.getBytes());
 			
 		}catch (IOException e) {
 			Common.displayErrorMsg("Error reading "+seasonFile);

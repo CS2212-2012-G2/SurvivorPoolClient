@@ -80,9 +80,10 @@ public class Common {
 	 */
 	public static void exitApp(){
 		int response = Dialog.ask(Dialog.D_SAVE,"Do you want to save?");
-		if(response == Dialog.SAVE)
+		if(response == Dialog.SAVE){
 			System.out.println("*****SAVE");
-		else if(response == Dialog.CANCEL)
+			GameData.getCurrentGame().writeData();
+		}else if(response == Dialog.CANCEL)
 			return;
 		System.exit(0);
 	}
