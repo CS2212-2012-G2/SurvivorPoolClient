@@ -92,7 +92,6 @@ public abstract class GameData {
 		
 		Vector active = new Vector(allContestants.size());
 		
-		int newSize = 0;
 		for (int i = 0; i < allContestants.size(); i++) {
 			Contestant c = (Contestant)allContestants.elementAt(i);
 			if ((c != null) && !c.isCastOff()) {
@@ -148,25 +147,6 @@ public abstract class GameData {
 		int index = getContestantIndexID(id);
 		
 		return (index > -1 ? (Contestant)allContestants.elementAt(index) : null);
-	}
-	
-	/**
-	 * Add contestant safely into gamedata
-	 * @param c New contestant, will not add if ID of contestant is null.
-	 */
-	public void addContestant(Contestant c) {
-		if (c.getID() == null || 
-				!isIDValid(c.getID())) {
-			System.out.println("Contestant must have valid ID");
-			return;
-		}
-		
-		if (allContestants.size() == numContestants) {
-			System.out.println("Too many contestants.");
-			return;
-		}
-		
-		allContestants.addElement((Object)c);
 	}
 	
 	/**
@@ -474,7 +454,7 @@ public abstract class GameData {
 	 */
 	public void fromJSONObject(JSONObject obj) throws JSONException {
 		numContestants = ((Integer)obj.get(KEY_NUM_CONTEST)).intValue();
-				
+		
 		// tribes
 		JSONArray ts = (JSONArray)obj.get(KEY_TRIBES);
 		this.setTribeNames((String)ts.get(0),  (String)ts.get(1) );
@@ -483,7 +463,7 @@ public abstract class GameData {
 		weeksPassed = obj.getInt(KEY_WEEKS_PASSED);
 		
 		seasonStarted = obj.getBoolean(KEY_SEASON_STARTED);
-		
+		System.out.println("***vars were initialized");
 		//Contestants must be loaded before users, but after others!
 		allContestants = new Vector(numContestants);
 		
@@ -497,14 +477,16 @@ public abstract class GameData {
 			addContestantNoCheck(c);
 			
 		}
-		
+		System.out.println("contestants were initialized");
 		// users:
 		JSONArray users = (JSONArray)obj.get(KEY_USERS);
+		System.out.println("users was valid");
 		for (int i = 0; i < users.length(); i++) {
 			User u = new User();
 			u.fromJSONObject(users.getJSONObject(i));
 			addUser(u);
 		}
+		System.out.println("users were initialized");
 		System.out.println(this.toJSONObject().toString());
 	}
 

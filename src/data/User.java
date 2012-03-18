@@ -163,7 +163,6 @@ public class User implements Person {
 	 */
 	public void setWeeklyPick(Contestant pick)  {
 		weeklyPick = pick;
-		System.out.println("***********eyaatad:"+pick.getID());
 	}
 
 	/**
@@ -177,7 +176,8 @@ public class User implements Person {
 	 */
 	public void setUltimatePick(Contestant winner){
 		setUltimatePickNoSetPts(winner);
-		ultPoints = 2 * GameData.getCurrentGame().weeksLeft();
+		if(winner!=null)
+			ultPoints = 2 * GameData.getCurrentGame().weeksLeft();
 	}
 	/**
 	 * just sets the same as prior without setting pts.
@@ -257,11 +257,16 @@ public class User implements Person {
 			setPoints(((Integer)o.remove(KEY_POINTS)).intValue());
 			
 			String id = (String)o.remove(KEY_WEEKLY_PICK_ID);
-			Contestant c = GameData.getCurrentGame().getContestant(id);
+			Contestant c = null;
+			if(!id.equals("??"))
+				c = GameData.getCurrentGame().getContestant(id);
 			setWeeklyPick(c);
 			
 			id = (String)o.remove(KEY_ULT_PICK_ID);
-			c = GameData.getCurrentGame().getContestant(id);
+			c=null;
+			if(!id.equals("??"))
+				c = GameData.getCurrentGame().getContestant(id);
+			setWeeklyPick(c);
 			setUltimatePick(c);
 			
 			setPoints(((Integer)o.remove(KEY_WIN_PICK_POINTS)).intValue());

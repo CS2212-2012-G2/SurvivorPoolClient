@@ -46,19 +46,6 @@ public class GameData extends data.GameData {
 		return retList;
 	}
 	
-	// extends the method in super class to sort it.
-	public void addContestant(Contestant c) {
-		super.addContestant(c);
-		updateSortAllContestants(ComparatorFactory.CONTNT_ID);
-	}
-
-	public void removeContestant(Contestant target) {
-		//if contestant was there, sort the array
-		if(allList.removeElement(target)){
-			updateSortAllContestants(ComparatorFactory.CONTNT_ID);
-		}
-	}
-	
 	/**
 	 * initGameData reads in a data file and builds a GameData object out
 	 * of it, returning it to the user.

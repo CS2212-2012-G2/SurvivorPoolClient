@@ -117,7 +117,9 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 			}
 			
 		} catch (Exception ex) {
+			ErrorText.displayErrorMsg("Problem detected."+ex.toString()+" Exiting.");
 			ex.printStackTrace();
+			Common.exitApp();
 		}
 		
 		return false; // match is not found
