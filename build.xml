@@ -1,0 +1,63 @@
+<project name="SurvivorPool-Client" default="all">
+
+  <property name="jar-out" value="Group2BlackBerry.jar"/>
+  <property name="bin-dir" value="bin/"/>
+  <property name="src-dir" value="src/"/>
+  <property name="javadoc-dir" value="doc/"/>
+  <property name="res-dir" value="res/"/>
+
+  <target name="clean">
+    <delete dir="${bin-dir}" />
+    <mkdir dir="${bin-dir}" />
+    <delete dir="${javadoc-dir}"/>
+    <mkdir dir="${javadoc-dir}"/>
+  </target>
+
+  <target name="jar-sub">
+
+    <delete file="res/data/Settings.dat"/>
+    <delete file="${jar-out}"/>
+    <jar destfile="${jar-out}"
+         basedir="./"
+	 defaultexcludes="yes">
+      <exclude name="**.jar" />
+      <exclude name="**/.classpath" />
+      <exclude name="**/.project" />
+      <exclude name="**/*.swp" />
+      <include name="${src-dir}**/*.java" />
+      <include name="${javadoc-dir}**" />
+      <include name="${res-dir}**" />
+      <include name="*" />
+    </jar>
+  </target>
+
+  <target name="jar-sub-clean">
+    <delete file="res/data/Settings.dat"/>
+
+    <antcall target="jar-sub"/>
+   </target> 
+
+  <target name="doc">
+    <delete dir="${javadoc-dir}"/>
+    <mkdir dir="${javadoc-dir}"/>
+    <javadoc destdir="${javadoc-dir}"
+	     author="true"
+	     version="true"
+	     use="true"
+	     windowtitle="CS2212 Group 2 2012 - Javadoc">
+      
+      <fileset dir="src" defaultexcludes="yes">
+        <include name="client/**.java"/>
+	<include name="data/**.java"/>
+	<include name="test/**.java"/>
+	<include name="common/**.java"/>
+      </fileset>
+    </javadoc>
+  </target>
+
+  <target name="all">
+    <antcall target="clean"/>
+    <antcall target="doc"/>
+    <antcall target="jar-sub"/>
+  </target>
+</project>
