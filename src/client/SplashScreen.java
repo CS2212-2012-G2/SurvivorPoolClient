@@ -86,6 +86,10 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 	}
 
+	public boolean onSavePrompt(){
+		return true;
+	}
+	
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnLogin) { // if the log in button is clicked
 			if (checkLogIn(edit.getText().toLowerCase())) {
