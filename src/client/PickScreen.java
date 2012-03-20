@@ -159,8 +159,8 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(getChosenContestant());
 			} else if (voteType.equals("ultimate")) { 
 				GameData.getCurrentGame().getCurrentUser().setUltimatePick(getChosenContestant());
-			} else if(voteType.equals("final")){ //TODO: are these the same?
-				GameData.getCurrentGame().getCurrentUser().setUltimatePick(getChosenContestant());
+			} else if(voteType.equals("final")){
+				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(getChosenContestant());
 			}
 		}
 	}

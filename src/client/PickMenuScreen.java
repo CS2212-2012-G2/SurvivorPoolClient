@@ -8,6 +8,7 @@ package client;
  * Description:
  * */
 
+import data.GameData;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -50,13 +51,10 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 		btnWeekly.setMargin(230, 0, 0, 0); // formatting
 		btnUltimate = new ButtonField("Vote For Ultimate", LabelField.FIELD_HCENTER); 
 		btnUltimate.setChangeListener(this);
-		btnFinal = new ButtonField("Vote For Finals", LabelField.FIELD_HCENTER); 
-		btnFinal.setChangeListener(this);
-		/* -----------------------------------------------------------------
-		 * IF NOT THE FINALS, button3.setEnabled(false);
-		 * -----------------------------------------------------------------*/
-		
-		
+		if(GameData.getCurrentGame().weeksLeft()==1){
+			btnFinal = new ButtonField("Vote For Finals", LabelField.FIELD_HCENTER); 
+			btnFinal.setChangeListener(this);
+		}
 		/* Build the components to MainScreen */
 		this.setStatus(Common.getToolbar());
 		vertFieldManager.add(btnWeekly);
@@ -78,7 +76,7 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 			UiApplication.getUiApplication().pushScreen(
 					new PickScreen("ultimate"));
 		
-		}else if (arg0 == btnFinal){//TODO: should only appear in last week
+		}else if (arg0 == btnFinal){
 			UiApplication.getUiApplication().pushScreen(
 					new PickScreen("final"));
 		}
