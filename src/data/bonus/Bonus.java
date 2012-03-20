@@ -3,9 +3,9 @@ package data.bonus;
 import java.util.Vector;
 
 import net.rim.device.api.io.FileNotFoundException;
-
+import net.rim.device.api.util.Arrays;
+import net.rim.device.api.util.Comparator;
 import client.data.JSONUtils;
-
 import data.me.json.JSONArray;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
@@ -21,13 +21,29 @@ public class Bonus {
 	
 	private static final String KEY_QUESTIONS = "questions";
 	public static final String  filePath 	  = "file:///SDCard/res/data/bonus.dat";
+	static Comparator comp= new Comparator(){
+
+		public int compare(Object o1, Object o2) {
+			BonusQuestion b1 = (BonusQuestion) o1;
+			BonusQuestion b2 = (BonusQuestion) o2;
+			return (b1.getWeek()-b2.getWeek());
+		}
+		
+	};
 	/**
 	 * DO NOT CALL THIS FUNCTION! Only used fromJSONObject or when a bonusquestion is created
 	 * @param b
 	 */
 	public static void addNewQuestion(BonusQuestion b){
 		questions.addElement(b);
+		sortQuestions();
 		//TODO: should sort it so get by week is quicker
+	}
+	
+	private static void sortQuestions(){
+		Object[] unsorted = new Object[questions.size()];
+		questions.copyInto(unsorted);
+		Arrays.sort(unsorted,comp);
 	}
 	
 	/**
@@ -44,11 +60,19 @@ public class Bonus {
 	 * @return a possible null BonusQuestion
 	 */
 	public static BonusQuestion getQuestionByWeek(int week){
-		for(int i=0;i<questions.size();i++){
-			BonusQuestion b = (BonusQuestion) questions.elementAt(i);
+		int min = 0;
+		int max = questions.size();
+		while(min<=max){
+			int middle = (min+max)/2;
+			BonusQuestion b = (BonusQuestion) questions.elementAt(middle);
 			if(b.getWeek()==week)
-				return b;
+				return b; 
+			else if(b.getWeek()>week)
+				max=middle-1;
+			else
+				min=middle+1;
 		}
+		
 		return null;
 	}
 	
