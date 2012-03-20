@@ -2,6 +2,10 @@ package data.bonus;
 
 import java.util.Vector;
 
+import net.rim.device.api.io.FileNotFoundException;
+
+import client.data.JSONUtils;
+
 import data.me.json.JSONArray;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
@@ -16,7 +20,7 @@ public class Bonus {
 	static Vector questions = new Vector();
 	
 	private static final String KEY_QUESTIONS = "questions";
-	public static final String  fileName 	  = "res/data/bonus.dat";
+	public static final String  filePath 	  = "res/data/bonus.dat";
 	/**
 	 * DO NOT CALL THIS FUNCTION! Only used fromJSONObject or when a bonusquestion is created
 	 * @param b
@@ -67,6 +71,20 @@ public class Bonus {
 			BonusQuestion b = new BonusQuestion();
 			b.fromJSONObject(qA.getJSONObject(i));
 			addNewQuestion(b);
+		}
+	}
+	
+	/**
+	 * Initalize bonus
+	 */
+	public static void initBonus(){
+		try {
+			fromJSONObject(JSONUtils.readFile(filePath));
+		} catch (FileNotFoundException e) {
+			System.out.println("could not read "+filePath);
+		} catch (JSONException e) {
+			System.out.println("could not convert to json object "+filePath);
+			e.printStackTrace();
 		}
 	}
 }

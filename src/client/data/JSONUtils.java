@@ -12,6 +12,7 @@ import javax.microedition.io.file.FileSystemRegistry;
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.io.IOUtilities;
 import client.Common;
+import data.bonus.Bonus;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
@@ -24,9 +25,14 @@ import data.me.json.JSONObject;
  */
 public class JSONUtils{
 	
-	public static String seasonFile = "file:///SDCard/res/data/Settings.dat";
+	
 	
 	//some code from http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822
+	
+	/**
+	 * Get a json object from file path
+	 * @param path The file path where the json string is stored
+	 */
 	public static JSONObject readFile(String path) throws FileNotFoundException{
 		InputStream is = null;
 		if(!isSDCardInserted()){
@@ -35,9 +41,9 @@ public class JSONUtils{
 		}
 		
 		try {
-			FileConnection fconn = (FileConnection)Connector.open(seasonFile,Connector.READ_WRITE);
+			FileConnection fconn = (FileConnection)Connector.open(path,Connector.READ_WRITE);
 			if (!fconn.exists()) {//file doesn't exist
-				Common.displayErrorMsg(seasonFile+" not found.");
+				Common.displayErrorMsg(path+" not found.");
 				return null;
 			}
 			
@@ -47,7 +53,7 @@ public class JSONUtils{
 			return obj; //return json obejct
 			
 		}catch (IOException e) {
-			Common.displayErrorMsg("Error reading "+seasonFile);
+			Common.displayErrorMsg("Error reading "+path);
 			e.printStackTrace();
 			return null;
 		
@@ -65,43 +71,55 @@ public class JSONUtils{
 	
 	
 	/**
-	 * Writes to file using a json object
-	 * @param filePath The file path to write to
-	 * @param json A json object that has the keys and teh values
+	 * Write all the necessary files
+	 * @throws JSONException 
 	 */
-	public static void writeJSON(JSONObject json){
+	public static void writeData() throws JSONException{
 		//http://stackoverflow.com/questions/1519328/j2me-blackberry-how-to-read-write-text-file
-		DataOutputStream os = null;
+		
 		if(!isSDCardInserted()){
 			Common.displayErrorMsg("SD Card not inserted.");
 			return;
 		}
 		
 		try {
-			FileConnection fconn = (FileConnection)Connector.open(seasonFile+".as",Connector.READ_WRITE);
-			if (!fconn.exists()) {
-				fconn.create();
-			}
-			
-			os = fconn.openDataOutputStream();
-			String jsonString = json.toString();
-			System.out.println(jsonString);
-			os.write(jsonString.getBytes());
+			writeData(GameData.getCurrentGame().toJSONObject(),GameData.filePath);
+			writeData(Bonus.toJSONObject(),Bonus.filePath);
 			
 		}catch (IOException e) {
-			Common.displayErrorMsg("Error reading "+seasonFile);
+			Common.displayErrorMsg("Error writing file");
 			e.printStackTrace();
 			return;
 		
-		}finally{
-			if(os != null){
-				try { os.close(); } catch (IOException ignored) {}
-			}
+		}
+	}
+	
+	/**
+	 * Write json object to a specified object
+	 * @param json
+	 * @param filePath
+	 * @throws IOException
+	 */
+	private static void writeData(JSONObject json,String filePath) throws IOException{
+		DataOutputStream os = null;
+		//TODO: remvove the .as extensions after write data is confirmed to work
+		FileConnection fconn = (FileConnection)Connector.open(filePath+".as",Connector.READ_WRITE);
+		if (!fconn.exists()) {
+			fconn.create();
 		}
 		
+		os = fconn.openDataOutputStream();
+		String jsonString = json.toString();
+		System.out.println(jsonString);
+		os.write(jsonString.getBytes());
+		os.close();
+		fconn.close();
 	}
-
 	
+	/**
+	 * Quick check to see if sd card has been inserted
+	 * @return
+	 */
 	private static boolean isSDCardInserted(){
 		Enumeration r = FileSystemRegistry.listRoots();
 		

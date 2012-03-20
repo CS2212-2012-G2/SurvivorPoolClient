@@ -3,11 +3,9 @@ package client.data;
 
 import java.util.Vector;
 
-import client.Common;
-
 import net.rim.device.api.io.FileNotFoundException;
-import net.rim.device.api.util.Arrays;
-import data.Contestant;
+import client.Common;
+import data.bonus.Bonus;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
@@ -16,6 +14,7 @@ public class GameData extends data.GameData {
 	private Vector allList; // lits of
 	// all/remaining
 	// contestants
+	public static String filePath = "file:///SDCard/res/data/Settings.dat";
 	
 	public GameData(int numContestants) {
 		super(numContestants);
@@ -36,7 +35,7 @@ public class GameData extends data.GameData {
 		JSONObject json;
 		
 		try {
-			json = JSONUtils.readFile(JSONUtils.seasonFile);
+			json = JSONUtils.readFile(filePath);
 			if(json==null){
 				return false;
 			}
@@ -69,6 +68,8 @@ public class GameData extends data.GameData {
 		}
 		
 		System.out.println("json read");
+		Bonus.initBonus();//initalize bonus
+		
 		System.out.println("initGameData finished");
 		return true;
 	}
@@ -81,7 +82,7 @@ public class GameData extends data.GameData {
 	
 	public void writeData() {
 		try {
-			JSONUtils.writeJSON(this.toJSONObject());
+			JSONUtils.writeData();
 		} catch (JSONException e) {
 			System.out.println("***write data json exception");
 			e.printStackTrace();
