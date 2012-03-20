@@ -10,9 +10,6 @@ package client;
 
 import java.util.Vector;
 
-import net.rim.device.api.command.Command;
-import net.rim.device.api.command.CommandHandler;
-import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -28,24 +25,19 @@ import net.rim.device.api.ui.component.table.RichList;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import net.rim.device.api.ui.toolbar.ToolbarButtonField;
-import net.rim.device.api.ui.toolbar.ToolbarManager;
-import net.rim.device.api.util.StringProvider;
 import client.data.GameData;
 import data.Contestant;
-import data.User;
 
 public class PickScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
-	private LabelField labelTempName, labelTempTribe, labelTempStatus; // various
+	private LabelField lblContName, labelContTribe, labelTempStatus; // various
 																		// labels.
-	private String name, voteType;
+	private String voteType;
 	private FontFamily ff1; // fonts.
 	private Font font2; // fonts.
 	private ButtonField btnVoted;
-	private Contestant tempCont;
-	private ObjectChoiceField tempField;
-	private String[] possibleChoices;
+	private ObjectChoiceField ocfActiveContestant;
+	private RichList list;	
 	
 	public PickScreen(String voteType) {
 		super();
@@ -64,51 +56,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		};
 		;
 
-		/* build the tool bar */
-		ToolbarManager manager = new ToolbarManager();
-		setToolbar(manager);
-		try {
-			/* Logout button */
-			ToolbarButtonField toolbutton1 = new ToolbarButtonField(null,
-					new StringProvider("Log Out"));
-			toolbutton1.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton1";
-				}
-			});
-			/* if pressed, go back to Splash */
-			toolbutton1.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					UiApplication.getUiApplication().pushScreen(
-							new SplashScreen());
-				}
-			}));
-			/* Exit button */
-			ToolbarButtonField toolbutton2 = new ToolbarButtonField(null,
-					new StringProvider("Exit"));
-			toolbutton2.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton2";
-				}
-			});
-			/* if pressed, exit the system */
-			toolbutton2.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					System.exit(0);
-				}
-			}));
-
-			/* add buttons to the tool bar */
-			manager.add(toolbutton1);
-			manager.add(toolbutton2);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		/* build contestant list */
-		RichList list = new RichList(vertFieldManager, true, 3, 0);
+		setToolbar(Common.getToolbar());
 
 		try { // set up the smaller list font
 			ff1 = FontFamily.forName("Verdana");
@@ -121,54 +69,43 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 				}
 			});
 		}
-
-		/* build the list */
-
-		/*
-		 * FILL THE LIST WITH ALL THE PLAYERS --------------------------
-		 * 
-		 * SHOW NAME, TRIBE, GAME STATUS AND PICTURE
-		 * 
-		 * -----------------------------------------------------------
-		 */
-
-		System.out.println("PickScreen: Getting all contestants from GD");
-		Vector contList = GameData.getCurrentGame().getAllContestants();
-		System.out.println("PickScreen: conlist size"+contList.size());
 		
-		/* build choices drop down*/
-		String[] choices = new String[contList.size()];
-		int iSetTo = 0;
+		Vector contList = GameData.getCurrentGame().getActiveContestants();
+		
+		Contestant[] contArray = new Contestant[contList.size()];
+		contList.copyInto(contArray);
+		ocfActiveContestant = new ObjectChoiceField(" Cast your "+ voteType + " vote: ",contArray);
+		
 		
 		System.out.println("PickScreen: adding contestants to table");
 		
-		for (int i = 0; i < contList.size(); i++) {
-			tempCont = (Contestant) contList.elementAt(i);
-			System.out.println("PickScreen: "+tempCont.getFirstName());
-			if(!tempCont.isCastOff()){
-				choices[iSetTo]= tempCont.getFirstName() + " " + tempCont.getLastName()+" "+tempCont.getID();
-				iSetTo++;
-			}
-			/* list contains labels so that the text colour can change */
-			labelTempName = new LabelField(tempCont.getFirstName() + " " + tempCont.getLastName(), LabelField.ELLIPSIS) {
-				public void paint(Graphics g) {
-					g.setColor(Color.WHITE);
-					super.paint(g);
-				}
-			};
-			labelTempName.setFont(font2);
+		//TODO: change to true after images are implemented
+		list = new RichList(vertFieldManager, false, 3, 0);
 
-			labelTempTribe = new LabelField(tempCont.getTribe(), LabelField.ELLIPSIS) {
+		//get all contestants for list
+		contList = GameData.getCurrentGame().getAllContestants();
+		for (int i = 0; i < contList.size(); i++) {
+			Contestant cont = (Contestant) contList.elementAt(i);
+			/* list contains labels so that the text colour can change */
+			lblContName = new LabelField(cont.getFirstName() + " " + cont.getLastName(), LabelField.ELLIPSIS) {
 				public void paint(Graphics g) {
 					g.setColor(Color.WHITE);
 					super.paint(g);
 				}
 			};
-			labelTempName.setFont(font2);
+			lblContName.setFont(font2);
+
+			labelContTribe = new LabelField(cont.getTribe(), LabelField.ELLIPSIS) {
+				public void paint(Graphics g) {
+					g.setColor(Color.WHITE);
+					super.paint(g);
+				}
+			};
+			lblContName.setFont(font2);
 
 			String tempString = "";
 			
-			if (tempCont.isCastOff())
+			if (cont.isCastOff())
 				tempString = "Castoff";
 			else
 				tempString = "Active";
@@ -179,10 +116,9 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 					super.paint(g);
 				}
 			};
-			labelTempName.setFont(font2);
-
-		//	list.add(new Object[] { Bitmap.getBitmapResource(tempCont.getPicture()), labelTempName, labelTempTribe,
-			//		labelTempStatus });
+			lblContName.setFont(font2);
+			list.add(new Object[] {lblContName, labelContTribe,labelTempStatus });
+			
 		}
 		System.out.println("PickScreen: contestants added to list");
 		
@@ -191,70 +127,58 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 						| HorizontalFieldManager.FIELD_HCENTER) {
 			// Override the paint method to draw the background image.
 			public void paint(Graphics graphics) {
-				// graphics.setColor(Color.GREEN);
-				// graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+				graphics.setColor(Color.GREEN);
+				graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
 				super.paint(graphics);
 			}
 		};
 		;
 
-		/* Build the banner */
-
-
-
 		btnVoted = new ButtonField("Okay");
 		btnVoted.setChangeListener(this);
 
-		/*
-		 * ADD AFTER PERSISTANCE ------------------------------
-		 * 
-		 * CHECK IF THE PERSON HAS ALREADY VOTED IF THEY HAVE, TURN OFF BUTTON
-		 * ACCESS
-		 * 
-		 * ---------------------------------------------------
-		 */
-		possibleChoices = new String[iSetTo];
-		for(int i =0;i<iSetTo;i++){
-			possibleChoices[i]=choices[i];
-		}
-		
-		tempField = new ObjectChoiceField(" Cast your "
-				+ voteType + " vote: ", possibleChoices, 0,
-				ObjectChoiceField.FORCE_SINGLE_LINE
-						| ObjectChoiceField.FIELD_HCENTER);
 		horFieldManager.add(btnVoted);
-		horFieldManager.add(tempField);
+		horFieldManager.add(ocfActiveContestant);
 		horFieldManager.setFont(font2);
 		
-		/* Build the components to MainScreen */
+		
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
-		this.setStatus(manager);
+		this.setStatus(Common.getToolbar());
+		vertFieldManager.setFocus(); //THIS NEEDS TO BE HERE. APP CRASHES WITHOUT IT
 		System.out.println("PickScreen: Constructor end");
 	}
 
+	public boolean onSavePrompt(){
+		return true;
+	}
+	
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnVoted) { // if the okay button is clicked
 			if (voteType.equals("weekly")) {
-				
-				//TODO: move this to a helper function
-				int i =tempField.getSelectedIndex();
-				if(i==-1)
-					return;
-				
-				String conName = possibleChoices[i];
-				
-				int idLoc = conName.lastIndexOf((int)' ');
-				String conId = conName.substring(idLoc+1);
-				Contestant c = GameData.getCurrentGame().getContestant(conId);
-				System.out.println("****You chose "+c.getFirstName());
-				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(c);
-			} else if (voteType.equals("ultimate")) { // ultimate
-				// output
-			} else { // final
-						// output
+				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(getChosenContestant());
+			} else if (voteType.equals("ultimate")) { 
+				GameData.getCurrentGame().getCurrentUser().setUltimatePick(getChosenContestant());
+			} else if(voteType.equals("final")){ //TODO: are these the same?
+				GameData.getCurrentGame().getCurrentUser().setUltimatePick(getChosenContestant());
 			}
 		}
+	}
+	
+	/**
+	 * Gets the contestant from the drop down box or null if none chosen
+	 * @return
+	 */
+	private Contestant getChosenContestant(){
+		int i =ocfActiveContestant.getSelectedIndex();
+		System.out.println("**********:"+i);
+		if(i==-1)
+			return null;
+		
+
+		Contestant contestant = (Contestant) ocfActiveContestant.getChoice(i);
+		System.out.println(contestant.getID());
+		return contestant;
 	}
 
 }

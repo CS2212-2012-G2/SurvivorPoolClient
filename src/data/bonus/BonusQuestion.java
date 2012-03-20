@@ -1,5 +1,8 @@
 package data.bonus;
 
+import data.me.json.JSONArray;
+import data.me.json.JSONException;
+import data.me.json.JSONObject;
 
 /**
  * BonusQuestion is the class that will deal with the numerous bonus questions
@@ -11,82 +14,249 @@ package data.bonus;
  */
 
 public class BonusQuestion {
-	/**
-	 * Used to show a question is a multiple choice question.
-	 */
-	public static int TYPE_MULTI = 0;
 	
-	/**
-	 * Used to show a question is a short answer question.
-	 */
-	public static int TYPE_SHORT = 1;
-	
+	protected int bonusType;//0=short 1=mc
+
 	protected String prompt;
 	protected boolean active;
 	protected String answer;
+	protected String[] choices; // TODO: can we somehow implement short answer
+								// and mc together without this?
+	protected int week;
 
-	protected int type;
-	
+	public static final String FILE_PATH = "res/data/bonus.dat";
+	protected static final String KEY_TYPE = "type";
+	protected static final String KEY_PROMPT = "prompt";
+	protected static final String KEY_ANSWER = "answer";
+	protected static final String KEY_ACTIVE = "active";
+	protected static final String KEY_CHOICES = "mc_choices";// TODO:need a
+																// better name
+																// for type
+	protected static final String KEY_WEEK = "week";
+
+	/**
+	 * Default constructor for Bonus Question
+	 * 
+	 * @param prompt
+	 *            The question(required)
+	 * @param answer
+	 *            The answer(required)
+	 * @param choices
+	 *            The possible choices(null from short answer, and actual values
+	 *            for MC)
+	 */
+	public BonusQuestion(String prompt, String answer, String[] choices,
+			boolean active, int week) {
+		this.prompt = prompt;
+		this.answer = answer;
+		this.choices = choices;
+		bonusType = choices == null ? 0 : 1;
+		this.active = active;
+		this.week = week;
+		Bonus.addNewQuestion(this);
+		// TODO: do we need to check if answer is in choices?
+	}
+
+	/**
+	 * Only used for fromJsonObject
+	 */
 	public BonusQuestion() {
-		System.out.println("Not implemented");
 	}
 
-	// ----------------- ACCESSOR METHODS ----------------- //
-
 	/**
-	 * getAnswer is to be implemented by both the ShortAnswer and MultipleChoice
-	 * classes. It will return the correct answer to the Admin when a User has
-	 * attempted to answer a question.
+	 * Get the type of question.
+	 * 0=short, 1=mc
+	 * @return
 	 */
-	public String getAnswer() {
-		return this.answer;
+	public int getBonusType() {
+		return bonusType;
 	}
 
-	// I'm also not sure what the difference between the checkAnswer and
-	// getAnswer methods
-	// is. Why just check it when we can get it and skip over that step? Unless
-	// I'm
-	// misinterpreting it.
-
-	// I just wrote String here because I wasn't sure.
-	// This is just a palceholder method afterall.
-
 	/**
-	 * getType returns the type of question that is to be asked, which can be
-	 * either multiple choice of short answer.
-	 * 
-	 * @return this.type
+	 * Set the bonus type
+	 * 0=short, 1=multi
+	 * @param bonusType
 	 */
-	public int getType() {
-		return this.type;
+	public void setBonusType(int bonusType) {
+		this.bonusType = bonusType;
 	}
 
 	/**
-	 * isActive returns true if the user is still able to answer a specific
-	 * bonus question.
+	 * Get the question prompt
 	 * 
-	 * @return this.active
+	 * @return String of prompt
+	 */
+	public String getPrompt() {
+		return prompt;
+	}
+
+	/**
+	 * Set the question prompt
+	 * 
+	 * @param prompt
+	 */
+	public void setPrompt(String prompt) {
+		this.prompt = prompt;
+	}
+
+	/**
+	 * Returns if the question is still active
+	 * 
+	 * @return
 	 */
 	public boolean isActive() {
 		return active;
 	}
-	
+
 	/**
-	 * Sets the active state to the value passed.
-	 * @param active	The new state of the question.
+	 * Set if question is active
+	 * 
+	 * @param active
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	
+
 	/**
-	 * Checks whether an answer is correct against a stored value. Does this 
-	 * case insensitively.
-	 * @param test The answer to test with.
-	 * @return True if correct.
+	 * Get the answer to the question
+	 * 
+	 * @return
 	 */
-	public boolean checkAnswer(String test) {
-		return test.equalsIgnoreCase(this.answer);
-	}	
+	public String getAnswer() {
+		return answer;
+	}
+
+	/**
+	 * Set answer to question
+	 * 
+	 * @param answer
+	 */
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
+	/**
+	 * Get possible choices or null if question is short answre
+	 * 
+	 * @return
+	 */
+	public String[] getChoices() {
+		return choices;
+	}
+
+	/**
+	 * Set choices. CHANGES TYPE TO MULTIPLE CHOICE!
+	 * 
+	 * @param choices
+	 */
+	public void setChoices(String[] choices) {
+		this.choices = choices;
+		bonusType = 1;
+	}
+
+	/**
+	 * Get the week this question was asked
+	 * 
+	 * @return int
+	 */
+	public int getWeek() {
+		return week;
+	}
+
+	/**
+	 * Set the week this question was asked
+	 * 
+	 * @param week
+	 */
+	public void setWeek(int week) {
+		this.week = week;
+	}
+
+	/**
+	 * Converts Contestant object to a json object
+	 * 
+	 * @return a JSON object containing all the data needed
+	 * @throws JSONException
+	 */
+	public JSONObject toJSONObject() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.put(KEY_PROMPT, prompt);
+		obj.put(KEY_ANSWER, answer);
+		
+		if (choices != null) {
+			JSONArray sChoice = new JSONArray();
+			for(int i =0;i<choices.length;i++){
+				String s = choices[i];
+				sChoice.put(s);
+			}
+		} else {
+			obj.put(KEY_CHOICES, null);
+		}
+
+		obj.put(KEY_ACTIVE, active);
+		obj.put(KEY_WEEK, week);
+		return obj;
+	}
+
+	public void fromJSONObject(JSONObject o) throws JSONException {
+
+		setPrompt(o.getString(KEY_PROMPT));
+		setAnswer(o.getString(KEY_ANSWER));
+		setActive(o.getBoolean(KEY_ACTIVE));
+
+		JSONArray jChoices = o.getJSONArray(KEY_CHOICES);
+		if (jChoices == null) {
+			setChoices(null);
+		} else {
+			String[] choice = new String[jChoices.length()];
+			for (int i = 0; i < jChoices.length(); i++) {
+				choice[i] = jChoices.getString(i);
+			}
+			setChoices(choice);
+		}
+		setWeek(o.getInt(KEY_WEEK));
+
+	}
+
+	public static void main(String[] args) throws JSONException {
+		BonusQuestion b = new BonusQuestion("question", "answer", null, true, 1);
+		String shortActive = b.toJSONObject().toString();
+		System.out.println(shortActive);
+
+		b = new BonusQuestion("question", "answer", null, false, 2);
+		String shortNotActive = b.toJSONObject().toString();
+		System.out.println(shortNotActive);
+
+		String[] choices = { "one", "two", "three", "answer" };
+		b = new BonusQuestion("question", "answer", choices, true, 3);
+		String mcActive = b.toJSONObject().toString();
+		System.out.println(mcActive);
+
+		b = new BonusQuestion("question", "answer", choices, false, 4);
+		String mcNotActive = b.toJSONObject().toString();
+		System.out.println(mcNotActive);
+
+		System.out.println(Bonus.toJSONObject().toString());
+		System.out.println("\n\n\nGenerating fromJSONObject");
+		JSONObject o = new JSONObject(shortActive);
+		BonusQuestion bq = new BonusQuestion();
+		bq.fromJSONObject(o);
+		System.out.println(bq.toJSONObject().toString());
+
+		o = new JSONObject(shortNotActive);
+		bq = new BonusQuestion();
+		bq.fromJSONObject(o);
+		System.out.println(bq.toJSONObject().toString());
+
+		o = new JSONObject(mcActive);
+		bq = new BonusQuestion();
+		bq.fromJSONObject(o);
+		System.out.println(bq.toJSONObject().toString());
+
+		o = new JSONObject(mcNotActive);
+		bq = new BonusQuestion();
+		bq.fromJSONObject(o);
+		System.out.println(bq.toJSONObject().toString());
+		System.out.println(Bonus.toJSONObject().toString());
+	}
 }

@@ -8,11 +8,6 @@ package client;
  * Description: 
  * */
 
-import java.util.Vector;
-
-import net.rim.device.api.command.Command;
-import net.rim.device.api.command.CommandHandler;
-import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -27,10 +22,6 @@ import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import net.rim.device.api.ui.toolbar.ToolbarButtonField;
-import net.rim.device.api.ui.toolbar.ToolbarManager;
-import net.rim.device.api.util.StringProvider;
-import client.data.ErrorText;
 import client.data.GameData;
 import data.User;
 
@@ -57,55 +48,14 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 
-		/* build the tool bar */
-		ToolbarManager manager = new ToolbarManager();
-		setToolbar(manager);
-		try {
-			/* refresh button */
-			ToolbarButtonField toolbutton1 = new ToolbarButtonField(null,
-					new StringProvider("Refresh"));
-			toolbutton1.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton1";
-				}
-			});
-			/* if pressed, go back to the splash screen */
-			toolbutton1.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					UiApplication.getUiApplication().pushScreen(
-							new SplashScreen());
-				}
-			}));
-			/* Exit button */
-			ToolbarButtonField toolbutton2 = new ToolbarButtonField(null,
-					new StringProvider("Exit"));
-			toolbutton2.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton2";
-				}
-			});
-			/* if pressed, exit the system */
-			toolbutton2.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					System.exit(0);
-				}
-			}));
+		setToolbar(Common.getToolbar());
 
-			/* add buttons to the tool bar */
-			manager.add(toolbutton1);
-			manager.add(toolbutton2);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 
-		/* Log-in button */
-		// centre the button
 		btnLogin = new ButtonField("Log In", LabelField.FIELD_HCENTER);
 		btnLogin.setChangeListener(this); // activate listener
 
 		/* build editable text field */
+		
 		edit = new EditField("\nUserID:  ", "", 10, EditField.NO_NEWLINE) {
 			public void paint(Graphics graphics) { // keep on same line
 				graphics.setColor(Color.WHITE); // white text
@@ -129,7 +79,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		edit.setFont(font1);
 
 		/* Build the components to MainScreen */
-		this.setStatus(manager);
+		this.setStatus(Common.getToolbar());
 		vertFieldManager.add(edit);
 		vertFieldManager.add(btnLogin);
 		this.add(vertFieldManager);
@@ -152,7 +102,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 			//TODO: find the proper place to check. Not during click.
 			if(GameData.getCurrentGame()==null){ 
 				if(!GameData.initGameData()){
-					ErrorText.displayErrorMsg("Exiting.");
+					Common.displayErrorMsg("Exiting.");
 					System.exit(0);	
 				}
 			}
@@ -162,49 +112,16 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 				GameData.getCurrentGame().setCurrentUser(u);
 				return true;
 			}else{
-				ErrorText.displayErrorMsg("Invalid user id.");
+				Common.displayErrorMsg("Invalid user id.");
 			}
 			
 		} catch (Exception ex) {
+			Common.displayErrorMsg("Problem detected."+ex.toString()+" Exiting.");
 			ex.printStackTrace();
+			System.exit(0);
 		}
 		
 		return false; // match is not found
 	}
 
-	public static Vector splitUserID(String inString, String delimeter) {
-		Vector vec = new Vector();
-		char newLine = 10;
-
-		try {
-			int indexA = 0; // start
-			int indexB = inString.indexOf(delimeter); // first delimeter
-														// location
-
-			while (indexB != -1) { // while there's still more in file
-				if (indexB > indexA) {
-					// strip the current word
-					String temp = new String(inString.substring(indexA, indexB));
-					if (indexA == 0)
-						vec.addElement(temp); // add to vector
-
-					// if the current string section contains a new line
-					if (temp.indexOf(newLine) != -1) {
-						String tempUser = temp.substring(
-								temp.indexOf(newLine) + 1, temp.length());
-						vec.addElement(tempUser); // add to vector
-					}
-
-				}
-
-				// Increment to next word
-				// A starts at the character after the previous's last
-				indexA = indexB + delimeter.length();
-				// B ends at the next delimeter
-				indexB = inString.indexOf(delimeter, indexA);
-			}
-		} catch (Exception e) {
-		}
-		return vec;
-	}
 }
