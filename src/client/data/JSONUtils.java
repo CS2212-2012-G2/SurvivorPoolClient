@@ -32,8 +32,9 @@ public class JSONUtils{
 	/**
 	 * Get a json object from file path
 	 * @param path The file path where the json string is stored
+	 * @param displayError true if you want to display an error on file not found.
 	 */
-	public static JSONObject readFile(String path) throws FileNotFoundException{
+	public static JSONObject readFile(String path,boolean displayError) throws FileNotFoundException{
 		InputStream is = null;
 		if(!isSDCardInserted()){
 			Common.displayErrorMsg("SD Card not inserted.");
@@ -43,7 +44,8 @@ public class JSONUtils{
 		try {
 			FileConnection fconn = (FileConnection)Connector.open(path,Connector.READ_WRITE);
 			if (!fconn.exists()) {//file doesn't exist
-				Common.displayErrorMsg(path+" not found.");
+				if(displayError)
+					Common.displayErrorMsg("********"+path+" not found.");
 				return null;
 			}
 			

@@ -35,7 +35,7 @@ public class GameData extends data.GameData {
 		JSONObject json;
 		
 		try {
-			json = JSONUtils.readFile(filePath);
+			json = JSONUtils.readFile(filePath,true);
 			if(json==null){
 				return false;
 			}

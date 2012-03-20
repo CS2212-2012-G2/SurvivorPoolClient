@@ -20,7 +20,7 @@ public class Bonus {
 	static Vector questions = new Vector();
 	
 	private static final String KEY_QUESTIONS = "questions";
-	public static final String  filePath 	  = "res/data/bonus.dat";
+	public static final String  filePath 	  = "file:///SDCard/res/data/bonus.dat";
 	/**
 	 * DO NOT CALL THIS FUNCTION! Only used fromJSONObject or when a bonusquestion is created
 	 * @param b
@@ -66,6 +66,8 @@ public class Bonus {
 	}
 	
 	public static void fromJSONObject(JSONObject o) throws JSONException{
+		if(o==null)
+			return;
 		JSONArray qA = o.getJSONArray(KEY_QUESTIONS);
 		for(int i =0;i<qA.length();i++){
 			BonusQuestion b = new BonusQuestion();
@@ -78,8 +80,9 @@ public class Bonus {
 	 * Initalize bonus
 	 */
 	public static void initBonus(){
+		System.out.println("Bonus init start");
 		try {
-			fromJSONObject(JSONUtils.readFile(filePath));
+			fromJSONObject(JSONUtils.readFile(filePath,false));
 		} catch (FileNotFoundException e) {
 			System.out.println("could not read "+filePath);
 		} catch (JSONException e) {
