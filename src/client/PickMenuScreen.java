@@ -51,15 +51,15 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 		btnWeekly.setMargin(230, 0, 0, 0); // formatting
 		btnUltimate = new ButtonField("Vote For Ultimate", LabelField.FIELD_HCENTER); 
 		btnUltimate.setChangeListener(this);
-		if(GameData.getCurrentGame().weeksLeft()==1){
-			btnFinal = new ButtonField("Vote For Finals", LabelField.FIELD_HCENTER); 
-			btnFinal.setChangeListener(this);
-		}
 		/* Build the components to MainScreen */
 		this.setStatus(Common.getToolbar());
 		vertFieldManager.add(btnWeekly);
 		vertFieldManager.add(btnUltimate);
-		vertFieldManager.add(btnFinal);
+		if(GameData.getCurrentGame().weeksLeft()==1){
+			btnFinal = new ButtonField("Vote For Finals", LabelField.FIELD_HCENTER); 
+			btnFinal.setChangeListener(this);
+			vertFieldManager.add(btnFinal);
+		}
 		this.add(vertFieldManager);
 	}
 	
