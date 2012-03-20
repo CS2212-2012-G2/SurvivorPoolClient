@@ -9,6 +9,7 @@ import net.rim.device.api.ui.toolbar.ToolbarButtonField;
 import net.rim.device.api.ui.toolbar.ToolbarManager;
 import net.rim.device.api.util.StringProvider;
 import data.GameData;
+import data.User;
 
 public class Common {
 
@@ -81,8 +82,19 @@ public class Common {
 	public static void exitApp(){
 		int response = Dialog.ask(Dialog.D_SAVE,"Do you want to save?");
 		if(response == Dialog.SAVE){
-			System.out.println("*****SAVE");
-			GameData.getCurrentGame().writeData();
+			//TODO: is first week, week 0?
+			System.out.println("****cur week"+GameData.getCurrentGame().getCurrentWeek());
+			System.out.println("****name"+GameData.getCurrentGame().getCurrentUser().getFirstName());
+			if(GameData.getCurrentGame().getCurrentWeek()==1){
+				User u = GameData.getCurrentGame().getCurrentUser();
+				
+				if(u.getUltimatePick()==null){
+					Dialog.alert("Cannot save unless you choose an ultimate pick.");
+					return;
+				}
+			}else{
+				GameData.getCurrentGame().writeData();
+			}
 		}else if(response == Dialog.CANCEL)
 			return;
 		System.exit(0);
