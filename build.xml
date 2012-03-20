@@ -1,6 +1,6 @@
 <project name="SurvivorPool-Client" default="all">
 
-  <property name="jar-out" value="Group2BlackBerry.jar"/>
+  <property name="jar-out" value="Group2Client.jar"/>
   <property name="bin-dir" value="bin/"/>
   <property name="src-dir" value="src/"/>
   <property name="javadoc-dir" value="doc/"/>
@@ -21,9 +21,9 @@
          basedir="./"
 	 defaultexcludes="yes">
       <exclude name="**.jar" />
-      <exclude name="**/.classpath" />
-      <exclude name="**/.project" />
-      <exclude name="**/*.swp" />
+      <exclude name="**/.*" />
+      <exclude name="**/BlackBerry" />
+      <exclude name="**/deliverables" />
       <include name="${src-dir}**/*.java" />
       <include name="${javadoc-dir}**" />
       <include name="${res-dir}**" />
