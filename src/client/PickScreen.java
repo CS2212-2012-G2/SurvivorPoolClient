@@ -8,8 +8,14 @@ package client;
  * Description:
  * */
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Vector;
 
+import javax.microedition.io.Connector;
+import javax.microedition.io.file.FileConnection;
+
+import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -37,8 +43,8 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	private Font font2; // fonts.
 	private ButtonField btnVoted;
 	private ObjectChoiceField ocfActiveContestant;
-	private RichList list;	
-	
+	private RichList list;
+
 	public PickScreen(String voteType) {
 		super();
 		System.out.println("PickScreen constructor");
@@ -80,7 +86,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		System.out.println("PickScreen: adding contestants to table");
 		
 		//TODO: change to true after images are implemented
-		list = new RichList(vertFieldManager, false, 3, 0);
+		list = new RichList(vertFieldManager, true, 3, 0);
 
 		//get all contestants for list
 		contList = GameData.getCurrentGame().getAllContestants();
@@ -117,7 +123,8 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 				}
 			};
 			lblContName.setFont(font2);
-			list.add(new Object[] {lblContName, labelContTribe,labelTempStatus });
+			Bitmap imgContestant = getImage(cont.getPicture());
+			list.add(new Object[] {imgContestant,lblContName, labelContTribe,labelTempStatus });
 			
 		}
 		System.out.println("PickScreen: contestants added to list");
@@ -149,36 +156,83 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		System.out.println("PickScreen: Constructor end");
 	}
 
-	public boolean onSavePrompt(){
+	public boolean onSavePrompt() {
 		return true;
 	}
-	
+
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnVoted) { // if the okay button is clicked
 			if (voteType.equals("weekly")) {
-				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(getChosenContestant());
-			} else if (voteType.equals("ultimate")) { 
-				GameData.getCurrentGame().getCurrentUser().setUltimatePick(getChosenContestant());
-			} else if(voteType.equals("final")){
-				GameData.getCurrentGame().getCurrentUser().setWeeklyPick(getChosenContestant());
+				GameData.getCurrentGame().getCurrentUser()
+						.setWeeklyPick(getChosenContestant());
+			} else if (voteType.equals("ultimate")) {
+				GameData.getCurrentGame().getCurrentUser()
+						.setUltimatePick(getChosenContestant());
+			} else if (voteType.equals("final")) {
+				GameData.getCurrentGame().getCurrentUser()
+						.setWeeklyPick(getChosenContestant());
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the contestant from the drop down box or null if none chosen
+	 * 
 	 * @return
 	 */
-	private Contestant getChosenContestant(){
-		int i =ocfActiveContestant.getSelectedIndex();
-		System.out.println("**********:"+i);
-		if(i==-1)
+	private Contestant getChosenContestant() {
+		int i = ocfActiveContestant.getSelectedIndex();
+		System.out.println("**********:" + i);
+		if (i == -1)
 			return null;
-		
 
 		Contestant contestant = (Contestant) ocfActiveContestant.getChoice(i);
 		System.out.println(contestant.getID());
 		return contestant;
+	}
+
+	// original from
+	// http://supportforums.blackberry.com/t5/Java-Development/How-to-read-display-image-from-SD-card-on-Device/m-p/621671#M129277
+
+	public Bitmap getImage(String path) {
+		StringBuffer sb = new StringBuffer(1024);
+		sb.append("file:///SDCard/").append(path);
+		String filename = sb.toString();
+		sb = null;
+		Bitmap image = null;
+
+		FileConnection fc = null;
+		InputStream input = null;
+		try {
+			fc = (FileConnection) Connector
+					.open(filename, Connector.READ_WRITE);
+			if (fc.exists()) {
+				input = fc.openInputStream();
+				byte[] data = new byte[(int) fc.fileSize()];
+				input.read(data);
+				image = Bitmap.createBitmapFromPNG(data, 0, data.length);
+			}
+		} catch (Exception e) {
+			System.out.println("MLS:" + e);
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
+			if (fc != null) {
+				try {
+					fc.close();
+				} catch (Exception e) {
+				}
+			}
+		}
+
+		if (image == null) {
+			System.out.println("image not found");
+		}
+		return image;
 	}
 
 }
