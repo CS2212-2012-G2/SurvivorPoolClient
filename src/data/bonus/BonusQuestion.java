@@ -129,7 +129,8 @@ public class BonusQuestion {
 	 */
 	public void setChoices(String[] choices) {
 		this.choices = choices;
-		bonusType = 1;
+		if(choices!=null)
+			bonusType = 1;
 	}
 
 	/**
@@ -181,7 +182,8 @@ public class BonusQuestion {
 		setAnswer(o.getString(KEY_ANSWER));
 
 		JSONArray jChoices = o.getJSONArray(KEY_CHOICES);
-		if (jChoices == null) {
+		System.out.println("*********************"+jChoices.length());
+		if (jChoices == null||jChoices.length()==0) {
 			setChoices(null);
 		} else {
 			String[] choice = new String[jChoices.length()];
