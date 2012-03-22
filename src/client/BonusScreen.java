@@ -148,6 +148,15 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			buttonPrevious.setEnabled(false);
 		if(questionNum==questions.size()-1)
 			buttonNext.setEnabled(false);
+		
+
+		/* Add the send button */
+		if(current.getWeek()==GameData.getCurrentGame().getCurrentWeek()){
+			buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
+			buttonSend.setChangeListener(this);
+			buttonSend.setMargin(0, 20, 30, 20);
+			vertFieldManager.add(buttonSend);
+		}
 	}
 
 	public boolean onSavePrompt() {
