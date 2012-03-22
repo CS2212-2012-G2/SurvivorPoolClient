@@ -45,6 +45,8 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	private ObjectChoiceField ocfActiveContestant;
 	private RichList list;
 
+	private final static String DEFAULT_IMAGE = "res/test/defaultpic.png";
+	
 	public PickScreen(String voteType) {
 		super();
 		System.out.println("PickScreen constructor");
@@ -231,6 +233,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 		if (image == null) {
 			System.out.println("image not found");
+			return getImage(DEFAULT_IMAGE);//TODO: possible recursive loop
 		}
 		return image;
 	}
