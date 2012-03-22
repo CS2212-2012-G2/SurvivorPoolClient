@@ -18,7 +18,6 @@ public class BonusQuestion {
 	protected int bonusType;//0=short 1=mc
 
 	protected String prompt;
-	protected boolean active;
 	protected String answer;
 	protected String[] choices; // TODO: can we somehow implement short answer
 								// and mc together without this?
@@ -28,7 +27,6 @@ public class BonusQuestion {
 	protected static final String KEY_TYPE = "type";
 	protected static final String KEY_PROMPT = "prompt";
 	protected static final String KEY_ANSWER = "answer";
-	protected static final String KEY_ACTIVE = "active";
 	protected static final String KEY_CHOICES = "mc_choices";// TODO:need a
 																// better name
 																// for type
@@ -45,13 +43,11 @@ public class BonusQuestion {
 	 *            The possible choices(null from short answer, and actual values
 	 *            for MC)
 	 */
-	public BonusQuestion(String prompt, String answer, String[] choices,
-			boolean active, int week) {
+	public BonusQuestion(String prompt, String answer, String[] choices,int week) {
 		this.prompt = prompt;
 		this.answer = answer;
 		this.choices = choices;
 		bonusType = choices == null ? 0 : 1;
-		this.active = active;
 		this.week = week;
 		Bonus.addNewQuestion(this);
 		// TODO: do we need to check if answer is in choices?
@@ -97,24 +93,6 @@ public class BonusQuestion {
 	 */
 	public void setPrompt(String prompt) {
 		this.prompt = prompt;
-	}
-
-	/**
-	 * Returns if the question is still active
-	 * 
-	 * @return
-	 */
-	public boolean isActive() {
-		return active;
-	}
-
-	/**
-	 * Set if question is active
-	 * 
-	 * @param active
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 
 	/**
@@ -193,7 +171,6 @@ public class BonusQuestion {
 			obj.put(KEY_CHOICES, null);
 		}
 
-		obj.put(KEY_ACTIVE, active);
 		obj.put(KEY_WEEK, week);
 		return obj;
 	}
@@ -202,7 +179,6 @@ public class BonusQuestion {
 
 		setPrompt(o.getString(KEY_PROMPT));
 		setAnswer(o.getString(KEY_ANSWER));
-		setActive(o.getBoolean(KEY_ACTIVE));
 
 		JSONArray jChoices = o.getJSONArray(KEY_CHOICES);
 		if (jChoices == null) {
@@ -218,45 +194,4 @@ public class BonusQuestion {
 
 	}
 
-	public static void main(String[] args) throws JSONException {
-		BonusQuestion b = new BonusQuestion("question", "answer", null, true, 1);
-		String shortActive = b.toJSONObject().toString();
-		System.out.println(shortActive);
-
-		b = new BonusQuestion("question", "answer", null, false, 2);
-		String shortNotActive = b.toJSONObject().toString();
-		System.out.println(shortNotActive);
-
-		String[] choices = { "one", "two", "three", "answer" };
-		b = new BonusQuestion("question", "answer", choices, true, 3);
-		String mcActive = b.toJSONObject().toString();
-		System.out.println(mcActive);
-
-		b = new BonusQuestion("question", "answer", choices, false, 4);
-		String mcNotActive = b.toJSONObject().toString();
-		System.out.println(mcNotActive);
-
-		System.out.println(Bonus.toJSONObject().toString());
-		System.out.println("\n\n\nGenerating fromJSONObject");
-		JSONObject o = new JSONObject(shortActive);
-		BonusQuestion bq = new BonusQuestion();
-		bq.fromJSONObject(o);
-		System.out.println(bq.toJSONObject().toString());
-
-		o = new JSONObject(shortNotActive);
-		bq = new BonusQuestion();
-		bq.fromJSONObject(o);
-		System.out.println(bq.toJSONObject().toString());
-
-		o = new JSONObject(mcActive);
-		bq = new BonusQuestion();
-		bq.fromJSONObject(o);
-		System.out.println(bq.toJSONObject().toString());
-
-		o = new JSONObject(mcNotActive);
-		bq = new BonusQuestion();
-		bq.fromJSONObject(o);
-		System.out.println(bq.toJSONObject().toString());
-		System.out.println(Bonus.toJSONObject().toString());
-	}
 }

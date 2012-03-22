@@ -8,6 +8,8 @@ package client;
  * Description:
  * */
 
+import java.util.Vector;
+
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -34,18 +36,21 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	private EditField answerField, questionField; // editable text field
 	private ObjectChoiceField multiChoiceField;
 	
-	int currentWeek=0;
+	private VerticalFieldManager vertFieldManager;
+	
+	private Vector questions = Bonus.getAllQuestions();
+	int questionNum = questions.size() - 1;
 
 	public BonusScreen() {
 		super(NO_VERTICAL_SCROLL);
-		currentWeek=GameData.getCurrentGame().getCurrentWeek();
-		updateQuestionScreen(currentWeek);
+		drawQuestionScreen();
 	}
 
-	private void updateQuestionScreen(int week) {
+	private void drawQuestionScreen() {
 
-		VerticalFieldManager vertFieldManager = new VerticalFieldManager(
-				VerticalFieldManager.USE_ALL_WIDTH | VerticalFieldManager.USE_ALL_HEIGHT) {
+		vertFieldManager = new VerticalFieldManager(
+				VerticalFieldManager.USE_ALL_WIDTH
+						| VerticalFieldManager.USE_ALL_HEIGHT) {
 			// Override the paint method to draw the background image.
 			public void paint(Graphics graphics) {
 				graphics.setColor(Color.BLACK);
@@ -64,92 +69,103 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			System.out.println("font family failed");
 		}
 
-		/* Add the question */
-		BonusQuestion current = Bonus.getQuestionByWeek(week);
-		questionField = new EditField(current.getPrompt(), "", 1,EditField.NO_NEWLINE) {
+		/* Add the send button */
+		buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
+		buttonSend.setChangeListener(this);
+
+		buttonSend.setMargin(0, 20, 30, 20);
+		vertFieldManager.add(buttonSend);
+
+		HorizontalFieldManager horFieldManager = new HorizontalFieldManager(
+				HorizontalFieldManager.USE_ALL_WIDTH
+						| HorizontalFieldManager.FIELD_HCENTER);
+
+		/* Top manager bar setup */
+		buttonPrevious = new ButtonField("Prev"); // previous button
+		buttonPrevious.setChangeListener(this);
+		
+		horFieldManager.add(buttonPrevious);
+
+		labelTitle = new LabelField("  Bonus Questions ");
+		labelTitle.setFont(font1); // centre label
+
+		horFieldManager.add(labelTitle);
+
+		buttonNext = new ButtonField("Next"); // next button
+		buttonNext.setChangeListener(this);
+		if (questionNum == questions.size()-1)
+			buttonNext.setEnabled(false);
+		horFieldManager.add(buttonNext);
+		
+		updateQuestionScreen();
+		this.setTitle(horFieldManager);
+		this.add(vertFieldManager);
+		this.setStatus(Common.getToolbar());
+	}
+	
+	private void updateQuestionScreen(){
+		vertFieldManager.deleteAll();
+		BonusQuestion current = (BonusQuestion) questions.elementAt(questionNum);
+		questionField = new EditField(current.getPrompt(), "", 1,
+				EditField.NO_NEWLINE) {
+			public void paint(Graphics graphics) { // keep on same line
+				graphics.setColor(Color.WHITE); // white text
+				super.paint(graphics);
+			}
+		};
+
+		questionField.setEditable(false);
+		questionField.setFont(font2);
+		questionField.setMargin(30, 20, 30, 20);
+		vertFieldManager.add(questionField);
+
+		multiChoiceField = new ObjectChoiceField("", current.getChoices(), 0,
+				ObjectChoiceField.FORCE_SINGLE_LINE
+						| ObjectChoiceField.FIELD_HCENTER);
+		
+		answerField = new EditField("Answer:  ", "", 200, EditField.NO_NEWLINE) {
 			public void paint(Graphics graphics) { // keep on same line
 				graphics.setColor(Color.WHITE); // white text
 				super.paint(graphics);
 			}
 		};
 		
-		questionField.setEditable(false);
-		questionField.setFont(font2);
-		questionField.setMargin(30, 20, 30, 20);
-		vertFieldManager.add(questionField);
-
-		if (current.getBonusType()==1) {//multiple choice
-			multiChoiceField = new ObjectChoiceField("",current.getChoices(),0,
-					ObjectChoiceField.FORCE_SINGLE_LINE	| ObjectChoiceField.FIELD_HCENTER);
-			vertFieldManager.add(multiChoiceField);
-		} else {
-			answerField = new EditField("Answer:  ", "", 200,EditField.NO_NEWLINE) {
-				public void paint(Graphics graphics) { // keep on same line
-					graphics.setColor(Color.WHITE); // white text
-					super.paint(graphics);
-				}
-			};
-			
-			//display answer only if question from prev week
-			if (current.getWeek()!=GameData.getCurrentGame().getCurrentWeek()) {
-				answerField.setText(current.getAnswer());
-			}
-			answerField.setMargin(0, 20, 10, 20);
+		if(current.getBonusType()==0)//add the appropriate answer field
 			vertFieldManager.add(answerField);
+		else
+			vertFieldManager.add(multiChoiceField);
+
+		if (current.getWeek() != GameData.getCurrentGame().getCurrentWeek()) {
+			answerField.setText(current.getAnswer());
 		}
-
-		/* Add the send button */
-		buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
-		buttonSend.setChangeListener(this);
-		
-		if (current.getWeek()!=GameData.getCurrentGame().getCurrentWeek())
+		answerField.setMargin(0, 20, 10, 20);
+		if (current.getWeek() != GameData.getCurrentGame().getCurrentWeek())
 			buttonSend.setEnabled(false);
-		
-		buttonSend.setMargin(0, 20, 30, 20);
-		vertFieldManager.add(buttonSend);
 
-		HorizontalFieldManager horFieldManager = new HorizontalFieldManager(
-				HorizontalFieldManager.USE_ALL_WIDTH| HorizontalFieldManager.FIELD_HCENTER);
-
-		/* Top manager bar setup */
-		buttonPrevious = new ButtonField("Prev"); // previous button
-		buttonPrevious.setChangeListener(this);
-		if (week == 1)
+		buttonPrevious.setEnabled(true);
+		buttonNext.setEnabled(true);
+		if(questionNum==0)
 			buttonPrevious.setEnabled(false);
-		
-		horFieldManager.add(buttonPrevious);
-		
-		labelTitle = new LabelField("  Bonus Questions ");
-		labelTitle.setFont(font1); // centre label
-		
-		horFieldManager.add(labelTitle);
-		
-		buttonNext = new ButtonField("Next"); // next button
-		buttonNext.setChangeListener(this);
-		if (week == GameData.getCurrentGame().getCurrentWeek())
+		if(questionNum==questions.size()-1)
 			buttonNext.setEnabled(false);
-		horFieldManager.add(buttonNext); 
-
-		this.setTitle(horFieldManager);
-		this.add(vertFieldManager);
-		this.setStatus(Common.getToolbar());
 	}
 
-	public boolean onSavePrompt(){
+	public boolean onSavePrompt() {
 		return true;
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {
-		if(arg0 == buttonSend) { // if the SEND button is clicked
-			//TODO: figure out how to store answers
-		}else if (arg0 == buttonNext) {
-			currentWeek++;
-			this.deleteAll();
-			updateQuestionScreen(currentWeek);
-		}else if (arg0 == buttonPrevious) {
-			currentWeek--;
-			this.deleteAll();
-			updateQuestionScreen(currentWeek);
+		if (arg0 == buttonSend) { // if the SEND button is clicked
+			// TODO: figure out how to store answers
+		} else if (arg0 == buttonNext) {
+			questionNum++;
+			//this.deleteAll();
+			updateQuestionScreen();
+		} else if (arg0 == buttonPrevious) {
+			questionNum--;
+			//this.deleteAll();
+			//drawQuestionScreen();
+			updateQuestionScreen();
 
 		}
 	}
