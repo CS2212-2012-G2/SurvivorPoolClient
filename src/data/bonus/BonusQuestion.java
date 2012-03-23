@@ -22,6 +22,7 @@ public class BonusQuestion {
 	protected String[] choices; // TODO: can we somehow implement short answer
 								// and mc together without this?
 	protected int week;
+	protected int number;
 
 	public static final String FILE_PATH = "res/data/bonus.dat";
 	protected static final String KEY_TYPE = "type";
@@ -31,6 +32,7 @@ public class BonusQuestion {
 																// better name
 																// for type
 	protected static final String KEY_WEEK = "week";
+	protected static final String KEY_NUMBER = "number";
 
 	/**
 	 * Default constructor for Bonus Question
@@ -43,12 +45,13 @@ public class BonusQuestion {
 	 *            The possible choices(null from short answer, and actual values
 	 *            for MC)
 	 */
-	public BonusQuestion(String prompt, String answer, String[] choices,int week) {
+	public BonusQuestion(String prompt, String answer, String[] choices,int week,int number) {
 		this.prompt = prompt;
 		this.answer = answer;
 		this.choices = choices;
 		bonusType = choices == null ? 0 : 1;
 		this.week = week;
+		this.number=number;
 		Bonus.addNewQuestion(this);
 		// TODO: do we need to check if answer is in choices?
 	}
@@ -152,6 +155,24 @@ public class BonusQuestion {
 	}
 
 	/**
+	 * Get the question number in a particular week
+	 * 
+	 * @return int
+	 */
+	public int getNumber() {
+		return number;
+	}
+
+	/**
+	 * Set the question number within a particular week
+	 * 
+	 * @param number
+	 */
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	/**
 	 * Converts Contestant object to a json object
 	 * 
 	 * @return a JSON object containing all the data needed
@@ -173,6 +194,7 @@ public class BonusQuestion {
 		}
 
 		obj.put(KEY_WEEK, week);
+		obj.put(KEY_NUMBER, number);
 		return obj;
 	}
 
@@ -182,7 +204,7 @@ public class BonusQuestion {
 		setAnswer(o.getString(KEY_ANSWER));
 
 		JSONArray jChoices = o.getJSONArray(KEY_CHOICES);
-		System.out.println("*********************"+jChoices.length());
+		//System.out.println("*********************"+jChoices.length());
 		if (jChoices == null||jChoices.length()==0) {
 			setChoices(null);
 		} else {
@@ -193,7 +215,7 @@ public class BonusQuestion {
 			setChoices(choice);
 		}
 		setWeek(o.getInt(KEY_WEEK));
-
+		setNumber(o.getInt(KEY_NUMBER));
 	}
 
 }

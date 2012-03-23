@@ -26,7 +26,12 @@ public class Bonus {
 		public int compare(Object o1, Object o2) {
 			BonusQuestion b1 = (BonusQuestion) o1;
 			BonusQuestion b2 = (BonusQuestion) o2;
-			return (b1.getWeek()-b2.getWeek());
+			int weekDiff = b1.getWeek()-b2.getWeek();
+			if(weekDiff==0){
+				return b1.getNumber()-b2.getNumber();
+			}else{
+				return b1.getWeek()-b2.getWeek();
+			}	
 		}
 		
 	};
