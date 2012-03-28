@@ -53,7 +53,7 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 		this.setStatus(Common.getToolbar());
 		vertFieldManager.add(btnUserStanding);
 		vertFieldManager.add(btnVote);
-		if(Bonus.getAllQuestions()!=null||Bonus.getAllQuestions().size()!=0)
+		if(Bonus.getAllQuestions()!=null&&Bonus.getAllQuestions().size()!=0)
 			vertFieldManager.add(btnBonus);
 		this.add(vertFieldManager);
 	}
