@@ -107,8 +107,8 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	private void updateQuestionScreen(){
 		//TODO: a better way to update screen than this.
 		vertFieldManager.deleteAll();
-		BonusQuestion current = (BonusQuestion) questions.elementAt(questionNum);
-		questionField = new EditField(current.getPrompt(), "", 1,
+		BonusQuestion currentQuestion = (BonusQuestion) questions.elementAt(questionNum);
+		questionField = new EditField(currentQuestion.getPrompt(), "", 1,
 				EditField.NO_NEWLINE) {
 			public void paint(Graphics graphics) { // keep on same line
 				graphics.setColor(Color.WHITE); // white text
@@ -121,7 +121,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		questionField.setMargin(30, 20, 30, 20);
 		vertFieldManager.add(questionField);
 
-		multiChoiceField = new ObjectChoiceField("", current.getChoices(), 0,
+		multiChoiceField = new ObjectChoiceField("", currentQuestion.getChoices(), 0,
 				ObjectChoiceField.FORCE_SINGLE_LINE
 						| ObjectChoiceField.FIELD_HCENTER);
 		
@@ -133,17 +133,33 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		};
 		
 		User curUser = GameData.getCurrentGame().getCurrentUser();
-		if(current.getBonusType()==0){
+		String uAnswer = curUser.getUserAnswer(questionNum);
+		if(currentQuestion.getBonusType()==0){//short answer
 			vertFieldManager.add(answerField);
 			answerField.setMargin(0, 20, 10, 20);
-			if (showAnswer())
-				answerField.setText(current.getAnswer()+"\nYour answer: "
-						+curUser.getUserAnswer(questionNum));
+			if (showAnswer()){
+				String ans = "Correct Answer: "+currentQuestion.getAnswer()+".";
+				if(uAnswer!=null)
+					ans+="\nYour: Answer: "+uAnswer;
+				else
+					ans+="\nYou did not answer this question.";
+				answerField.setText(ans);
+			}
 		}else{
+			
+			if (showAnswer()){
+				String[] c = new String[2];
+				c[0] = "Cor. Answer:"+currentQuestion.getAnswer();
+				if(uAnswer!=null)
+					c[1]= "Your answer: "+uAnswer;
+				else
+					c[1] = "Did not answer";
+				multiChoiceField.setChoices(c);
+			}else{
+				multiChoiceField.setChoices(currentQuestion.getChoices());
+			}
+			
 			vertFieldManager.add(multiChoiceField);
-			if (showAnswer()&&current.getAnswer()!=null)
-				answerField.setText(current.getAnswer()+"\nYour answer: "
-						+curUser.getUserAnswer(questionNum));
 		}
 		
 		buttonPrevious.setEnabled(true);
