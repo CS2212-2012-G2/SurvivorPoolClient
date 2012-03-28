@@ -83,18 +83,14 @@ public class Common {
 		int response = Dialog.ask(Dialog.D_SAVE,"Do you want to save?");
 		if(response == Dialog.SAVE){
 			//TODO: is first week, week 0?
-			System.out.println("****cur week"+GameData.getCurrentGame().getCurrentWeek());
-			System.out.println("****name"+GameData.getCurrentGame().getCurrentUser().getFirstName());
 			if(GameData.getCurrentGame().getCurrentWeek()==1){
 				User u = GameData.getCurrentGame().getCurrentUser();
-				
 				if(u.getUltimatePick()==null){
 					Dialog.alert("Cannot save unless you choose an ultimate pick.");
 					return;
 				}
-			}else{
-				GameData.getCurrentGame().writeData();
 			}
+			GameData.getCurrentGame().writeData();
 		}else if(response == Dialog.CANCEL)
 			return;
 		System.exit(0);

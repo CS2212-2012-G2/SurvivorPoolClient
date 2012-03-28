@@ -184,7 +184,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	 */
 	private Contestant getChosenContestant() {
 		int i = ocfActiveContestant.getSelectedIndex();
-		System.out.println("**********:" + i);
+		System.out.println("********** The contestant chosen:" + i);
 		if (i == -1)
 			return null;
 

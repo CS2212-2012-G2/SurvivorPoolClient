@@ -204,7 +204,6 @@ public class BonusQuestion {
 		setAnswer(o.getString(KEY_ANSWER));
 
 		JSONArray jChoices = o.getJSONArray(KEY_CHOICES);
-		//System.out.println("*********************"+jChoices.length());
 		if (jChoices == null||jChoices.length()==0) {
 			setChoices(null);
 		} else {

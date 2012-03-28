@@ -112,7 +112,7 @@ public class JSONUtils{
 		
 		os = fconn.openDataOutputStream();
 		String jsonString = json.toString();
-		System.out.println(jsonString);
+		System.out.println("**************"+jsonString);
 		os.write(jsonString.getBytes());
 		os.close();
 		fconn.close();
