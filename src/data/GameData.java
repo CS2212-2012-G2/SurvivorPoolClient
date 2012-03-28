@@ -25,7 +25,8 @@ public abstract class GameData {
 
 	protected int weeksRem, weeksPassed; // keep track of weeks remaining/weeks passed
 	protected int numContestants;
-										
+
+	private int betAmount, totalAmount;
 	protected boolean seasonStarted= false, elimExists = false; 
 	
 	protected String[] tribeNames = new String[2]; // string array storing both tribe names
@@ -43,17 +44,15 @@ public abstract class GameData {
 	/**
 	 * JSON Keys
 	 */
-	protected static final String KEY_CONTESTANTS = "cons"; 
-	protected static final String KEY_NUM_CONTEST	= "cons_num";
-	
-	protected static final String KEY_USERS = "users";
-	
-	protected static final String KEY_WEEKS_REMAIN = "weeks_rem";
-	protected static final String KEY_WEEKS_PASSED = "weeks_pass";
-	
-	protected static final String KEY_TRIBES = "tribes_arr";
-	
-	protected static final String KEY_SEASON_STARTED = "season_started";
+	private static final String KEY_CONTESTANTS = "cons",
+	KEY_NUM_CONTEST = "cons_num",
+	KEY_USERS = "users",
+	KEY_WEEKS_REMAIN = "weeks_rem",
+	KEY_WEEKS_PASSED = "weeks_pass",
+	KEY_TRIBES = "tribes_arr",
+	KEY_SEASON_STARTED = "season_started",
+	KEY_BET_AMOUNT = "bet_amount",
+	KEY_POOL_TOTAL = "pool_total";
 	
 	/**
 	 * Constructor method that takes a set number of contestants. Will not
@@ -457,6 +456,10 @@ public abstract class GameData {
 		obj.put(KEY_WEEKS_PASSED, weeksPassed);
 		obj.put(KEY_SEASON_STARTED,seasonStarted);
 
+		if(seasonStarted){
+			obj.put(KEY_BET_AMOUNT, betAmount);
+			obj.put(KEY_POOL_TOTAL, totalAmount);
+		}
 		
 		return obj;
 	}
@@ -499,6 +502,12 @@ public abstract class GameData {
 			User u = new User();
 			u.fromJSONObject(users.getJSONObject(i));
 			addUser(u);
+		}
+		
+		if(seasonStarted){
+			betAmount=obj.getInt(KEY_BET_AMOUNT);
+			totalAmount = obj.getInt(KEY_POOL_TOTAL);
+			System.out.println(betAmount + " " + totalAmount);
 		}
 		System.out.println("users were initialized");
 		System.out.println(this.toJSONObject().toString());
