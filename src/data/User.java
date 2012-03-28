@@ -342,6 +342,8 @@ public class User implements Person {
 	}
 	
 	public void answersFromJSONObject(JSONObject o) throws JSONException{
+		if(o==null)
+			return;
 		JSONArray a = (JSONArray) o.remove(KEY_ANSWERS);
 		answers = new String[a.length()];
 		for(int i =0;i<a.length();i++){

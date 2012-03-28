@@ -42,7 +42,6 @@ public class Bonus {
 	public static void addNewQuestion(BonusQuestion b){
 		questions.addElement(b);
 		sortQuestions();
-		//TODO: should sort it so get by week is quicker
 	}
 	
 	private static void sortQuestions(){
@@ -57,28 +56,6 @@ public class Bonus {
 	 */
 	public static Vector getAllQuestions(){
 		return questions;
-	}
-	
-	/**
-	 * Get the question that was asked on a certain week
-	 * @param week 
-	 * @return a possible null BonusQuestion
-	 */
-	public static BonusQuestion getQuestionByWeek(int week){
-		int min = 0;
-		int max = questions.size();
-		while(min<=max){
-			int middle = (min+max)/2;
-			BonusQuestion b = (BonusQuestion) questions.elementAt(middle);
-			if(b.getWeek()==week)
-				return b; 
-			else if(b.getWeek()>week)
-				max=middle-1;
-			else
-				min=middle+1;
-		}
-		
-		return null;
 	}
 	
 	public static JSONObject toJSONObject() throws JSONException{

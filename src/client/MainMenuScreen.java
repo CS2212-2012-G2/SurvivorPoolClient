@@ -8,6 +8,7 @@ package client;
  * Description:
  * */
 
+import data.bonus.Bonus;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -52,7 +53,8 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 		this.setStatus(Common.getToolbar());
 		vertFieldManager.add(btnUserStanding);
 		vertFieldManager.add(btnVote);
-		vertFieldManager.add(btnBonus);
+		if(Bonus.getAllQuestions()!=null||Bonus.getAllQuestions().size()!=0)
+			vertFieldManager.add(btnBonus);
 		this.add(vertFieldManager);
 	}
 	
