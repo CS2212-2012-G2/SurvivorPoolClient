@@ -291,13 +291,13 @@ public class User implements Person {
 		if (c != null)
 			obj.put(KEY_WEEKLY_PICK_ID, c.getID());
 		else 
-			obj.put(KEY_WEEKLY_PICK_ID, null);
+			obj.put(KEY_WEEKLY_PICK_ID, "??");
 		
 		c = getUltimatePick();
 		if (c != null) 
 			obj.put(KEY_ULT_PICK_ID, c.getID());
 		else
-			obj.put(KEY_ULT_PICK_ID, null);
+			obj.put(KEY_ULT_PICK_ID, "??");
 		
 		obj.put(KEY_WIN_PICK_POINTS, new Integer(getUltimatePoints()));
 		
