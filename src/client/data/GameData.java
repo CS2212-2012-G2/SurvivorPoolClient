@@ -14,7 +14,7 @@ public class GameData extends data.GameData {
 	private Vector allList; // lits of
 	// all/remaining
 	// contestants
-	public static String filePath = "file:///SDCard/res/data/Settings.dat";
+	public static String filePath = "file:///SDCard/res/data/GameData.dat";
 	
 	public GameData(int numContestants) {
 		super(numContestants);
