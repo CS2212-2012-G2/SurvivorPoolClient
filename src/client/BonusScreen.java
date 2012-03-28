@@ -24,6 +24,7 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import data.GameData;
+import data.User;
 import data.bonus.Bonus;
 import data.bonus.BonusQuestion;
 
@@ -130,20 +131,23 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 		
-		if(current.getBonusType()==0)//add the appropriate answer field
+		User curUser = GameData.getCurrentGame().getCurrentUser();
+		if(current.getBonusType()==0){
 			vertFieldManager.add(answerField);
-		else
+			answerField.setMargin(0, 20, 10, 20);
+			if (showAnswer())
+				answerField.setText(current.getAnswer()+"\nYour answer: "
+						+curUser.getUserAnswer(questionNum));
+		}else{
 			vertFieldManager.add(multiChoiceField);
-
-		if (current.getWeek() != GameData.getCurrentGame().getCurrentWeek()) {
-			answerField.setText(current.getAnswer());
+			if (showAnswer())
+				answerField.setText(current.getAnswer()+"\nYour answer: "
+						+curUser.getUserAnswer(questionNum));
 		}
-		answerField.setMargin(0, 20, 10, 20);
-		if (current.getWeek() != GameData.getCurrentGame().getCurrentWeek())
-			buttonSend.setEnabled(false);
-
+		
 		buttonPrevious.setEnabled(true);
 		buttonNext.setEnabled(true);
+		
 		if(questionNum==0)
 			buttonPrevious.setEnabled(false);
 		if(questionNum==questions.size()-1)
@@ -151,7 +155,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		
 
 		/* Add the send button */
-		if(current.getWeek()==GameData.getCurrentGame().getCurrentWeek()){
+		if(!showAnswer()){
 			buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
 			buttonSend.setChangeListener(this);
 			buttonSend.setMargin(0, 20, 30, 20);
@@ -159,21 +163,26 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		}
 	}
 
+	private boolean showAnswer(){
+		BonusQuestion cur = (BonusQuestion) questions.elementAt(questionNum);
+		if(cur.getWeek()<GameData.getCurrentGame().getCurrentWeek())
+			return true;
+		return false;
+	}
+	
 	public boolean onSavePrompt() {
 		return true;
 	}
 
 	public void fieldChanged(Field arg0, int arg1) {
-		if (arg0 == buttonSend) { // if the SEND button is clicked
-			// TODO: figure out how to store answers
+		if (arg0 == buttonSend) { 
+			User u = GameData.getCurrentGame().getCurrentUser();
+			BonusQuestion b = (BonusQuestion) questions.elementAt(questionNum);
 		} else if (arg0 == buttonNext) {
 			questionNum++;
-			//this.deleteAll();
 			updateQuestionScreen();
 		} else if (arg0 == buttonPrevious) {
 			questionNum--;
-			//this.deleteAll();
-			//drawQuestionScreen();
 			updateQuestionScreen();
 
 		}

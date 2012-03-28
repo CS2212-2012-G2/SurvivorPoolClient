@@ -1,7 +1,11 @@
 package data;
 
+import java.util.Vector;
+
 import common.Utils;
 
+import data.bonus.Bonus;
+import data.bonus.BonusQuestion;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
@@ -23,7 +27,9 @@ public class User implements Person {
 	
 	private Contestant ultPick, weeklyPick; // users pick of the winner and
 										    // their weekly pick
+	private int numBonusAnswer = 0;
 	
+	private String[] answers;
 	// JSON Keys:
 	
 	protected static final String KEY_ID = "id";
@@ -33,6 +39,7 @@ public class User implements Person {
 	protected static final String KEY_WIN_PICK_POINTS = "win_points";
 	protected static final String KEY_ULT_PICK_ID	= "ult_pick";
 	protected static final String KEY_WEEKLY_PICK_ID = "week_pick";
+	protected static final String KEY_NUM_BONUS_ANSWER = "num_bonus_answer";
 
 	/**
 	 * Constructor method for the type User sets names, initializes points
@@ -219,10 +226,52 @@ public class User implements Person {
 				", Points: " + "\"" + points + "\"" + ", ID: " + "\"" + unID + "\">");
 	}
 
-	// ----------------- JSON ----------------- //
-	
-	
+	/**
+	 * Get the number of bonus questions answered this week
+	 * @return num questions answered
+	 */
+	public int getNumBonusAnswer() {
+		return numBonusAnswer;
+	}
 
+	/**
+	 * Set the number of bonus questions answered this week.
+	 * Set this to 0 after week has advanced!
+	 * @param numBonusAnswer The number of bonus questions answered
+	 */
+	public void setNumBonusAnswer(int numBonusAnswer) {
+		this.numBonusAnswer = numBonusAnswer;
+	}
+	
+	/**
+	 * Checks to see if an answer is correct and updates
+	 * values accordingly
+	 * @param b The bonus question that is being answered
+	 * @param answer The answer the user provided
+	 */
+	public void checkAnswer(BonusQuestion b, String answer){
+		Vector bonusList = Bonus.getAllQuestions();
+		int i =bonusList.indexOf(b);
+		String prevAnswer = answers[i];
+		String correctAnswer = b.getAnswer();
+		if(correctAnswer.equalsIgnoreCase(prevAnswer)){
+			if(!correctAnswer.equalsIgnoreCase(answer)){
+				numBonusAnswer--;
+			}
+		}else if(correctAnswer.equalsIgnoreCase(answer)){
+				numBonusAnswer++;
+		}
+	}
+	
+	/**
+	 * Gets the answer the user provided
+	 * @param numQuestion The question number
+	 * @return
+	 */
+	public String getUserAnswer(int numQuestion){
+		return answers[numQuestion];
+	}
+	// ----------------- JSON ----------------- //
 
 	public JSONObject toJSONObject() throws JSONException {
 		JSONObject obj = new JSONObject();

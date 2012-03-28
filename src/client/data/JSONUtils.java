@@ -45,7 +45,7 @@ public class JSONUtils{
 			FileConnection fconn = (FileConnection)Connector.open(path,Connector.READ_WRITE);
 			if (!fconn.exists()) {//file doesn't exist
 				if(displayError)
-					Common.displayErrorMsg("********"+path+" not found.");
+					Common.displayErrorMsg(path+" not found.");
 				return null;
 			}
 			
