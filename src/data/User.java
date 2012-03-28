@@ -6,6 +6,7 @@ import common.Utils;
 
 import data.bonus.Bonus;
 import data.bonus.BonusQuestion;
+import data.me.json.JSONArray;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
@@ -30,6 +31,8 @@ public class User implements Person {
 	private int numBonusAnswer = 0;
 	
 	private String[] answers;
+	
+	private final String answerPath = "file:///SDCard/res/data/UserAnswer";
 	// JSON Keys:
 	
 	protected static final String KEY_ID = "id";
@@ -40,6 +43,9 @@ public class User implements Person {
 	protected static final String KEY_ULT_PICK_ID	= "ult_pick";
 	protected static final String KEY_WEEKLY_PICK_ID = "week_pick";
 	protected static final String KEY_NUM_BONUS_ANSWER = "num_bonus_answer";
+	
+	//used for bonus answers
+	protected static final String KEY_ANSWERS = "answers";
 
 	/**
 	 * Constructor method for the type User sets names, initializes points
@@ -326,6 +332,26 @@ public class User implements Person {
 
 	}
 	
+	public JSONObject answerToJSONObject(){
+		JSONObject o = new JSONObject();
+		JSONArray a = new JSONArray();
+		for(int i =0;i<answers.length;i++){
+			a.put(answers[i]);
+		}
+		return o;
+	}
+	
+	public void answersFromJSONObject(JSONObject o) throws JSONException{
+		JSONArray a = (JSONArray) o.remove(KEY_ANSWERS);
+		answers = new String[a.length()];
+		for(int i =0;i<a.length();i++){
+			answers[i]=a.getString(i);
+		}
+	}
+	
+	public String getAnswerPath(){
+		return answerPath+this.getID()+".dat";
+	}
 	/**
 	 * Updates the stored user with any not null information in the passed user
 	 * @param u The user to update from.

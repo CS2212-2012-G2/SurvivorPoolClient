@@ -2,6 +2,10 @@ package data;
 
 import java.util.Vector;
 
+import net.rim.device.api.io.FileNotFoundException;
+
+import client.data.JSONUtils;
+
 import common.Utils;
 
 import data.me.json.JSONArray;
@@ -392,11 +396,21 @@ public abstract class GameData {
 	}
 	
 	/**
-	 * Set the current blackberry user
+	 * Set the current blackberry user and read in all data
+	 * that is necessary
 	 * @param u User
 	 */
 	public void setCurrentUser(User u) {
 		currentUser = u;
+		try {
+			u.answersFromJSONObject(JSONUtils.readFile(u.getAnswerPath(), false));
+		} catch (FileNotFoundException e) {
+			System.out.println("could not read user answer file");
+			e.printStackTrace();
+		} catch (JSONException e) {
+			System.out.println("user answer file is not properly formatted");
+			e.printStackTrace();
+		}
 	}
 	
 	/**

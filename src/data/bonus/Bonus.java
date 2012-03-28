@@ -20,7 +20,7 @@ public class Bonus {
 	static Vector questions = new Vector();
 	
 	private static final String KEY_QUESTIONS = "questions";
-	public static final String  filePath 	  = "file:///SDCard/res/data/bonus.dat";
+	public static final String  filePath 	  = "file:///SDCard/res/data/Bonus.dat";
 	static Comparator comp= new Comparator(){
 
 		public int compare(Object o1, Object o2) {

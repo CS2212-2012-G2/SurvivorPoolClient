@@ -12,6 +12,7 @@ import javax.microedition.io.file.FileSystemRegistry;
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.io.IOUtilities;
 import client.Common;
+import data.User;
 import data.bonus.Bonus;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
@@ -87,7 +88,8 @@ public class JSONUtils{
 		try {
 			writeData(GameData.getCurrentGame().toJSONObject(),GameData.filePath);
 			writeData(Bonus.toJSONObject(),Bonus.filePath);
-			
+			User u = GameData.getCurrentGame().getCurrentUser();
+			writeData(u.answerToJSONObject(),u.getAnswerPath());
 		}catch (IOException e) {
 			Common.displayErrorMsg("Error writing file");
 			e.printStackTrace();
