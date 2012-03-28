@@ -105,6 +105,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	}
 	
 	private void updateQuestionScreen(){
+		//TODO: a better way to update screen than this.
 		vertFieldManager.deleteAll();
 		BonusQuestion current = (BonusQuestion) questions.elementAt(questionNum);
 		questionField = new EditField(current.getPrompt(), "", 1,
@@ -140,7 +141,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 						+curUser.getUserAnswer(questionNum));
 		}else{
 			vertFieldManager.add(multiChoiceField);
-			if (showAnswer())
+			if (showAnswer()&&current.getAnswer()!=null)
 				answerField.setText(current.getAnswer()+"\nYour answer: "
 						+curUser.getUserAnswer(questionNum));
 		}
@@ -165,7 +166,8 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 
 	private boolean showAnswer(){
 		BonusQuestion cur = (BonusQuestion) questions.elementAt(questionNum);
-		if(cur.getWeek()<GameData.getCurrentGame().getCurrentWeek())
+		GameData g = GameData.getCurrentGame();
+		if(cur.getWeek()<g.getCurrentWeek())
 			return true;
 		return false;
 	}

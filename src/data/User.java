@@ -275,6 +275,8 @@ public class User implements Person {
 	 * @return
 	 */
 	public String getUserAnswer(int numQuestion){
+		if(answers==null)
+			return null;
 		return answers[numQuestion];
 	}
 	// ----------------- JSON ----------------- //
