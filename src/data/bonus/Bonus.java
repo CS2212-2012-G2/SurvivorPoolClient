@@ -82,6 +82,9 @@ public class Bonus {
 		}
 	}
 	
+	public static boolean questionsExist(){
+		return questions!=null&&questions.size()!=0;
+	}
 	/**
 	 * Initalize bonus
 	 */

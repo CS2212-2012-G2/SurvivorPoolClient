@@ -87,9 +87,11 @@ public class JSONUtils{
 		
 		try {
 			writeData(GameData.getCurrentGame().toJSONObject(),GameData.filePath);
-			writeData(Bonus.toJSONObject(),Bonus.filePath);
-			User u = GameData.getCurrentGame().getCurrentUser();
-			writeData(u.answerToJSONObject(),u.getAnswerPath());
+			//writeData(Bonus.toJSONObject(),Bonus.filePath); TODO: do we need to write this out?
+			if(Bonus.questionsExist()){
+				User u = GameData.getCurrentGame().getCurrentUser();
+				writeData(u.answerToJSONObject(),u.getAnswerPath());
+			}
 		}catch (IOException e) {
 			Common.displayErrorMsg("Error writing file");
 			e.printStackTrace();
