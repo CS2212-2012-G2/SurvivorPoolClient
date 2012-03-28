@@ -44,7 +44,7 @@ public abstract class GameData {
 	/**
 	 * JSON Keys
 	 */
-	private static final String KEY_CONTESTANTS = "cons",
+	protected static final String KEY_CONTESTANTS = "cons",
 	KEY_NUM_CONTEST = "cons_num",
 	KEY_USERS = "users",
 	KEY_WEEKS_REMAIN = "weeks_rem",

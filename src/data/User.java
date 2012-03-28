@@ -300,7 +300,7 @@ public class User implements Person {
 			obj.put(KEY_ULT_PICK_ID, "??");
 		
 		obj.put(KEY_WIN_PICK_POINTS, new Integer(getUltimatePoints()));
-		
+		obj.put(KEY_NUM_BONUS_ANSWER,getNumBonusAnswer());
 		return obj;
 	}
 	
@@ -324,7 +324,8 @@ public class User implements Person {
 			setWeeklyPick(c);
 			setUltimatePick(c);
 			
-			setPoints(((Integer)o.remove(KEY_WIN_PICK_POINTS)).intValue());
+			setUltimatePoints(((Integer)o.remove(KEY_WIN_PICK_POINTS)).intValue());
+			setNumBonusAnswer(((Integer)o.remove(KEY_NUM_BONUS_ANSWER)).intValue());
 		} catch (InvalidFieldException e) {
 			System.out.println("Warning: InvalidFieldException in fromJSONObject");
 			System.out.println(e.getMessage());
