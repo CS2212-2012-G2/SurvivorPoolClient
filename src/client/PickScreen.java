@@ -178,6 +178,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 				GameData.getCurrentGame().getCurrentUser()
 						.setUltimatePick(getChosenContestant());
 			}
+			UiApplication.getUiApplication().popScreen(this);
 		}
 	}
 
