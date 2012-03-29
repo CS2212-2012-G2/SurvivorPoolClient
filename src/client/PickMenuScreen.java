@@ -21,18 +21,13 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 	/* Variables */
-	private ButtonField btnWeekly, btnUltimate, btnFinal; // The continue button.
+	private ButtonField btnWeekly, btnUltimate; 
 	private Bitmap backgroundBitmap;
 	
 	
 	public PickMenuScreen() {
 		super(NO_VERTICAL_SCROLL);
-		
-		/* REPLACE AFTER DATA PERSISTANCE*/
-
-		/* -----------------------------------------*/
 		backgroundBitmap = Bitmap.getBitmapResource("MainMenu.png");
-
 		VerticalFieldManager vertFieldManager = new VerticalFieldManager(
 				VerticalFieldManager.USE_ALL_WIDTH
 						| VerticalFieldManager.USE_ALL_HEIGHT) {
@@ -51,15 +46,14 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 		btnWeekly.setMargin(230, 0, 0, 0); // formatting
 		btnUltimate = new ButtonField("Vote For Ultimate", LabelField.FIELD_HCENTER); 
 		btnUltimate.setChangeListener(this);
-		/* Build the components to MainScreen */
+
+		if(GameData.getCurrentGame().weeksLeft()==1){
+			btnWeekly.setLabel("Vote For Finals");
+		}
+
 		this.setStatus(Common.getToolbar());
 		vertFieldManager.add(btnWeekly);
 		vertFieldManager.add(btnUltimate);
-		if(GameData.getCurrentGame().weeksLeft()==1){
-			btnFinal = new ButtonField("Vote For Finals", LabelField.FIELD_HCENTER); 
-			btnFinal.setChangeListener(this);
-			vertFieldManager.add(btnFinal);
-		}
 		this.add(vertFieldManager);
 	}
 	
@@ -70,15 +64,12 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnWeekly) { 
 			UiApplication.getUiApplication().pushScreen(
-					new PickScreen("weekly"));
+					new PickScreen(PickScreen.T_WEEKLY));
 		
 		}else if (arg0 == btnUltimate){
 			UiApplication.getUiApplication().pushScreen(
-					new PickScreen("ultimate"));
+					new PickScreen(PickScreen.T_ULTIMATE));
 		
-		}else if (arg0 == btnFinal){
-			UiApplication.getUiApplication().pushScreen(
-					new PickScreen("final"));
 		}
 
 	}

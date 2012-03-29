@@ -33,12 +33,13 @@ import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import client.data.GameData;
 import data.Contestant;
+import data.User;
 
 public class PickScreen extends MainScreen implements FieldChangeListener {
 	/* Variables */
 	private LabelField lblContName, labelContTribe, labelTempStatus; // various
 																		// labels.
-	private String voteType;
+	private int voteType;
 	private FontFamily ff1; // fonts.
 	private Font font2; // fonts.
 	private ButtonField btnVoted;
@@ -47,7 +48,9 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 	private final static String DEFAULT_IMAGE = "res/test/defaultpic.png";
 	
-	public PickScreen(String voteType) {
+	public final static int T_WEEKLY= 0;
+	public final static int T_ULTIMATE= 1;
+	public PickScreen(int voteType) {
 		super();
 		System.out.println("PickScreen constructor");
 		this.voteType = voteType;
@@ -83,8 +86,12 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		Contestant[] contArray = new Contestant[contList.size()];
 		contList.copyInto(contArray);
 		ocfActiveContestant = new ObjectChoiceField(" Cast your "+ voteType + " vote: ",contArray);
-		
-		
+		User u = GameData.getCurrentGame().getCurrentUser();
+		if(voteType==T_WEEKLY&&u.getWeeklyPick()!=null){
+			ocfActiveContestant.setSelectedIndex(u.getWeeklyPick());
+		}else if(voteType==T_ULTIMATE&&u.getUltimatePick()!=null){
+			ocfActiveContestant.setSelectedIndex(u.getUltimatePick());
+		}
 		System.out.println("PickScreen: adding contestants to table");
 		
 		//TODO: change to true after images are implemented
@@ -164,15 +171,12 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnVoted) { // if the okay button is clicked
-			if (voteType.equals("weekly")) {
+			if (voteType==T_WEEKLY) {
 				GameData.getCurrentGame().getCurrentUser()
 						.setWeeklyPick(getChosenContestant());
-			} else if (voteType.equals("ultimate")) {
+			} else if (voteType==T_ULTIMATE) {
 				GameData.getCurrentGame().getCurrentUser()
 						.setUltimatePick(getChosenContestant());
-			} else if (voteType.equals("final")) {
-				GameData.getCurrentGame().getCurrentUser()
-						.setWeeklyPick(getChosenContestant());
 			}
 		}
 	}

@@ -323,7 +323,6 @@ public class User implements Person {
 			c=null;
 			if(!id.equals("??"))
 				c = GameData.getCurrentGame().getContestant(id);
-			setWeeklyPick(c);
 			setUltimatePick(c);
 			
 			setUltimatePoints(((Integer)o.remove(KEY_WIN_PICK_POINTS)).intValue());
@@ -335,12 +334,15 @@ public class User implements Person {
 
 	}
 	
-	public JSONObject answerToJSONObject(){
+	public JSONObject answerToJSONObject() throws JSONException{
+		if(answers==null||answers.length==0)
+			return null;
 		JSONObject o = new JSONObject();
 		JSONArray a = new JSONArray();
 		for(int i =0;i<answers.length;i++){
 			a.put(answers[i]);
 		}
+		o.put(KEY_ANSWERS, a);
 		return o;
 	}
 	

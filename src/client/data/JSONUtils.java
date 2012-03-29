@@ -87,7 +87,7 @@ public class JSONUtils{
 		
 		try {
 			writeData(GameData.getCurrentGame().toJSONObject(),GameData.filePath);
-			//writeData(Bonus.toJSONObject(),Bonus.filePath); TODO: do we need to write this out?
+			
 			if(Bonus.questionsExist()){
 				User u = GameData.getCurrentGame().getCurrentUser();
 				writeData(u.answerToJSONObject(),u.getAnswerPath());
@@ -107,6 +107,8 @@ public class JSONUtils{
 	 * @throws IOException
 	 */
 	private static void writeData(JSONObject json,String filePath) throws IOException{
+		if(json==null)
+			return;
 		DataOutputStream os = null;
 		//TODO: remvove the .as extensions after write data is confirmed to work
 		FileConnection fconn = (FileConnection)Connector.open(filePath+".as",Connector.READ_WRITE);
