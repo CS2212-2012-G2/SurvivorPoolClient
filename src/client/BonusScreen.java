@@ -133,27 +133,25 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		};
 		
 		User curUser = GameData.getCurrentGame().getCurrentUser();
-		String uAnswer = curUser.getUserAnswer(questionNum);
+		String uAnswer = curUser.getUserAnswer(currentQuestion);
+		
 		if(currentQuestion.getBonusType()==0){//short answer
 			vertFieldManager.add(answerField);
 			answerField.setMargin(0, 20, 10, 20);
-			if (showAnswer()){
-				String ans = "Correct Answer: "+currentQuestion.getAnswer()+".";
-				if(uAnswer!=null)
-					ans+="\nYour: Answer: "+uAnswer;
-				else
-					ans+="\nYou did not answer this question.";
-				answerField.setText(ans);
+			String ans = "";
+			if (showAnswer()){//has the week passed
+				ans += "Correct Answer: "+currentQuestion.getAnswer()+".";
 			}
-		}else{
 			
+			if(uAnswer!=null) //has the user answered this question before
+				ans+="\nYour: Answer: "+uAnswer;
+			answerField.setText(ans);
+		}else{//MC question
 			if (showAnswer()){
 				String[] c = new String[2];
 				c[0] = "Cor. Answer:"+currentQuestion.getAnswer();
 				if(uAnswer!=null)
 					c[1]= "Your answer: "+uAnswer;
-				else
-					c[1] = "Did not answer";
 				multiChoiceField.setChoices(c);
 			}else{
 				multiChoiceField.setChoices(currentQuestion.getChoices());
@@ -196,11 +194,19 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		if (arg0 == buttonSend) { 
 			User u = GameData.getCurrentGame().getCurrentUser();
 			BonusQuestion b = (BonusQuestion) questions.elementAt(questionNum);
+			String answer="";
+			if(b.getBonusType()==0){
+				answer = answerField.getText();
+			}else{
+				int i =multiChoiceField.getSelectedIndex();
+				answer = b.getChoices()[i];
+			}
+			u.setUserAnswer(b, answer);
 		} else if (arg0 == buttonNext) {
-			questionNum++;
+			++questionNum;
 			updateQuestionScreen();
 		} else if (arg0 == buttonPrevious) {
-			questionNum--;
+			--questionNum;
 			updateQuestionScreen();
 
 		}

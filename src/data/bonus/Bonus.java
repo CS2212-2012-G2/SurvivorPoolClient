@@ -5,6 +5,7 @@ import java.util.Vector;
 import net.rim.device.api.io.FileNotFoundException;
 import net.rim.device.api.util.Arrays;
 import net.rim.device.api.util.Comparator;
+import net.rim.device.api.util.SimpleSortingVector;
 import client.data.JSONUtils;
 import data.me.json.JSONArray;
 import data.me.json.JSONException;
@@ -17,10 +18,11 @@ import data.me.json.JSONObject;
  */
 public class Bonus {
 
-	static Vector questions = new Vector();
+	static SimpleSortingVector questions = new SimpleSortingVector();
 	
 	private static final String KEY_QUESTIONS = "questions";
 	public static final String  filePath 	  = "file:///SDCard/res/data/Bonus.dat";
+	
 	static Comparator comp= new Comparator(){
 
 		public int compare(Object o1, Object o2) {
@@ -35,19 +37,13 @@ public class Bonus {
 		}
 		
 	};
+	
 	/**
 	 * DO NOT CALL THIS FUNCTION! Only used fromJSONObject or when a bonusquestion is created
 	 * @param b
 	 */
 	public static void addNewQuestion(BonusQuestion b){
 		questions.addElement(b);
-		sortQuestions();
-	}
-	
-	private static void sortQuestions(){
-		Object[] unsorted = new Object[questions.size()];
-		questions.copyInto(unsorted);
-		Arrays.sort(unsorted,comp);
 	}
 	
 	/**
@@ -85,11 +81,14 @@ public class Bonus {
 	public static boolean questionsExist(){
 		return questions!=null&&questions.size()!=0;
 	}
+	
 	/**
 	 * Initalize bonus
 	 */
 	public static void initBonus(){
 		System.out.println("Bonus init start");
+		questions.setSort(true);//sort automatically
+		questions.setSortComparator(Bonus.comp);
 		try {
 			fromJSONObject(JSONUtils.readFile(filePath,false));
 		} catch (FileNotFoundException e) {

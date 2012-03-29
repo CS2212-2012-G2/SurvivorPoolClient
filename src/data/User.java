@@ -2,10 +2,13 @@ package data;
 
 import java.util.Vector;
 
+import net.rim.device.api.util.SimpleSortingVector;
+
 import common.Utils;
 
 import data.bonus.Bonus;
 import data.bonus.BonusQuestion;
+import data.bonus.UserAnswer;
 import data.me.json.JSONArray;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;
@@ -28,10 +31,9 @@ public class User implements Person {
 	
 	private Contestant ultPick, weeklyPick; // users pick of the winner and
 										    // their weekly pick
-	private int numBonusAnswer = 0;
+	private int numBonusAnswered = 0;
 	
-	private String[] answers;
-	
+	private SimpleSortingVector answers = new SimpleSortingVector();
 	private final String answerPath = "file:///SDCard/res/data/UserAnswer";
 	// JSON Keys:
 	
@@ -237,7 +239,7 @@ public class User implements Person {
 	 * @return num questions answered
 	 */
 	public int getNumBonusAnswer() {
-		return numBonusAnswer;
+		return numBonusAnswered;
 	}
 
 	/**
@@ -246,26 +248,25 @@ public class User implements Person {
 	 * @param numBonusAnswer The number of bonus questions answered
 	 */
 	public void setNumBonusAnswer(int numBonusAnswer) {
-		this.numBonusAnswer = numBonusAnswer;
+		this.numBonusAnswered = numBonusAnswer;
 	}
 	
 	/**
 	 * Checks to see if an answer is correct and updates
 	 * values accordingly
 	 * @param b The bonus question that is being answered
-	 * @param answer The answer the user provided
+	 * @param curAnswer The answer the user provided
 	 */
-	public void checkAnswer(BonusQuestion b, String answer){
-		Vector bonusList = Bonus.getAllQuestions();
-		int i =bonusList.indexOf(b);
-		String prevAnswer = answers[i];
+	private void checkAnswer(BonusQuestion b, String curAnswer){
+		String prevAnswer = getUserAnswer(b);
 		String correctAnswer = b.getAnswer();
+		
 		if(correctAnswer.equalsIgnoreCase(prevAnswer)){
-			if(!correctAnswer.equalsIgnoreCase(answer)){
-				numBonusAnswer--;
-			}
-		}else if(correctAnswer.equalsIgnoreCase(answer)){
-				numBonusAnswer++;
+			if(!correctAnswer.equals(curAnswer))//user previously had it correct
+				numBonusAnswered--;
+		}else{
+			if(correctAnswer.equals(curAnswer))//user got it correct this time
+				numBonusAnswered++;
 		}
 	}
 	
@@ -274,10 +275,25 @@ public class User implements Person {
 	 * @param numQuestion The question number
 	 * @return
 	 */
-	public String getUserAnswer(int numQuestion){
-		if(answers==null)
+	public String getUserAnswer(BonusQuestion b){
+		if(answers.size()==0)
 			return null;
-		return answers[numQuestion];
+		UserAnswer uA = new UserAnswer(b.getWeek(),b.getNumber());
+		int i =answers.find(uA);
+		if(i<0)
+			return null;
+		uA = (UserAnswer) answers.elementAt(i);
+		return uA.getAnswer();
+	}
+	
+	public void setUserAnswer(BonusQuestion b,String answer){
+		checkAnswer(b,answer);
+		UserAnswer uA = new UserAnswer(b.getWeek(),b.getNumber(),answer);
+		int i = answers.find(uA);
+		if(i>=0)
+			answers.setElementAt(uA, i);
+		else
+			answers.addElement(uA);
 	}
 	// ----------------- JSON ----------------- //
 
@@ -307,6 +323,8 @@ public class User implements Person {
 	}
 	
 	public void fromJSONObject(JSONObject o) {
+		answers.setSort(true);
+		answers.setSortComparator(UserAnswer.comp);
 		try {
 			setFirstName((String)o.remove(KEY_FIRST_NAME));
 			setLastName((String)o.remove(KEY_LAST_NAME));
@@ -335,12 +353,13 @@ public class User implements Person {
 	}
 	
 	public JSONObject answerToJSONObject() throws JSONException{
-		if(answers==null||answers.length==0)
+		if(answers.size()==0)
 			return null;
 		JSONObject o = new JSONObject();
 		JSONArray a = new JSONArray();
-		for(int i =0;i<answers.length;i++){
-			a.put(answers[i]);
+		for(int i =0;i<answers.size();i++){
+			UserAnswer uA = (UserAnswer) answers.elementAt(i);
+			a.put(uA.toJSONObject());
 		}
 		o.put(KEY_ANSWERS, a);
 		return o;
@@ -350,9 +369,12 @@ public class User implements Person {
 		if(o==null)
 			return;
 		JSONArray a = (JSONArray) o.remove(KEY_ANSWERS);
-		answers = new String[a.length()];
+		
 		for(int i =0;i<a.length();i++){
-			answers[i]=a.getString(i);
+			JSONObject ansJson = a.getJSONObject(i);
+			UserAnswer uA = new UserAnswer();
+			uA.fromJSONObject(ansJson);
+			answers.addElement(uA);
 		}
 	}
 	
