@@ -87,6 +87,7 @@ public class Common {
 				User u = GameData.getCurrentGame().getCurrentUser();
 				if(u.getUltimatePick()==null){
 					Dialog.alert("Cannot save unless you choose an ultimate pick.");
+					UiApplication.getUiApplication().pushScreen(new PickScreen(PickScreen.T_ULTIMATE));
 					return;
 				}
 			}
