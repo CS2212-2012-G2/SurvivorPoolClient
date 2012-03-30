@@ -270,7 +270,7 @@ public class Contestant implements Person {
 		obj.put(KEY_ID, getID());
 		obj.put(KEY_PICTURE, getPicture());
 		obj.put(KEY_TRIBE, getTribe());
-		obj.put(KEY_DATE, new Integer(getCastDate()));
+		obj.put(KEY_DATE,getCastDate());
 		obj.put(KEY_CHOSEN, chosen);
 		return obj;
 	}

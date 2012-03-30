@@ -86,8 +86,9 @@ public class JSONUtils{
 		}
 		
 		try {
-			writeData(GameData.getCurrentGame().toJSONObject(),GameData.filePath);
-			
+			JSONObject s = GameData.getCurrentGame().toJSONObject();
+			writeData(s,GameData.filePath);
+			System.out.println("\n\n\nWhat we got:"+s);
 			if(Bonus.questionsExist()){
 				User u = GameData.getCurrentGame().getCurrentUser();
 				writeData(u.answerToJSONObject(),u.getAnswerPath());
@@ -118,6 +119,7 @@ public class JSONUtils{
 		os = fconn.openDataOutputStream();
 		String jsonString = json.toString();
 		os.write(jsonString.getBytes());
+		System.out.println("\n\n\n\n actually writing"+jsonString.getBytes());
 		os.close();
 		fconn.close();
 	}

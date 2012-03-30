@@ -427,7 +427,7 @@ public abstract class GameData {
 	public JSONObject toJSONObject() throws JSONException {
 		JSONObject obj = new JSONObject();
 		
-		obj.put(KEY_NUM_CONTEST, new Integer(numContestants));
+		obj.put(KEY_NUM_CONTEST, numContestants);
 		JSONArray cons = new JSONArray();
 		for(int i =0;i<allContestants.size();i++){
 			Object o = allContestants.elementAt(i);

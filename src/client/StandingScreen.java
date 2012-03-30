@@ -22,6 +22,8 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.table.RichList;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import net.rim.device.api.util.Comparator;
+import net.rim.device.api.util.SimpleSortingVector;
 import client.data.GameData;
 import data.User;
 
@@ -77,7 +79,21 @@ public class StandingScreen extends MainScreen implements FieldChangeListener {
 		labelTemp.setFont(font1);
 
 		
-		Vector userList = GameData.getCurrentGame().getAllUsers();
+		Vector userL = GameData.getCurrentGame().getAllUsers();
+		//to display from most points to least point
+		SimpleSortingVector userList = new SimpleSortingVector();
+		for(int i =0;i<userL.size();i++)
+			userList.addElement(userL.elementAt(i));
+		userList.setSortComparator(new Comparator(){//sorts highest to least points
+			public int compare(Object o1, Object o2) {
+				User u1 = (User)o1;
+				User u2 = (User)o2;
+				return u2.getPoints()-u1.getPoints();
+			}
+			
+		});
+		userList.reSort();//sort the array
+		
 		list.add(new Object[] { labelTemp }); // add headers
 
 		/* fill list with players */
