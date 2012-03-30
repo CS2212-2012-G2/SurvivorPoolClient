@@ -53,7 +53,6 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	public final static int T_ULTIMATE= 1;
 	public PickScreen(int voteType) {
 		super();
-		System.out.println("PickScreen constructor");
 		this.voteType = voteType;
 
 		VerticalFieldManager vertFieldManager = new VerticalFieldManager(
@@ -93,9 +92,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		}else if(voteType==T_ULTIMATE&&u.getUltimatePick()!=null){
 			ocfActiveContestant.setSelectedIndex(u.getUltimatePick());
 		}
-		System.out.println("PickScreen: adding contestants to table");
-		
-		//TODO: change to true after images are implemented
+			
 		list = new RichList(vertFieldManager, true, 3, 0);
 
 		//get all contestants for list
@@ -137,8 +134,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 			list.add(new Object[] {imgContestant,lblContName, labelContTribe,labelTempStatus });
 			
 		}
-		System.out.println("PickScreen: contestants added to list");
-		
+			
 		HorizontalFieldManager horFieldManager = new HorizontalFieldManager(
 				HorizontalFieldManager.USE_ALL_WIDTH
 						| HorizontalFieldManager.FIELD_HCENTER) {
@@ -163,7 +159,6 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		this.add(vertFieldManager);
 		this.setStatus(Common.getToolbar());
 		vertFieldManager.setFocus(); //THIS NEEDS TO BE HERE. APP CRASHES WITHOUT IT
-		System.out.println("PickScreen: Constructor end");
 	}
 
 	public boolean onSavePrompt() {
@@ -191,12 +186,10 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	 */
 	private Contestant getChosenContestant() {
 		int i = ocfActiveContestant.getSelectedIndex();
-		System.out.println("********** The contestant chosen:" + i);
 		if (i == -1)
 			return null;
 
 		Contestant contestant = (Contestant) ocfActiveContestant.getChoice(i);
-		System.out.println(contestant.getID());
 		return contestant;
 	}
 
@@ -222,7 +215,6 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 				image = Bitmap.createBitmapFromPNG(data, 0, data.length);
 			}
 		} catch (Exception e) {
-			System.out.println("MLS:" + e);
 		} finally {
 			if (input != null) {
 				try {
@@ -239,7 +231,6 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		}
 
 		if (image == null) {
-			System.out.println("image not found");
 			return getImage(DEFAULT_IMAGE);//TODO: possible recursive loop
 		}
 		return image;

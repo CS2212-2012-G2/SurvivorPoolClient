@@ -61,9 +61,7 @@ public class Common {
 			/* add buttons to the tool bar */
 			toolbar.add(btnRefresh);
 			toolbar.add(btnExit);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		} catch (Exception e) {}
 	}
 	
 	/**

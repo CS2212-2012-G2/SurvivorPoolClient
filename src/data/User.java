@@ -346,8 +346,7 @@ public class User implements Person {
 			setUltimatePoints(((Integer)o.remove(KEY_WIN_PICK_POINTS)).intValue());
 			setNumBonusAnswer(((Integer)o.remove(KEY_NUM_BONUS_ANSWER)).intValue());
 		} catch (InvalidFieldException e) {
-			System.out.println("Warning: InvalidFieldException in fromJSONObject");
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 	}
@@ -415,30 +414,5 @@ public class User implements Person {
 		if (u.getUltimatePoints() != getUltimatePoints()) {
 			setUltimatePoints(u.getUltimatePoints());
 		}
-	}
-	
-	public static void main(String[] args) {
-		User u = null;
-		try {
-			u = new User("bob", "builder", "bbuilde");
-		} catch (InvalidFieldException e) { }
-		
-		Contestant c = new Contestant();
-		Contestant ul = new Contestant();
-		try {
-			c.setID("aa");
-			ul.setID("ab");
-			u.setWeeklyPick(c);
-			u.setUltimatePick(ul);
-		} catch (InvalidFieldException e1) {
-			e1.printStackTrace();
-		}
-		
-		try {
-			System.out.println(u.toJSONObject().toString());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
 	}
 }

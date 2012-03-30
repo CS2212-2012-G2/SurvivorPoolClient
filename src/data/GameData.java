@@ -159,7 +159,6 @@ public abstract class GameData {
 	 */
 	public void addContestantNoCheck(Contestant c) {
 		if (allContestants.size() == numContestants) {
-			System.out.println("Too many contestants.");
 			return;
 		}
 		
@@ -226,8 +225,7 @@ public abstract class GameData {
 			u = (User) allUsers.elementAt(i);
 			if(u.getWeeklyPick().equals(c)){
 				   u.addPoints(20);
-				   System.out.println("Added 20 points to " + u);
-				}
+			}
 		}
 	}
 	
@@ -404,10 +402,8 @@ public abstract class GameData {
 		try {
 			u.answersFromJSONObject(JSONUtils.readFile(u.getAnswerPath(), false));
 		} catch (FileNotFoundException e) {
-			System.out.println("could not read user answer file");
 			e.printStackTrace();
 		} catch (JSONException e) {
-			System.out.println("user answer file is not properly formatted");
 			e.printStackTrace();
 		}
 	}
@@ -480,7 +476,7 @@ public abstract class GameData {
 		weeksPassed = obj.getInt(KEY_WEEKS_PASSED);
 		
 		seasonStarted = obj.getBoolean(KEY_SEASON_STARTED);
-		System.out.println("***vars were initialized");
+		
 		//Contestants must be loaded before users, but after others!
 		allContestants = new Vector(numContestants);
 		
@@ -494,10 +490,8 @@ public abstract class GameData {
 			addContestantNoCheck(c);
 			
 		}
-		System.out.println("contestants were initialized");
 		// users:
 		JSONArray users = (JSONArray)obj.get(KEY_USERS);
-		System.out.println("users was valid");
 		for (int i = 0; i < users.length(); i++) {
 			User u = new User();
 			u.fromJSONObject(users.getJSONObject(i));
@@ -507,10 +501,8 @@ public abstract class GameData {
 		if(seasonStarted){
 			betAmount=obj.getInt(KEY_BET_AMOUNT);
 			totalAmount = obj.getInt(KEY_POOL_TOTAL);
-			System.out.println(betAmount + " " + totalAmount);
 		}
-		System.out.println("users were initialized");
-		System.out.println(this.toJSONObject().toString());
+		
 	}
 
 	public abstract void writeData();

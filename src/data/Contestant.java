@@ -291,28 +291,7 @@ public class Contestant implements Person {
 			setTribe((String)o.remove(KEY_TRIBE));
 			setPicture((String)o.remove(KEY_PICTURE));
 			setCastDate(((Integer)o.remove(KEY_DATE)).intValue());
-		} catch (InvalidFieldException e) {
-			System.out.println("Warning: InvalidFieldException in fromJSONObject");
-			System.out.println(e.getMessage());
-		}
+		} catch (InvalidFieldException e) {}
 	}
 	
-	/// Driver for Contestant JSON 
-		public static void main(String[] args) throws InvalidFieldException {
-			Contestant c = new data.Contestant("ad", "Jon", "silver", "booby");
-			
-			try {
-				System.out.println(c.toJSONObject().toString());
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}
-			
-			try {
-				Contestant p = new data.Contestant();
-				p.fromJSONObject(c.toJSONObject());
-				System.out.println(p);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 }

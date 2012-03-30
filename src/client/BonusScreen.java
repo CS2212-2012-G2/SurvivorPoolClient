@@ -70,9 +70,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		try { // set up the smaller list font
 			ff1 = FontFamily.forName("Verdana");
 			font2 = ff1.getFont(Font.BOLD, 20);
-		} catch (final ClassNotFoundException cnfe) {
-			System.out.println("font family failed");
-		}
+		} catch (final ClassNotFoundException cnfe) {}
 
 		questionField = new EditField("", "", 200,
 				EditField.NO_NEWLINE) {
@@ -133,7 +131,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		
 		for(int i =0;i<questions.size();i++){
 			BonusQuestion b = (BonusQuestion) questions.elementAt(i);
-			System.out.println(b.getPrompt());
 		}
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
@@ -141,7 +138,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	}
 	
 	private void updateQuestionScreen(){
-		System.out.println(currentQuestion.getPrompt());
 		User curUser = GameData.getCurrentGame().getCurrentUser();
 		String uAnswer = curUser.getUserAnswer(currentQuestion);
 		
@@ -237,14 +233,12 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		} else if (arg0 == buttonNext) {
 			int loc = questions.indexOf(currentQuestion);
 			currentQuestion = (BonusQuestion) questions.elementAt(loc+1);
-			System.out.println(currentQuestion.getPrompt()+" next clicked");
 			try{
 				updateQuestionScreen();
 			}catch(Exception e){}
 		} else if (arg0 == buttonPrevious) {
 			int loc = questions.indexOf(currentQuestion);
 			currentQuestion = (BonusQuestion) questions.elementAt(loc-1);
-			System.out.println(currentQuestion.getPrompt()+" previous clicked");
 			try{
 				updateQuestionScreen();
 			}catch(Exception e){}

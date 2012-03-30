@@ -86,16 +86,11 @@ public class Bonus {
 	 * Initalize bonus
 	 */
 	public static void initBonus(){
-		System.out.println("Bonus init start");
 		questions.setSort(true);//sort automatically
 		questions.setSortComparator(Bonus.comp);
 		try {
 			fromJSONObject(JSONUtils.readFile(filePath,false));
-		} catch (FileNotFoundException e) {
-			System.out.println("could not read "+filePath);
-		} catch (JSONException e) {
-			System.out.println("could not convert to json object "+filePath);
-			e.printStackTrace();
-		}
+		} catch (FileNotFoundException e) {} 
+		catch (JSONException e) {}
 	}
 }
