@@ -20,6 +20,7 @@ import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
+import net.rim.device.api.ui.component.Status;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -141,10 +142,12 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			String ans = "";
 			if (showAnswer()){//has the week passed
 				ans += "Correct Answer: "+currentQuestion.getAnswer()+".";
+				if(uAnswer!=null)
+					ans+="Your Answer: ";
 			}
 			
 			if(uAnswer!=null) //has the user answered this question before
-				ans+="\nYour: Answer: "+uAnswer;
+				ans+=uAnswer;
 			answerField.setText(ans);
 		}else{//MC question
 			if (showAnswer()){
@@ -212,6 +215,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 				answer = b.getChoices()[i];
 			}
 			u.setUserAnswer(b, answer);
+			Status.show("Sent.");
 		} else if (arg0 == buttonNext) {
 			++questionNum;
 			updateQuestionScreen();

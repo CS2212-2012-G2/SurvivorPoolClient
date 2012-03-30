@@ -27,6 +27,7 @@ import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
+import net.rim.device.api.ui.component.Status;
 import net.rim.device.api.ui.component.table.RichList;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
@@ -171,14 +172,15 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnVoted) { // if the okay button is clicked
+			Contestant c = getChosenContestant();
 			if (voteType==T_WEEKLY) {
 				GameData.getCurrentGame().getCurrentUser()
-						.setWeeklyPick(getChosenContestant());
+						.setWeeklyPick(c);
 			} else if (voteType==T_ULTIMATE) {
 				GameData.getCurrentGame().getCurrentUser()
-						.setUltimatePick(getChosenContestant());
+						.setUltimatePick(c);
 			}
-			UiApplication.getUiApplication().popScreen(this);
+			Status.show("You chose: "+c.getFirstName()+" "+c.getLastName());
 		}
 	}
 
