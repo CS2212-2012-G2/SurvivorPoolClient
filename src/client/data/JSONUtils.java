@@ -110,8 +110,7 @@ public class JSONUtils{
 		if(json==null)
 			return;
 		DataOutputStream os = null;
-		//TODO: remvove the .as extensions after write data is confirmed to work
-		FileConnection fconn = (FileConnection)Connector.open(filePath+".as",Connector.READ_WRITE);
+		FileConnection fconn = (FileConnection)Connector.open(filePath,Connector.READ_WRITE);
 		if (!fconn.exists()) {
 			fconn.create();
 		}
