@@ -21,6 +21,7 @@ public class Contestant implements Person {
 	protected int castDate = -1; // week that player was cast off
 	protected String cID;
 	public boolean toBeCast;
+	private boolean chosen;
 	
 	protected final static String KEY_FIRST_NAME = "first";
 	protected final static String KEY_LAST_NAME	= "last";
@@ -28,7 +29,8 @@ public class Contestant implements Person {
 	protected final static String KEY_PICTURE = "picture";
 	protected final static String KEY_TRIBE = "tribe";
 	protected final static String KEY_DATE = "date";
-
+	protected final static String KEY_CHOSEN = "chosen";
+	
 	/**
 	 * Constructor method for type contestant sets player info
 	 * @param _id ID tag
@@ -269,7 +271,20 @@ public class Contestant implements Person {
 		obj.put(KEY_PICTURE, getPicture());
 		obj.put(KEY_TRIBE, getTribe());
 		obj.put(KEY_DATE, new Integer(getCastDate()));
+		obj.put(KEY_CHOSEN, chosen);
 		return obj;
+	}
+	
+	public void fromJSONObject(JSONObject o) {
+		try {
+			setID(o.getString(KEY_ID));
+			setFirstName(o.getString(KEY_FIRST_NAME));
+			setLastName(o.getString(KEY_LAST_NAME));
+			setTribe(o.getString(KEY_TRIBE));
+			setPicture(o.getString(KEY_PICTURE));
+			setCastDate(o.getInt(KEY_DATE));
+			chosen = o.getBoolean(KEY_CHOSEN);
+		} catch (InvalidFieldException e) {} catch (JSONException e) {}
 	}
 	
 	/**
@@ -280,18 +295,6 @@ public class Contestant implements Person {
 		this.castDate = -1;
 		GameData.getCurrentGame().elimExists = false;
 		GameData.getCurrentGame().elimCont = null;
-	}
-	
-	
-	public void fromJSONObject(JSONObject o) {
-		try {
-			setID((String)o.remove(KEY_ID));
-			setFirstName((String)o.remove(KEY_FIRST_NAME));
-			setLastName((String)o.remove(KEY_LAST_NAME));
-			setTribe((String)o.remove(KEY_TRIBE));
-			setPicture((String)o.remove(KEY_PICTURE));
-			setCastDate(((Integer)o.remove(KEY_DATE)).intValue());
-		} catch (InvalidFieldException e) {}
 	}
 	
 }
