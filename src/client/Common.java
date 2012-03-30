@@ -37,9 +37,9 @@ public class Common {
 					public void execute(ReadOnlyCommandMetadata metadata,
 							Object context) {
 						System.out.println("go back to splash");
-						save();
-						UiApplication.getUiApplication().pushScreen(
-								new SplashScreen());
+						if(logoff())
+							UiApplication.getUiApplication().pushScreen(
+									new SplashScreen());
 					}
 				}));
 				toolbar.add(btnLogout);
@@ -97,6 +97,13 @@ public class Common {
 		}else if(response == Dialog.CANCEL)
 			return false;
 		return true;
+	}
+	
+	public static boolean logoff(){
+		boolean saveStatus= save();
+		if(saveStatus)
+			GameData.getCurrentGame().setCurrentUser(null);
+		return saveStatus;
 	}
 	
 	/**

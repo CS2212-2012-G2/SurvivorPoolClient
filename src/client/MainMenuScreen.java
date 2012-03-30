@@ -59,10 +59,13 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 		this.add(vertFieldManager);
 	}
 	
-	public boolean onSavePrompt(){
-		return true;
+	public boolean onClose() 
+	{
+	    if(Common.logoff())
+	    	close();
+	    return true;
 	}
-
+	
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == btnUserStanding) { // View Standings
 			UiApplication.getUiApplication().pushScreen(

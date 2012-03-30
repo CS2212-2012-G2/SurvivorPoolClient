@@ -398,9 +398,9 @@ public abstract class GameData {
 	 * @param u User
 	 */
 	public void setCurrentUser(User u) {
+		currentUser = u;
 		if(u==null)
 			return;
-		currentUser = u;
 		try {
 			u.answersFromJSONObject(JSONUtils.readFile(u.getAnswerPath(), false));
 		} catch (FileNotFoundException e) {
