@@ -17,6 +17,7 @@ import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.ButtonField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
@@ -73,42 +74,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			System.out.println("font family failed");
 		}
 
-		/* Add the send button */
-		buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
-		buttonSend.setChangeListener(this);
-
-		buttonSend.setMargin(0, 20, 30, 20);
-		vertFieldManager.add(buttonSend);
-
-		HorizontalFieldManager horFieldManager = new HorizontalFieldManager(
-				HorizontalFieldManager.USE_ALL_WIDTH
-						| HorizontalFieldManager.FIELD_HCENTER);
-
-		/* Top manager bar setup */
-		buttonPrevious = new ButtonField("Prev"); // previous button
-		buttonPrevious.setChangeListener(this);
-		
-		horFieldManager.add(buttonPrevious);
-
-		labelTitle = new LabelField("  Bonus Questions ");
-		labelTitle.setFont(font1); // centre label
-
-		horFieldManager.add(labelTitle);
-
-		buttonNext = new ButtonField("Next"); // next button
-		buttonNext.setChangeListener(this);
-		horFieldManager.add(buttonNext);
-		
-		updateQuestionScreen();
-		this.setTitle(horFieldManager);
-		this.add(vertFieldManager);
-		this.setStatus(Common.getToolbar());
-	}
-	
-	private void updateQuestionScreen(){
-		//TODO: a better way to update screen than this.
-		vertFieldManager.deleteAll();
-		questionField = new EditField(currentQuestion.getPrompt(), "", 1,
+		questionField = new EditField("", "", 200,
 				EditField.NO_NEWLINE) {
 			public void paint(Graphics graphics) { // keep on same line
 				graphics.setColor(Color.WHITE); // white text
@@ -121,34 +87,86 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		questionField.setMargin(30, 20, 30, 20);
 		vertFieldManager.add(questionField);
 
-		multiChoiceField = new ObjectChoiceField("", currentQuestion.getChoices(), 0,
+		multiChoiceField = new ObjectChoiceField("Answer:", currentQuestion.getChoices(), 0,
 				ObjectChoiceField.FORCE_SINGLE_LINE
-						| ObjectChoiceField.FIELD_HCENTER);
-		
-		answerField = new EditField("Answer:  ", "", 200, EditField.NO_NEWLINE) {
+						| ObjectChoiceField.FIELD_HCENTER){
 			public void paint(Graphics graphics) { // keep on same line
 				graphics.setColor(Color.WHITE); // white text
 				super.paint(graphics);
 			}
 		};
 		
+		answerField = new EditField("Answer:  ", "", 200, 0) {
+			public void paint(Graphics graphics) { // keep on same line
+				graphics.setColor(Color.WHITE); // white text
+				super.paint(graphics);
+			}
+		};
+
+		HorizontalFieldManager horFieldManager = new HorizontalFieldManager(
+				HorizontalFieldManager.USE_ALL_WIDTH
+						| HorizontalFieldManager.FIELD_HCENTER);
+
+		/* Top manager bar setup */
+		buttonPrevious = new ButtonField("Prev"); // previous button
+		buttonPrevious.setChangeListener(this);
+		
+		horFieldManager.add(buttonPrevious);
+		
+		/* Add the send button */
+		buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
+		buttonSend.setChangeListener(this);
+
+		buttonSend.setMargin(0, 20, 30, 20);
+		horFieldManager.add(buttonSend);
+
+		labelTitle = new LabelField("  Bonus Questions ");
+		labelTitle.setFont(font1); // centre label
+
+		horFieldManager.add(labelTitle);
+
+		buttonNext = new ButtonField("Next"); // next button
+		buttonNext.setChangeListener(this);
+		horFieldManager.add(buttonNext);
+		
+		updateQuestionScreen();
+		
+		for(int i =0;i<questions.size();i++){
+			BonusQuestion b = (BonusQuestion) questions.elementAt(i);
+			System.out.println(b.getPrompt());
+		}
+		this.setTitle(horFieldManager);
+		this.add(vertFieldManager);
+		this.setStatus(Common.getToolbar());
+	}
+	
+	private void updateQuestionScreen(){
+		System.out.println(currentQuestion.getPrompt());
 		User curUser = GameData.getCurrentGame().getCurrentUser();
 		String uAnswer = curUser.getUserAnswer(currentQuestion);
 		
+		questionField.setText(currentQuestion.getPrompt());
+		
 		if(currentQuestion.getBonusType()==0){//short answer
-			vertFieldManager.add(answerField);
-			answerField.setMargin(0, 20, 10, 20);
+			try{
+				vertFieldManager.delete(multiChoiceField);
+			}catch(Exception e){}
 			String ans = "";
 			if (showAnswer()){//has the week passed
 				ans += "Correct Answer: "+currentQuestion.getAnswer()+".";
+				answerField.setEnabled(false);
 				if(uAnswer!=null)
-					ans+="Your Answer: ";
+					ans+="\nYour Answer: ";
 			}
-			
 			if(uAnswer!=null) //has the user answered this question before
 				ans+=uAnswer;
 			answerField.setText(ans);
+			vertFieldManager.add(answerField);
 		}else{//MC question
+			try{
+				vertFieldManager.delete(answerField);
+			}catch(Exception e){};
+			
 			if (showAnswer()){
 				String[] c = new String[2];
 				c[0] = "Cor. Answer:"+currentQuestion.getAnswer();
@@ -157,18 +175,19 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 				else
 					c[1] = "Did not answer";
 				multiChoiceField.setChoices(c);
-			}else{
+			}else{//correct answer not to be shown
 				String[] choices = currentQuestion.getChoices();
 				multiChoiceField.setChoices(choices);
 				if(uAnswer!=null){
-					for(int i =0;i<choices.length;i++){
-						if(uAnswer.equalsIgnoreCase(choices[i]))
+					for(int i =0;i<choices.length;i++){ //get location of user answer in array
+						if(uAnswer.equalsIgnoreCase(choices[i])){
 							multiChoiceField.setSelectedIndex(i);
+							break;
+						}
 					}
 				}
 				
 			}
-			
 			vertFieldManager.add(multiChoiceField);
 		}
 		
@@ -180,16 +199,14 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		if(currentQuestion.equals(questions.lastElement()))
 			buttonNext.setEnabled(false);
 		
-
-		/* Add the send button */
-		if(!showAnswer()){
-			buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
-			buttonSend.setChangeListener(this);
-			buttonSend.setMargin(0, 20, 30, 20);
-			vertFieldManager.add(buttonSend);
-		}
+		buttonSend.setEnabled(!showAnswer());
+		
 	}
 
+	/**
+	 * Checks to see if the week has passed and answer should be shown
+	 * @return true if correct answer should be shown
+	 */
 	private boolean showAnswer(){
 		GameData g = GameData.getCurrentGame();
 		if(currentQuestion.getWeek()<g.getCurrentWeek())
@@ -207,6 +224,10 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			String answer="";
 			if(currentQuestion.getBonusType()==0){
 				answer = answerField.getText();
+				if(answer.length()>200||answer.length()<1){
+					Dialog.alert("Answer must be between 1- 200 characters");
+					return;
+				}
 			}else{
 				int i =multiChoiceField.getSelectedIndex();
 				answer = currentQuestion.getChoices()[i];
@@ -216,11 +237,17 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		} else if (arg0 == buttonNext) {
 			int loc = questions.indexOf(currentQuestion);
 			currentQuestion = (BonusQuestion) questions.elementAt(loc+1);
-			updateQuestionScreen();
+			System.out.println(currentQuestion.getPrompt()+" next clicked");
+			try{
+				updateQuestionScreen();
+			}catch(Exception e){}
 		} else if (arg0 == buttonPrevious) {
 			int loc = questions.indexOf(currentQuestion);
 			currentQuestion = (BonusQuestion) questions.elementAt(loc-1);
-			updateQuestionScreen();
+			System.out.println(currentQuestion.getPrompt()+" previous clicked");
+			try{
+				updateQuestionScreen();
+			}catch(Exception e){}
 
 		}
 	}
