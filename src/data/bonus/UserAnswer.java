@@ -30,20 +30,32 @@ public class UserAnswer {
 		
 	};
 	
+	/**
+	 * Create a new user answer
+	 * @param week The week of the bonus question
+	 * @param num the bonus question number
+	 * @param answer the answer the user provided
+	 */
 	public UserAnswer(int week,int num,String answer){
 		this.answer= answer;
 		this.week = week;
 		this.num=num;
 	}
 	
+	/**
+	 * Used mostly for comparing
+	 * @param week
+	 * @param num
+	 */
 	public UserAnswer(int week,int num){
 		this.num= num;
 		this.week = week;
 	}
 	
-	public UserAnswer() {
-		
-	}
+	/**
+	 * Used mostly for json
+	 */
+	public UserAnswer() {}
 
 	public int getWeek() {
 		return week;
@@ -64,6 +76,7 @@ public class UserAnswer {
 	public String getAnswer() {
 		return answer;
 	}
+	
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}

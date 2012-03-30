@@ -72,14 +72,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		try { // set up the smaller list font
 			ff1 = FontFamily.forName("Verdana");
 			font2 = ff1.getFont(Font.BOLD, 20);
-		} catch (final ClassNotFoundException cnfe) {
-			UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					Dialog.alert("FontFamily.forName() threw "
-							+ cnfe.toString());
-				}
-			});
-		}
+		} catch (final ClassNotFoundException cnfe) {}
 		
 		Vector contList = GameData.getCurrentGame().getActiveContestants();
 		

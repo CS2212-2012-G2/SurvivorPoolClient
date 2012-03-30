@@ -31,7 +31,7 @@ import data.bonus.Bonus;
 import data.bonus.BonusQuestion;
 
 public class BonusScreen extends MainScreen implements FieldChangeListener {
-	/* Variables */
+	
 	private LabelField labelTitle; // various labels.
 	private FontFamily ff1; // fonts.
 	private Font font1, font2; // fonts.
@@ -42,7 +42,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	private VerticalFieldManager vertFieldManager;
 	
 	private Vector questions = Bonus.getAllQuestions();
-	//int questionNum = questions.size() - 1;
 	BonusQuestion currentQuestion;
 	
 	public BonusScreen() {
@@ -128,10 +127,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		horFieldManager.add(buttonNext);
 		
 		updateQuestionScreen();
-		
-		for(int i =0;i<questions.size();i++){
-			BonusQuestion b = (BonusQuestion) questions.elementAt(i);
-		}
+
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
 		this.setStatus(Common.getToolbar());
@@ -221,7 +217,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			if(currentQuestion.getBonusType()==0){
 				answer = answerField.getText();
 				if(answer.length()>200||answer.length()<1){
-					Dialog.alert("Answer must be between 1- 200 characters");
+					Common.displayErrorMsg("Answer must be between 1- 200 characters");
 					return;
 				}
 			}else{
@@ -230,19 +226,17 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 			u.setUserAnswer(currentQuestion, answer);
 			Status.show("Submitted.");
-		} else if (arg0 == buttonNext) {
-			int loc = questions.indexOf(currentQuestion);
-			currentQuestion = (BonusQuestion) questions.elementAt(loc+1);
+		} else { // switching questions
+			int loc= questions.indexOf(currentQuestion);
+			if (arg0 == buttonNext)
+				loc++;
+			else
+				loc--;
+			
+			currentQuestion = (BonusQuestion) questions.elementAt(loc);
 			try{
 				updateQuestionScreen();
 			}catch(Exception e){}
-		} else if (arg0 == buttonPrevious) {
-			int loc = questions.indexOf(currentQuestion);
-			currentQuestion = (BonusQuestion) questions.elementAt(loc-1);
-			try{
-				updateQuestionScreen();
-			}catch(Exception e){}
-
 		}
 	}
 

@@ -68,14 +68,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		try { // set up the font
 			ff1 = FontFamily.forName("Verdana");
 			font1 = ff1.getFont(Font.BOLD, 30);
-		} catch (final ClassNotFoundException cnfe) {
-			UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					Dialog.alert("FontFamily.forName() threw "
-							+ cnfe.toString());
-				}
-			});
-		}
+		} catch (final ClassNotFoundException cnfe) {}
 		edit.setFont(font1);
 
 		/* Build the components to MainScreen */
