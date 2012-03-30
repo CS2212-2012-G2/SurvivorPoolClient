@@ -109,13 +109,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		
 		horFieldManager.add(buttonPrevious);
 		
-		/* Add the send button */
-		buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
-		buttonSend.setChangeListener(this);
-
-		buttonSend.setMargin(0, 20, 30, 20);
-		horFieldManager.add(buttonSend);
-
 		labelTitle = new LabelField("  Bonus Questions ");
 		labelTitle.setFont(font1); // centre label
 
@@ -124,6 +117,13 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		buttonNext = new ButtonField("Next"); // next button
 		buttonNext.setChangeListener(this);
 		horFieldManager.add(buttonNext);
+	
+		/* Add the send button */
+		buttonSend = new ButtonField("Send", ButtonField.FIELD_HCENTER|ButtonField.FIELD_BOTTOM);
+		buttonSend.setChangeListener(this);
+
+		buttonSend.setMargin(0, 20, 30, 20);
+		horFieldManager.add(buttonSend);
 		
 		updateQuestionScreen();
 
@@ -137,6 +137,16 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		String uAnswer = curUser.getUserAnswer(currentQuestion);
 		
 		questionField.setText(currentQuestion.getPrompt());
+		buttonPrevious.setEnabled(true);
+		buttonNext.setEnabled(true);
+		int loc = questions.indexOf(currentQuestion);
+		System.out.println("     "+loc);
+		if(loc==0)
+			buttonPrevious.setEnabled(false);
+		if(loc==questions.size()-1)
+			buttonNext.setEnabled(false);
+		
+		buttonSend.setEnabled(!showAnswer());
 		
 		if(currentQuestion.getBonusType()==0){//short answer
 			try{
@@ -181,16 +191,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 			vertFieldManager.add(multiChoiceField);
 		}
-		
-		buttonPrevious.setEnabled(true);
-		buttonNext.setEnabled(true);
-		
-		if(currentQuestion.equals(questions.firstElement()))
-			buttonPrevious.setEnabled(false);
-		if(currentQuestion.equals(questions.lastElement()))
-			buttonNext.setEnabled(false);
-		
-		buttonSend.setEnabled(!showAnswer());
 		
 	}
 

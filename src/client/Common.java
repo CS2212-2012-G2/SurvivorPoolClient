@@ -76,7 +76,11 @@ public class Common {
 		createToolbar(msg);
 		return toolbar;
 	}
-	private static void save(){
+	/**
+	 * Save data to file with appropriate checks
+	 * @return true if user saved or false if user hit cancel or could not save
+	 */
+	private static boolean save(){
 		int response = Dialog.ask(Dialog.D_SAVE,"Do you want to save?");
 		if(response == Dialog.SAVE){
 			//TODO: is first week, week 0?
@@ -85,12 +89,14 @@ public class Common {
 				if(u.getUltimatePick()==null){
 					displayErrorMsg("Cannot save unless you choose an ultimate pick.");
 					UiApplication.getUiApplication().pushScreen(new PickScreen(PickScreen.T_ULTIMATE));
-					return;
+					return false;
 				}
 			}
 			GameData.getCurrentGame().writeData();
+			return true;
 		}else if(response == Dialog.CANCEL)
-			return;
+			return false;
+		return true;
 	}
 	
 	/**
@@ -102,8 +108,8 @@ public class Common {
 			System.exit(0);
 			return;
 		}
-		save();
-		System.exit(0);
+		if(save())
+			System.exit(0);
 	}
 
 	/**

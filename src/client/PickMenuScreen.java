@@ -44,7 +44,7 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 		btnWeekly.setMargin(230, 0, 0, 0); // formatting
 		btnUltimate = new ButtonField("Vote For Ultimate", LabelField.FIELD_HCENTER); 
 		btnUltimate.setChangeListener(this);
-
+		System.out.println(GameData.getCurrentGame().weeksLeft());
 		if(GameData.getCurrentGame().weeksLeft()==1){
 			btnWeekly.setLabel("Vote For Finals");
 		}

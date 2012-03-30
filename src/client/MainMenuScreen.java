@@ -8,6 +8,7 @@ package client;
  * Description:
  * */
 
+import data.GameData;
 import data.bonus.Bonus;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
@@ -51,7 +52,8 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 		/* Build the components to MainScreen */
 		this.setStatus(Common.getToolbar("Log Out"));
 		vertFieldManager.add(btnUserStanding);
-		vertFieldManager.add(btnVote);
+		if(!GameData.getCurrentGame().getSeasonEnded())
+			vertFieldManager.add(btnVote);
 		if(Bonus.questionsExist())
 			vertFieldManager.add(btnBonus);
 		this.add(vertFieldManager);
