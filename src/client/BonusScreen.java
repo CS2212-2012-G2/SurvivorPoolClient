@@ -152,9 +152,19 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 				c[0] = "Cor. Answer:"+currentQuestion.getAnswer();
 				if(uAnswer!=null)
 					c[1]= "Your answer: "+uAnswer;
+				else
+					c[1] = "Did not answer";
 				multiChoiceField.setChoices(c);
 			}else{
-				multiChoiceField.setChoices(currentQuestion.getChoices());
+				String[] choices = currentQuestion.getChoices();
+				multiChoiceField.setChoices(choices);
+				if(uAnswer!=null){
+					for(int i =0;i<choices.length;i++){
+						if(uAnswer.equalsIgnoreCase(choices[i]))
+							multiChoiceField.setSelectedIndex(i);
+					}
+				}
+				
 			}
 			
 			vertFieldManager.add(multiChoiceField);
