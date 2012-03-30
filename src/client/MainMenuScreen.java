@@ -39,7 +39,6 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 
-		setToolbar(Common.getToolbar());
 		/* buttons */
 		btnUserStanding = new ButtonField("View Standings", LabelField.FIELD_HCENTER);
 		btnUserStanding.setChangeListener(this);
@@ -50,7 +49,7 @@ public class MainMenuScreen extends MainScreen implements FieldChangeListener {
 		btnBonus.setChangeListener(this);
 
 		/* Build the components to MainScreen */
-		this.setStatus(Common.getToolbar());
+		this.setStatus(Common.getToolbar("Log Out"));
 		vertFieldManager.add(btnUserStanding);
 		vertFieldManager.add(btnVote);
 		if(Bonus.questionsExist())

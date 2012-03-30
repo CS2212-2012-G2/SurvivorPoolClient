@@ -35,7 +35,9 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 	public SplashScreen() {
 		super(NO_VERTICAL_SCROLL);
-
+		if(GameData.getCurrentGame()!=null){
+			GameData.getCurrentGame().setCurrentUser(null);
+		}
 		backgroundBitmap = Bitmap.getBitmapResource("Splash.png"); // background
 
 		VerticalFieldManager vertFieldManager = new VerticalFieldManager(
@@ -47,9 +49,6 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 				super.paint(graphics);
 			}
 		};
-
-		setToolbar(Common.getToolbar());
-
 
 		btnLogin = new ButtonField("Log In", LabelField.FIELD_HCENTER);
 		btnLogin.setChangeListener(this); // activate listener
@@ -72,7 +71,7 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 		edit.setFont(font1);
 
 		/* Build the components to MainScreen */
-		this.setStatus(Common.getToolbar());
+		this.setStatus(Common.getToolbar(null));
 		vertFieldManager.add(edit);
 		vertFieldManager.add(btnLogin);
 		this.add(vertFieldManager);

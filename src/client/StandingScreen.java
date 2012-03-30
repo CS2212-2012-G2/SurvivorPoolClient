@@ -47,9 +47,6 @@ public class StandingScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 		;
-
-	
-		setToolbar(Common.getToolbar());
 		
 		RichList list = new RichList(vertFieldManager, false, 1, 0);
 		try { // set up the header list font
@@ -115,7 +112,7 @@ public class StandingScreen extends MainScreen implements FieldChangeListener {
 		}
 
 		/* Build the components to MainScreen */
-		this.setStatus(Common.getToolbar());
+		this.setStatus(Common.getToolbar("Log Out"));
 		this.add(vertFieldManager);
 
 	}

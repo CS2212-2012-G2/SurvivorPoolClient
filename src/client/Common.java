@@ -18,29 +18,32 @@ public class Common {
 	/**
 	 * creates the toolbar for common actions
 	 */
-	private static void createToolbar(){
+	private static void createToolbar(String msg){
 		toolbar = new ToolbarManager();
 		try {
 			// refresh button
-			ToolbarButtonField btnRefresh = new ToolbarButtonField(null,
-					new StringProvider("Refresh"));
+			if(msg!=null){
+				ToolbarButtonField btnLogout = new ToolbarButtonField(null,
+						new StringProvider(msg));
 			
-			btnRefresh.setCommandContext(new Object() {
-				public String toString() {
-					return "toolbutton1";
-				}
-			});
+				btnLogout.setCommandContext(new Object() {
+					public String toString() {
+						return "toolbutton1";
+					}
+				});
 			
-			// if pressed, go back to the splash screen
-			btnRefresh.setCommand(new Command(new CommandHandler() {
-				public void execute(ReadOnlyCommandMetadata metadata,
-						Object context) {
-					UiApplication.getUiApplication().pushScreen(
-							new SplashScreen());
-				}
-			}));
-			
-			
+				// if pressed, go back to the splash screen
+				btnLogout.setCommand(new Command(new CommandHandler() {
+					public void execute(ReadOnlyCommandMetadata metadata,
+							Object context) {
+						System.out.println("go back to splash");
+						save();
+						UiApplication.getUiApplication().pushScreen(
+								new SplashScreen());
+					}
+				}));
+				toolbar.add(btnLogout);
+			}
 			// Exit button 
 			ToolbarButtonField btnExit = new ToolbarButtonField(null,
 					new StringProvider("Exit"));
@@ -59,25 +62,21 @@ public class Common {
 			}));
 
 			/* add buttons to the tool bar */
-			toolbar.add(btnRefresh);
+			
 			toolbar.add(btnExit);
 		} catch (Exception e) {}
 	}
 	
 	/**
 	 * The toolbar with refresh and exit
+	 * @param msg Changes the first label
 	 * @return
 	 */
-	public static ToolbarManager getToolbar(){
-		createToolbar();
+	public static ToolbarManager getToolbar(String msg){
+		createToolbar(msg);
 		return toolbar;
 	}
-	
-	/**
-	 * Close the app with the option to saveData
-	 * @param saveData
-	 */
-	public static void exitApp(){
+	private static void save(){
 		int response = Dialog.ask(Dialog.D_SAVE,"Do you want to save?");
 		if(response == Dialog.SAVE){
 			//TODO: is first week, week 0?
@@ -92,6 +91,18 @@ public class Common {
 			GameData.getCurrentGame().writeData();
 		}else if(response == Dialog.CANCEL)
 			return;
+	}
+	
+	/**
+	 * Close the app with the option to saveData
+	 * @param saveData
+	 */
+	public static void exitApp(){
+		if(GameData.getCurrentGame()==null||GameData.getCurrentGame().getCurrentUser()==null){
+			System.exit(0);
+			return;
+		}
+		save();
 		System.exit(0);
 	}
 

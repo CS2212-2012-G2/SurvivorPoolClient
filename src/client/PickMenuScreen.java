@@ -37,8 +37,6 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 				super.paint(graphics);
 			}
 		};
-
-		setToolbar(Common.getToolbar());
 		
 		/* Buttons */
 		btnWeekly = new ButtonField("Vote For This Week", LabelField.FIELD_HCENTER); 
@@ -51,7 +49,7 @@ public class PickMenuScreen extends MainScreen implements FieldChangeListener{
 			btnWeekly.setLabel("Vote For Finals");
 		}
 
-		this.setStatus(Common.getToolbar());
+		this.setStatus(Common.getToolbar("Log Out"));
 		vertFieldManager.add(btnWeekly);
 		vertFieldManager.add(btnUltimate);
 		this.add(vertFieldManager);

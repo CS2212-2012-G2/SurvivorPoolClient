@@ -67,8 +67,6 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		};
 		;
 
-		setToolbar(Common.getToolbar());
-
 		try { // set up the smaller list font
 			ff1 = FontFamily.forName("Verdana");
 			font2 = ff1.getFont(Font.BOLD, 20);
@@ -150,7 +148,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
-		this.setStatus(Common.getToolbar());
+		this.setStatus(Common.getToolbar("Log Out"));
 		vertFieldManager.setFocus(); //THIS NEEDS TO BE HERE. APP CRASHES WITHOUT IT
 	}
 

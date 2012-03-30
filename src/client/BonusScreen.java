@@ -62,7 +62,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 
-		setToolbar(Common.getToolbar());
+		//setToolbar(Common.getToolbar());
 
 		/* Font setup */
 		try { // set up the smaller list font
@@ -129,7 +129,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 
 		this.setTitle(horFieldManager);
 		this.add(vertFieldManager);
-		this.setStatus(Common.getToolbar());
+		this.setStatus(Common.getToolbar("Log Out"));
 	}
 	
 	private void updateQuestionScreen(){
