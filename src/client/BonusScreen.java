@@ -41,10 +41,12 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	private VerticalFieldManager vertFieldManager;
 	
 	private Vector questions = Bonus.getAllQuestions();
-	int questionNum = questions.size() - 1;
-
+	//int questionNum = questions.size() - 1;
+	BonusQuestion currentQuestion;
+	
 	public BonusScreen() {
 		super(NO_VERTICAL_SCROLL);
+		currentQuestion = (BonusQuestion) questions.lastElement();
 		drawQuestionScreen();
 	}
 
@@ -95,8 +97,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 
 		buttonNext = new ButtonField("Next"); // next button
 		buttonNext.setChangeListener(this);
-		if (questionNum == questions.size()-1)
-			buttonNext.setEnabled(false);
 		horFieldManager.add(buttonNext);
 		
 		updateQuestionScreen();
@@ -108,7 +108,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	private void updateQuestionScreen(){
 		//TODO: a better way to update screen than this.
 		vertFieldManager.deleteAll();
-		BonusQuestion currentQuestion = (BonusQuestion) questions.elementAt(questionNum);
 		questionField = new EditField(currentQuestion.getPrompt(), "", 1,
 				EditField.NO_NEWLINE) {
 			public void paint(Graphics graphics) { // keep on same line
@@ -176,9 +175,9 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		buttonPrevious.setEnabled(true);
 		buttonNext.setEnabled(true);
 		
-		if(questionNum==0)
+		if(currentQuestion.equals(questions.firstElement()))
 			buttonPrevious.setEnabled(false);
-		if(questionNum==questions.size()-1)
+		if(currentQuestion.equals(questions.lastElement()))
 			buttonNext.setEnabled(false);
 		
 
@@ -192,9 +191,8 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	}
 
 	private boolean showAnswer(){
-		BonusQuestion cur = (BonusQuestion) questions.elementAt(questionNum);
 		GameData g = GameData.getCurrentGame();
-		if(cur.getWeek()<g.getCurrentWeek())
+		if(currentQuestion.getWeek()<g.getCurrentWeek())
 			return true;
 		return false;
 	}
@@ -206,21 +204,22 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 	public void fieldChanged(Field arg0, int arg1) {
 		if (arg0 == buttonSend) { 
 			User u = GameData.getCurrentGame().getCurrentUser();
-			BonusQuestion b = (BonusQuestion) questions.elementAt(questionNum);
 			String answer="";
-			if(b.getBonusType()==0){
+			if(currentQuestion.getBonusType()==0){
 				answer = answerField.getText();
 			}else{
 				int i =multiChoiceField.getSelectedIndex();
-				answer = b.getChoices()[i];
+				answer = currentQuestion.getChoices()[i];
 			}
-			u.setUserAnswer(b, answer);
-			Status.show("Sent.");
+			u.setUserAnswer(currentQuestion, answer);
+			Status.show("Submitted.");
 		} else if (arg0 == buttonNext) {
-			++questionNum;
+			int loc = questions.indexOf(currentQuestion);
+			currentQuestion = (BonusQuestion) questions.elementAt(loc+1);
 			updateQuestionScreen();
 		} else if (arg0 == buttonPrevious) {
-			--questionNum;
+			int loc = questions.indexOf(currentQuestion);
+			currentQuestion = (BonusQuestion) questions.elementAt(loc-1);
 			updateQuestionScreen();
 
 		}
