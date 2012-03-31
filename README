@@ -4,10 +4,14 @@ BB SurvivorPool
 
 Setup
 ------
-Map the SD card to the folder that contains "res" folder on the admin side, not the client side. The res folder should be
-found in the same folder as the Swing .jar file.
+Create a Blackberry project called *SurvivorPoolClient* in eclipse. 
+Delete the src folder in the project and copy in all the files from the client jar files.
+
 
 Run BlackBerryApp.java
+
+Map the SD card to the folder that contains "res" folder on the admin side, not the client side. The res folder should be
+found in the same folder as the Swing .jar file.
 
 Season must be started to be able to log into BB(warning shows up)
 
