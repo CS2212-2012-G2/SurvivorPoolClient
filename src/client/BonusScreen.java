@@ -16,6 +16,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
@@ -147,6 +148,8 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 		buttonSend.setEnabled(!showAnswer());
 		if(uAnswer!=null)
 			buttonSend.setLabel("Resend");
+		else
+			buttonSend.setLabel("Send");
 		
 		if(currentQuestion.getBonusType()==0){//short answer
 			try{
@@ -225,6 +228,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 			u.setUserAnswer(currentQuestion, answer);
 			Status.show("Submitted.");
+			UiApplication.getUiApplication().popScreen(this);
 		} else { // switching questions
 			int loc= questions.indexOf(currentQuestion);
 			if (arg0 == buttonNext)
