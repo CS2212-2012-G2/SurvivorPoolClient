@@ -4,6 +4,8 @@ BB SurvivorPool
 
 Setup
 ------
+BB version used is 7.1.0
+
 Create a Blackberry project called *SurvivorPoolClient* in eclipse. 
 Delete the src folder in the project and copy in all the files from the client jar files.
 
