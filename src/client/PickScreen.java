@@ -24,7 +24,6 @@ import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.Status;
@@ -77,11 +76,11 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		Contestant[] contArray = new Contestant[contList.size()];
 		contList.copyInto(contArray);
 		ocfActiveContestant = new ObjectChoiceField(" Cast your "+ voteType + " vote: ",contArray);
-		User u = GameData.getCurrentGame().getCurrentUser();
-		if(voteType==T_WEEKLY&&u.getWeeklyPick()!=null){
-			ocfActiveContestant.setSelectedIndex(u.getWeeklyPick());
-		}else if(voteType==T_ULTIMATE&&u.getUltimatePick()!=null){
-			ocfActiveContestant.setSelectedIndex(u.getUltimatePick());
+		User user = GameData.getCurrentGame().getCurrentUser();
+		if(voteType==T_WEEKLY&&user.getWeeklyPick()!=null){
+			ocfActiveContestant.setSelectedIndex(user.getWeeklyPick());
+		}else if(voteType==T_ULTIMATE&&user.getUltimatePick()!=null){
+			ocfActiveContestant.setSelectedIndex(user.getUltimatePick());
 		}
 			
 		list = new RichList(vertFieldManager, true, 3, 0);
@@ -138,7 +137,12 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		};
 		;
 
-		btnVoted = new ButtonField("Okay");
+		String voted= "Vote";
+		user = GameData.getCurrentGame().getCurrentUser();
+		System.out.println(user.getWeeklyPick()+" "+this.voteType);
+		if((this.voteType==T_WEEKLY&&user.getWeeklyPick()!=null)||(this.voteType==T_ULTIMATE&&user.getUltimatePick()!=null))
+			voted = "Revote";
+		btnVoted = new ButtonField(voted);
 		btnVoted.setChangeListener(this);
 
 		horFieldManager.add(btnVoted);
@@ -167,6 +171,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 						.setUltimatePick(c);
 			}
 			Status.show("You chose: "+c.getFirstName()+" "+c.getLastName());
+			UiApplication.getUiApplication().popScreen(this);
 		}
 	}
 

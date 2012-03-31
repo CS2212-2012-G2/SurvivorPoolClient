@@ -62,8 +62,6 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 
-		//setToolbar(Common.getToolbar());
-
 		/* Font setup */
 		try { // set up the smaller list font
 			ff1 = FontFamily.forName("Verdana");
@@ -92,7 +90,7 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			}
 		};
 		
-		answerField = new EditField("Answer:  ", "", 200, 0) {
+		answerField = new EditField("Answer:  ", "", 200, 0){
 			public void paint(Graphics graphics) { // keep on same line
 				graphics.setColor(Color.WHITE); // white text
 				super.paint(graphics);
@@ -147,6 +145,8 @@ public class BonusScreen extends MainScreen implements FieldChangeListener {
 			buttonNext.setEnabled(false);
 		
 		buttonSend.setEnabled(!showAnswer());
+		if(uAnswer!=null)
+			buttonSend.setLabel("Resend");
 		
 		if(currentQuestion.getBonusType()==0){//short answer
 			try{
