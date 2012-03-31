@@ -18,41 +18,41 @@ Season must be started to be able to log into BB(warning shows up)
 
 Completing Specs
 ----------------
-1.1 enter his/her userid
+1. **enter his/her userid**
 	Starting the app will show the login screen. Enter user id and hit *log in*.
 	
-1.2 see the current standings 
+2. **see the current standings** 
 	In the main menu, click on *view standings*
 	
-1.3 pick which contestant will be the ultimate winner
+3. **pick which contestant will be the ultimate winner**
 	In the main menu, click on *Make your vote*, then *Vote for Ultimate*
 	
-1.4 see which contestants are still remaining, which have been eliminated
+4. **see which contestants are still remaining, which have been eliminated**
 	In the main menu, click on *Make your vote*, then any of the options
 	The values in the table show all the contestants and if they have been casted off or not
 	
-1.5 pick which contestant he/she thinks will be eliminated this week/round.
+5. **pick which contestant he/she thinks will be eliminated this week/round.**
 	In the main menu, click on *Make your vote*, then *Vote for this week*
 
-1.6 see the bonus questions
+6. **see the bonus questions**
 	In the main menu, click on *Bonus Questions*. Use the *prev* and *next*
 	buttons to switch between questions
 
-1.7 answer the bonus questions
+7. **answer the bonus questions**
 	See 1.6, but either select answer from drop down box, or enter in value in the answer text field
 	Hit *send* to submit the answer
 
-1.8 during the final week, pick from the remaining 3 contestants, which contestants will win the whole game.
+8. **during the final week, pick from the remaining 3 contestants, which contestants will win the whole game.**
 	See 1.5, except instead of Make your vote, it will say *Vote For Finals*
 	
-2.1 Upload his/her picks to the internet,the very first week, do NOT allow the user to upload his/her 
-	pick unless the user picks an overall winner.
+9. **Upload his/her picks to the internet,the very first week, do NOT allow the user to upload his/her pick**
+	**unless the user picks an overall winner.**
 	When the user hits *exit*, or *log out* a prompt is given to save. If user has not picked an overall winner
 	in the first week, it alerts user to select an ultimate user.
 
-3.1 When all the players (users) have been added by the administrative user and the game is about to start,
-	the blackberry side must download all the userids to allow the player to logon and somehow store those
-	userids on the blackberry. There must also be a reset that wipes clean all the userids so that it could
-	be reloaded again. This must be persistent (the user should only have to load the players once).
+10. **When all the players (users) have been added by the administrative user and the game is about to start,**
+	**the blackberry side must download all the userids to allow the player to logon and somehow store those**
+	**userids on the blackberry. There must also be a reset that wipes clean all the userids so that it could**
+	**be reloaded again. This must be persistent (the user should only have to load the players once).**
 
 	See setting up SD card. One can log out and log back in as any user.
