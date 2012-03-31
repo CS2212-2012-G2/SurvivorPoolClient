@@ -22,6 +22,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
@@ -170,6 +171,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 						.setUltimatePick(c);
 			}
 			Status.show("You chose: "+c.getFirstName()+" "+c.getLastName());
+			UiApplication.getUiApplication().popScreen(this);
 		}
 	}
 
