@@ -15,7 +15,7 @@
 
   <target name="jar-sub">
 
-    <delete file="res/data/Settings.dat"/>
+    <delete file="res/data/GameData.dat"/>
     <delete file="${jar-out}"/>
     <jar destfile="${jar-out}"
          basedir="./"

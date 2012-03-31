@@ -11,7 +11,7 @@ Should you have an older version of BlackBerry OS, see `Install BlackBerry OS
 
 1) Create a Blackberry project called *SurvivorPoolClient* in Eclipse. 
 
-2) Delete the ``src/`` folder in the project and copy *all* the files from the
+2) Delete the ``src/`` and ``bin/`` folder in the project and copy *all* the files from the
    client jar file.
 
 3) Run BlackBerryApp.java
