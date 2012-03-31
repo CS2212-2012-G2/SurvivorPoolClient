@@ -46,7 +46,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 	private ObjectChoiceField ocfActiveContestant;
 	private RichList list;
 
-	private final static String DEFAULT_IMAGE = "res/test/defaultpic.png";
+	private final static String DEFAULT_IMAGE = "res/img/defaultpic.png";
 	
 	public final static int T_WEEKLY= 0;
 	public final static int T_ULTIMATE= 1;

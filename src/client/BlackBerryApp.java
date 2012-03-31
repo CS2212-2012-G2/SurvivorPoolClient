@@ -13,7 +13,12 @@ import net.rim.device.api.ui.UiApplication;
 public class BlackBerryApp extends UiApplication {
 
 	public BlackBerryApp () {
-		pushScreen(new SplashScreen()); // loads first class screen
+		try{
+			pushScreen(new SplashScreen()); // loads first class screen
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			System.out.println("CAUGHT IN BBAPP. ");
+		}
 	}
 
 	public static void main(String[] args) {
