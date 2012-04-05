@@ -27,9 +27,6 @@ import data.me.json.JSONObject;
  */
 public class JSONUtils {
 
-	// some code from
-	// http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822
-
 	/**
 	 * Get a json object from file path
 	 * 
@@ -37,6 +34,7 @@ public class JSONUtils {
 	 *            The file path where the json string is stored
 	 * @param displayError
 	 *            true if you want to display an error on file not found.
+	 * Source: {@link http://supportforums.blackberry.com/t5/Java-Development/Unable-to-read-SDCard-data/td-p/492822}
 	 */
 	public static JSONObject readFile(String path, boolean displayError)
 			throws FileNotFoundException {
@@ -54,12 +52,12 @@ public class JSONUtils {
 	}
 
 	/**
-	 * Write all the necessary files
-	 * 
+	 * Write all the necessary files needed for bb to be operational
+	 * source {@link http://stackoverflow.com/questions/1519328/j2me-blackberry-how-to-read-write-text-file}
 	 * @throws JSONException
 	 */
 	public static void writeData() throws JSONException {
-		// http://stackoverflow.com/questions/1519328/j2me-blackberry-how-to-read-write-text-file
+		// 
 
 		if (!isSDCardInserted()) {
 			Common.displayErrorMsg("SD Card not inserted.");
@@ -85,8 +83,8 @@ public class JSONUtils {
 	/**
 	 * Write json object to a specified object
 	 * 
-	 * @param json
-	 * @param filePath
+	 * @param json the json object
+	 * @param filePath the file path
 	 * @throws IOException
 	 */
 	private static void writeData(JSONObject json, String filePath)
@@ -109,8 +107,13 @@ public class JSONUtils {
 		fconn.close();
 	}
 
-	// from
-	// http://stackoverflow.com/questions/1519328/j2me-blackberry-how-to-read-write-text-file
+	/**
+	 * Return string of file contents
+	 * @param path the path of the file
+	 * @param displayError to display error for any errors
+	 * @return string of file contents
+	 * Source: {@link http://stackoverflow.com/questions/1519328/j2me-blackberry-how-to-read-write-text-file}
+	 */
 	private static String readTextFile(String path,boolean displayError) {
 		if (!isSDCardInserted()) {
 			Common.displayErrorMsg("SD Card not inserted.");
@@ -148,9 +151,8 @@ public class JSONUtils {
 	}
 
 	/**
-	 * Quick check to see if sd card has been inserted
-	 * 
-	 * @return
+	 * Quick check to see if sd card has been inserter
+	 * @return true if sd card found
 	 */
 	private static boolean isSDCardInserted() {
 		Enumeration r = FileSystemRegistry.listRoots();

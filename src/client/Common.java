@@ -18,8 +18,10 @@ public class Common {
 
 	private static ToolbarManager toolbar;
 	
+
 	/**
-	 * creates the toolbar for common actions
+	 * Toolbar generator
+	 * @param msg The message that's not exit(usually logout)
 	 */
 	private static void createToolbar(String msg){
 		toolbar = new ToolbarManager();
@@ -73,7 +75,7 @@ public class Common {
 	/**
 	 * The toolbar with refresh and exit
 	 * @param msg Changes the first label
-	 * @return
+	 * @return a toolbarmanager
 	 */
 	public static ToolbarManager getToolbar(String msg){
 		createToolbar(msg);
@@ -102,6 +104,10 @@ public class Common {
 		return true;
 	}
 	
+	/**
+	 * Deals with saving and logging the user off
+	 * @return true if the game was saved
+	 */
 	public static boolean logoff(){
 		boolean saveStatus= save();
 		if(saveStatus)
@@ -111,7 +117,6 @@ public class Common {
 	
 	/**
 	 * Close the app with the option to saveData
-	 * @param saveData
 	 */
 	public static void exitApp(){
 		if(GameData.getCurrentGame()==null||GameData.getCurrentGame().getCurrentUser()==null){

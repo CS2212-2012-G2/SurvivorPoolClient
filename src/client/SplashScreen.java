@@ -92,6 +92,11 @@ public class SplashScreen extends MainScreen implements FieldChangeListener {
 
 	}
 
+	/**
+	 * Checks if the login id exists in database
+	 * @param userID the user id 
+	 * @return true if user id found
+	 */
 	public boolean checkLogIn(String userID) {
 		try {
 			//TODO: find the proper place to check. Not during click.

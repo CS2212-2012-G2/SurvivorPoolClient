@@ -177,8 +177,7 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 
 	/**
 	 * Gets the contestant from the drop down box or null if none chosen
-	 * 
-	 * @return
+	 * @return the contestant object
 	 */
 	private Contestant getChosenContestant() {
 		int i = ocfActiveContestant.getSelectedIndex();
@@ -189,9 +188,10 @@ public class PickScreen extends MainScreen implements FieldChangeListener {
 		return contestant;
 	}
 
-	// original from
-	// http://supportforums.blackberry.com/t5/Java-Development/How-to-read-display-image-from-SD-card-on-Device/m-p/621671#M129277
-
+	/**
+	 * Gets the image given a path
+	 * Source: {@link http://supportforums.blackberry.com/t5/Java-Development/How-to-read-display-image-from-SD-card-on-Device/m-p/621671#M129277}
+	 */
 	public Bitmap getImage(String path) {
 		StringBuffer sb = new StringBuffer(1024);
 		sb.append("file:///SDCard/").append(path);

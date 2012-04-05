@@ -1,7 +1,6 @@
 package client.data;
 
 /**@author Ramesh Raj, Kevin Brightwell
- * 
  */
 import java.util.Vector;
 
@@ -13,9 +12,7 @@ import data.me.json.JSONObject;
 
 public class GameData extends data.GameData {
 
-	private Vector allList; // lits of
-	// all/remaining
-	// contestants
+	private Vector allList;
 	public static String filePath = "file:///SDCard/res/data/GameData.dat";
 	
 	public GameData(int numContestants) {
