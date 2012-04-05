@@ -1,8 +1,7 @@
 package client;
 
-/* Author: CS2212 Group 2
+/**@author Jonathan Demelo, Ramesh Raj
  * File Name: BlackBerryApp.java
- * Date: 25/01/2012
  * Project: UWOSurvivorPool
  * Course: CS2212b
  * Description: The gateway class which create the first instance of the Blackberry application.

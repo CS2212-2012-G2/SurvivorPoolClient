@@ -1,5 +1,7 @@
 package data.bonus;
 
+/**@author Ramesh Raj
+ */
 import net.rim.device.api.util.Comparator;
 import data.me.json.JSONException;
 import data.me.json.JSONObject;

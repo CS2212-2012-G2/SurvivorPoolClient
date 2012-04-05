@@ -19,6 +19,7 @@ import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
 /**
+ * @author Ramesh Raj
  * Use this class to get the keys, to write to a file, and getting values. This
  * differs from justing using the JSON classes directly as we keep references to
  * the object centralized. We can take care of any additional code that is

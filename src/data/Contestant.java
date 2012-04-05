@@ -10,8 +10,7 @@ import data.me.json.JSONObject;
  * The contestant class will be used to create a person who will be competing in
  * the actual game of survivor, and can be chosen by people from the User class.
  * 
- * @author Kevin Brightwell, Jonathon Demelo, Graem Littleton, Justin McDonald,
- * 			Ramesh Raj 
+ * @author Kevin Brightwell, Jonathon Demelo, Graem Littleton, Ramesh Raj 
  */
 
 public class Contestant implements Person {

@@ -1,6 +1,8 @@
 package client.data;
 
-
+/**@author Jonathan Demelo, Ramesh Raj, Kevin Brightwell
+ * 
+ */
 
 import net.rim.device.api.util.Comparator;
 import data.Contestant;

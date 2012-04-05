@@ -1,5 +1,8 @@
 package client;
 
+/**@author Jonathan Demelo, Ramesh Raj
+ */
+
 import net.rim.device.api.command.Command;
 import net.rim.device.api.command.CommandHandler;
 import net.rim.device.api.command.ReadOnlyCommandMetadata;

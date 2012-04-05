@@ -8,8 +8,7 @@ import data.me.json.JSONObject;
  * BonusQuestion is the class that will deal with the numerous bonus questions
  * that users can answer at their leisure during the competition.
  * 
- * @author Graem Littleton, Kevin Brightwell, Jonathan Demelo, Ramesh Raj,
- *         Justin McDonald
+ * @author Ramesh Raj
  * 
  */
 

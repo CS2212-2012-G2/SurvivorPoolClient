@@ -1,6 +1,6 @@
 package client;
 
-/* Author: CS2212 Group 2
+/**@author Jonathan Demelo, Ramesh Raj
  * File Name: PickMenuScreen.java
  * Date: 25/01/2012
  * Project: UWOSurvivorPool

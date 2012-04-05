@@ -1,6 +1,8 @@
 package client.data;
 
-
+/**@author Ramesh Raj, Kevin Brightwell
+ * 
+ */
 import java.util.Vector;
 
 import net.rim.device.api.io.FileNotFoundException;
