@@ -17,8 +17,7 @@ import data.me.json.JSONObject;
  * information, including the number of weeks passed, the lists of all/active
  * contestants, and the number of weeks remaining.
  * 
- * @author Graem Littleton, Ramesh Raj, Justin McDonald, Jonathan Demelo, Kevin
- *         Brightwell
+ * @author Graem Littleton, Ramesh Raj,Jonathan Demelo, Kevin Brightwell
  */
 
 public abstract class GameData {
@@ -235,8 +234,6 @@ public abstract class GameData {
 	 * 
 	 * @return String array  tribe names
 	 */
-	
-	
 	public String[] getTribeNames(){
 		return tribeNames;
 	}

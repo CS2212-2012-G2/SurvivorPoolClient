@@ -5,11 +5,10 @@ import data.me.json.JSONException;
 import data.me.json.JSONObject;
 
 /**
- * BonusQuestion is the class that will deal with the numerous bonus questions
- * that users can answer at their leisure during the competition.
+ * BonusQuestion is the data type used to store all information about a single
+ * question.
  * 
- * @author Ramesh Raj
- * 
+ * @author Kevin Brightwell (@Nava2), Justin McDonald, Ramesh Raj (@slyos)
  */
 
 public class BonusQuestion {
@@ -197,6 +196,11 @@ public class BonusQuestion {
 		return obj;
 	}
 
+	/**
+	 * Creates a new bonus question object given a json object
+	 * @param o a valid bonus json object
+	 * @throws JSONException
+	 */
 	public void fromJSONObject(JSONObject o) throws JSONException {
 
 		setPrompt(o.getString(KEY_PROMPT));

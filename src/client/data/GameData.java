@@ -61,13 +61,16 @@ public class GameData extends data.GameData {
 		Bonus.initBonus();//initalize bonus
 		return true;
 	}
-
+	
 	public void fromJSONObject(JSONObject obj) throws JSONException {
 		super.fromJSONObject(obj);
 		allList = allContestants;
 		
 	}
 	
+	/**
+	 * Write gamedata to a file
+	 */
 	public void writeData() {
 		try {
 			JSONUtils.writeData();

@@ -22,6 +22,18 @@ public class Contestant implements Person {
 	public boolean toBeCast;
 	private boolean chosen;
 	
+	/**
+	 * Keys represent the string that is to be stored and fetched when writing to a JSON object
+	 * and reading one in.
+	 * 
+	 *                          KEY_FIRST_NAME = "first
+	 *							KEY_LAST_NAME = "last",
+	 *							KEY_ID = "id",
+	 *							KEY_PICTURE = "picture",
+     *							KEY_TRIBE = "tribe",
+	 *							KEY_DATE = "date",
+	 *							KEY_CHOSEN = "chosen",
+	 */
 	protected final static String KEY_FIRST_NAME = "first";
 	protected final static String KEY_LAST_NAME	= "last";
 	protected final static String KEY_ID	= "id";
@@ -32,13 +44,10 @@ public class Contestant implements Person {
 	
 	/**
 	 * Constructor method for type contestant sets player info
-	 * @param _id ID tag
-	 * @param first
-	 *            first name
-	 * @param last
-	 *            last name
-	 * @param _tribe
-	 *            contestant's tribe
+	 * @param _id    ID tag
+	 * @param first  first name
+	 * @param last   last name
+	 * @param _tribe contestant's tribe
 	 */
 	public Contestant(String _id, String first, String last, String _tribe) 
 			throws InvalidFieldException {
@@ -48,6 +57,10 @@ public class Contestant implements Person {
 		setTribe(_tribe);
 	}
 	
+	/**
+	 * Constructor with no parameters.  Simply sets castDate to the uncast and
+	 * picked to false.
+	 */
 	public Contestant() {
 		castDate = -1;
 	}
@@ -192,6 +205,9 @@ public class Contestant implements Person {
 		cID = newID;
 	}
 	
+	/**
+	 * Sets a contestant's cast date.
+	 */
 	public void setCastDate(int date) {
 		castDate = date;
 	}
@@ -274,6 +290,11 @@ public class Contestant implements Person {
 		return obj;
 	}
 	
+	/**
+	 * Converts a JSON object to a Contestant.
+	 * 
+	 * @param o   JSON object
+	 */
 	public void fromJSONObject(JSONObject o) {
 		try {
 			setID(o.getString(KEY_ID));

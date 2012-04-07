@@ -18,7 +18,7 @@ import data.me.json.JSONObject;
  * in the survivor pool.
  * 
  * @author Graem Littleton, Kevin Brightwell, Jonathan Demelo, Ramesh Raj,
- *         Justin McDonald
+ *         
  */
 
 public class User implements Person {
@@ -69,7 +69,10 @@ public class User implements Person {
 
 	}
 
-	// FIXME: Do something intelligent?
+	/**
+	 * Constructor for User with no information given.  Just sets points
+	 * to 0, all other information is null.
+	 */
 	public User() {
 		setPoints(0);
 	}
@@ -111,10 +114,18 @@ public class User implements Person {
 		return weeklyPick;
 	}
 	
+	/**
+	 * Returns the users current score
+	 * @return
+	 */
 	public int getPoints() {
 		return points;
 	}
 	
+	/**
+	 * Sets the users current score
+	 * @param points
+	 */
 	public void setPoints(int points) {
 		this.points = points;
 	}
@@ -297,6 +308,11 @@ public class User implements Person {
 	}
 	// ----------------- JSON ----------------- //
 
+	/**
+	 * Turns a User into a JSON object.
+	 * 
+	 * @return obj   JSON object
+	 */
 	public JSONObject toJSONObject() throws JSONException {
 		JSONObject obj = new JSONObject();
 		
@@ -322,6 +338,12 @@ public class User implements Person {
 		return obj;
 	}
 	
+
+	/**
+	 * Turns a JSON object into a User.
+	 * 
+	 * @param o      JSON object
+	 */
 	public void fromJSONObject(JSONObject o) {
 		answers.setSort(true);
 		answers.setSortComparator(UserAnswer.comp);
@@ -351,6 +373,11 @@ public class User implements Person {
 
 	}
 	
+
+	/**
+	 * Creates a json object from the user's answer
+	 * @return JSONObject json object with the answer
+	 */
 	public JSONObject answerToJSONObject() throws JSONException{
 		if(answers.size()==0)
 			return null;
@@ -364,6 +391,11 @@ public class User implements Person {
 		return o;
 	}
 	
+	/**
+	 * Creates the user's answer from json object
+	 * @param o json object
+	 * @throws JSONException
+	 */
 	public void answersFromJSONObject(JSONObject o) throws JSONException{
 		if(o==null)
 			return;
@@ -376,7 +408,11 @@ public class User implements Person {
 			answers.addElement(uA);
 		}
 	}
-	
+
+	/**
+	 * Get the path of the user's answer
+	 * @param o      JSON object
+	 */
 	public String getAnswerPath(){
 		return answerPath+this.getID()+".dat";
 	}

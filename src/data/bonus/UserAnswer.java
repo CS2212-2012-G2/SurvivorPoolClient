@@ -1,6 +1,8 @@
 package data.bonus;
 
-/**@author Ramesh Raj
+/**
+ * UserAnswer stores the all the given answers of ONE user.
+ * @author Ramesh Raj
  */
 import net.rim.device.api.util.Comparator;
 import data.me.json.JSONException;
@@ -63,27 +65,52 @@ public class UserAnswer {
 		return week;
 	}
 
+	/**
+	 * Set the week of the question this answers
+	 * @param week
+	 */
 	public void setWeek(int week) {
 		this.week = week;
 	}
 
+	/**
+	 * Get the question number in the week this answers
+	 * @return
+	 */
 	public int getNum() {
 		return num;
 	}
 
+	/**
+	 * Set the question number in the week this answers
+	 * @param num
+	 */
 	public void setNum(int num) {
 		this.num = num;
 	}
 
+	/**
+	 * Get the answer
+	 * @return
+	 */
 	public String getAnswer() {
 		return answer;
 	}
 	
+	/**
+	 * Set the answer
+	 * @param answer
+	 */
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
 	
 	
+	/**
+	 * Converts the useranswer object to a valid json object
+	 * @return a json object with all the necessary data
+	 * @throws JSONException
+	 */
 	public JSONObject toJSONObject() throws JSONException {
 		JSONObject o = new JSONObject();
 		o.put(KEY_ANSWER, answer);
@@ -92,6 +119,11 @@ public class UserAnswer {
 		return o;
 	}
 	
+	/**
+	 * Converts a json object to an UserAnswer object
+	 * @param o a valid json object
+	 * @throws JSONException
+	 */
 	public void fromJSONObject(JSONObject o) throws JSONException {
 		answer = o.getString(KEY_ANSWER);
 		week = o.getInt(KEY_WEEK);

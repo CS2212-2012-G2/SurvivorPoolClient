@@ -54,6 +54,12 @@ public class Bonus {
 		return questions;
 	}
 	
+	/**
+	 * Parses all {@link BonusQuestion} objects stored into a 
+	 * {@link JSONObject} with a single {@link JSONArray} stored internally.
+	 * for storage into JSON files.
+	 * @return
+	 */
 	public static JSONObject toJSONObject() throws JSONException{
 		JSONObject obj = new JSONObject();
 		
@@ -67,6 +73,10 @@ public class Bonus {
 		return obj;
 	}
 	
+	/**
+	 * Parses {@link BonusQuestion}s from a {@link JSONObject}.
+	 * @param o
+	 */
 	public static void fromJSONObject(JSONObject o) throws JSONException{
 		if(o==null)
 			return;
@@ -78,6 +88,10 @@ public class Bonus {
 		}
 	}
 	
+	/**
+	 * Checks to see if there are any bonus questions present
+	 * @return
+	 */
 	public static boolean questionsExist(){
 		return questions!=null&&questions.size()!=0;
 	}
